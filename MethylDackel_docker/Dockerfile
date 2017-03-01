@@ -1,0 +1,8 @@
+FROM adunford/bsmap_debian:1
+MAINTAINER Andrew Dunford <adunford@broadinstitute.org>
+
+COPY MethylDackel /MethylDackel
+WORKDIR /MethylDackel
+
+RUN make
+RUN make install
