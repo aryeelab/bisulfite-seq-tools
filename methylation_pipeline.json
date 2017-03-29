@@ -1,0 +1,6 @@
+{
+    "methpipe.ref_genome": "/home/adunford/Mus_musculus/Mus_musculus_assembly10.fasta",
+    "methpipe.sample_id": "sc-RRBS-zygote_01",
+    "methpipe.bsmap.fastq1": "/home/adunford/Mus_musculus/sc-RRBS-zygote_01_R1.fastq",
+    "methpipe.bsmap.fastq2": "/home/adunford/Mus_musculus/sc-RRBS-zygote_01_R2.fastq"
+}
