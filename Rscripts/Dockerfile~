@@ -1,0 +1,8 @@
+FROM adunford/methy:1
+MAINTAINER Andrew Dunford <adunford@broadinstitute.org>
+
+RUN apt-get install r-base
+RUN mkdir /RScripts/
+COPY create_rda.R combine_rda.R setup.R  /RScripts/
+WORKDIR   /RScripts/
+RUN Rscript setup.R

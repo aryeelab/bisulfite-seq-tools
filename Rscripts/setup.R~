@@ -1,0 +1,5 @@
+source("http://bioconductor.org/biocLite.R");
+biocLite('bsseq');
+
+install.packages("optparse", repos="http://R-Forge.R-project.org")
+install.packages("")
