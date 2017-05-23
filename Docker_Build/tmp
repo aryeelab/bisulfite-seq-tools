@@ -1,0 +1,64 @@
+## zlib headers and libraries.
+  have_zlib=yes
+  have_zlib=no
+if test "${have_zlib}" = yes; then
+  ac_fn_c_check_header_mongrel "$LINENO" "zlib.h" "ac_cv_header_zlib_h" "$ac_includes_default"
+if test "x$ac_cv_header_zlib_h" = xyes; then :
+  have_zlib=yes
+  have_zlib=no
+if test "${have_zlib}" = yes; then
+  { $as_echo "$as_me:${as_lineno-$LINENO}: checking if zlib version >= 1.2.5" >&5
+$as_echo_n "checking if zlib version >= 1.2.5... " >&6; }
+if ${r_cv_header_zlib_h+:} false; then :
+  r_cv_header_zlib_h=no
+#include <zlib.h>
+   version on the master site zlib.net */
+  r_cv_header_zlib_h=yes
+  r_cv_header_zlib_h=no
+{ $as_echo "$as_me:${as_lineno-$LINENO}: result: $r_cv_header_zlib_h" >&5
+$as_echo "$r_cv_header_zlib_h" >&6; }
+  have_zlib=${r_cv_header_zlib_h}
+{ $as_echo "$as_me:${as_lineno-$LINENO}: checking whether zlib support suffices" >&5
+$as_echo_n "checking whether zlib support suffices... " >&6; }
+if test "${have_zlib}" != yes; then
+  as_fn_error $? "zlib library and headers are required" "$LINENO" 5
+  { $as_echo "$as_me:${as_lineno-$LINENO}: checking mmap support for zlib" >&5
+$as_echo_n "checking mmap support for zlib... " >&6; }
+if ${r_cv_zlib_mmap+:} false; then :
+  r_cv_zlib_mmap=yes
+  r_cv_zlib_mmap=no
+  r_cv_zlib_mmap=yes
+{ $as_echo "$as_me:${as_lineno-$LINENO}: result: $r_cv_zlib_mmap" >&5
+$as_echo "$r_cv_zlib_mmap" >&6; }
+ if test "x${have_zlib}" = xno && test "x${r_cv_zlib_mmap}" = xyes; then
+## bzlib headers and libraries.
+{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for BZ2_bzlibVersion in -lbz2" >&5
+$as_echo_n "checking for BZ2_bzlibVersion in -lbz2... " >&6; }
+if ${ac_cv_lib_bz2_BZ2_bzlibVersion+:} false; then :
+char BZ2_bzlibVersion ();
+return BZ2_bzlibVersion ();
+  ac_cv_lib_bz2_BZ2_bzlibVersion=yes
+  ac_cv_lib_bz2_BZ2_bzlibVersion=no
+{ $as_echo "$as_me:${as_lineno-$LINENO}: result: $ac_cv_lib_bz2_BZ2_bzlibVersion" >&5
+$as_echo "$ac_cv_lib_bz2_BZ2_bzlibVersion" >&6; }
+if test "x$ac_cv_lib_bz2_BZ2_bzlibVersion" = xyes; then :
+  have_bzlib=yes
+  have_bzlib=no
+if test "${have_bzlib}" = yes; then
+  for ac_header in bzlib.h
+  ac_fn_c_check_header_mongrel "$LINENO" "bzlib.h" "ac_cv_header_bzlib_h" "$ac_includes_default"
+if test "x$ac_cv_header_bzlib_h" = xyes; then :
+ have_bzlib=yes
+  have_bzlib=no
+if test "x${have_bzlib}" = xyes; then
+if ${r_cv_have_bzlib+:} false; then :
+  r_cv_have_bzlib=no
+#include <bzlib.h>
+    char *ver = BZ2_bzlibVersion();
+  r_cv_have_bzlib=yes
+  r_cv_have_bzlib=no
+{ $as_echo "$as_me:${as_lineno-$LINENO}: result: $r_cv_have_bzlib" >&5
+$as_echo "$r_cv_have_bzlib" >&6; }
+if test "x${r_cv_have_bzlib}" = xno; then
+  have_bzlib=no
+if test "x${have_bzlib}" = xyes; then

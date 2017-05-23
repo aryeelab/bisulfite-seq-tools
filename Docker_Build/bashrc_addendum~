@@ -1,0 +1,5 @@
+BZIP_DIR=/usr/local/packages6/libs/gcc/4.4.7/bzip2/1.0.6
+LD_LIBRARY_PATH=$BZIP_DIR/lib
+CPATH=$BZIP_DIR/include
+MANPATH=$BZIP_DIR/man
+PATH=$BZIP_DIR/bin:$PATH
