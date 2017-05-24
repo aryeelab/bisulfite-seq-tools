@@ -22,29 +22,8 @@ RUN git clone https://github.com/dpryan79/MethylDackel.git && \
 	make && \
 	make install
 
-#Annoying Library stuff needed to install R-3.3.0
-RUN apt-get install -y libcurl4-openssl-dev wget gfortran
-WORKDIR /src
-RUN wget http://www.bzip.org/1.0.6/bzip2-1.0.6.tar.gz
-RUN mkdir -p /usr/local/packages6/libs/gcc/4.4.7/bzip2/1.0.6
-RUN tar -xvzf ./bzip2-1.0.6.tar.gz
-WORKDIR bzip2-1.0.6
-RUN make -f Makefile-libbz2_so
-RUN make
-RUN make install PREFIX=/usr/local/packages6/libs/gcc/4.4.7/bzip2/1.0.6
-RUN mv *.so* /usr/local/packages6/libs/gcc/4.4.7/bzip2/1.0.6/lib/
-
-COPY bashrc_addendum /root/.bashrc
-#RUN cat bashrc_addendum >> /root/.bashrc
-
-#installing R-3.3.0
-RUN mkdir -p /src/R/
-WORKDIR /src/R/
-RUN  wget  https://cran.r-project.org/src/base/R-3/R-3.3.0.tar.gz
-RUN tar xzvf R-3.3.0.tar.gz
-WORKDIR R-3.3.0
-#RUN source ~/.bashrc && echo $LD_LIBRARY_PATH
-#RUN source ~/.bashrc && echo $PATH
-#RUN ./configure  --with-readline=no --with-x=no --libdir=/usr/local/packages6/libs/gcc/4.4.7/bzip2/1.0.6/lib/ --enable-R-shlib --with-blas --with-lapack
-COPY install_R.sh .
-RUN sh install_R.sh
+# Install R-3.4.0 (See https://cran.r-project.org/bin/linux/debian)
+RUN apt-key adv --keyserver keys.gnupg.net --recv-key 'E19F5F87128899B192B1A2C2AD5F960A256A04AF' && \
+	echo "deb http://cloud.r-project.org/bin/linux/debian jessie-cran34/" >> /etc/apt/sources.list && \
+	apt-get update && \
+	apt-get install -y --force-yes r-base=3.4.0-1~jessiecran.0
