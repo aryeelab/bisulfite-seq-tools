@@ -14,11 +14,13 @@ RUN make
 RUN make install
 
 #install MethyDackel
-COPY MethylDackel /src/MethylDackel
-WORKDIR /src/MethylDackel
-
-RUN make
-RUN make install
+#COPY MethylDackel /src/MethylDackel
+WORKDIR /src
+RUN git clone https://github.com/dpryan79/MethylDackel.git && \
+	cd MethylDackel && \
+	git reset --hard ea29c16 && \
+	make && \
+	make install
 
 #Annoying Library stuff needed to install R-3.3.0
 RUN apt-get install -y libcurl4-openssl-dev wget gfortran
