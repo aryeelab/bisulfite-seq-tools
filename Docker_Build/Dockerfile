@@ -23,6 +23,7 @@ RUN git clone https://github.com/dpryan79/MethylDackel.git && \
 	make install
 
 # Install R-3.4.0 (See https://cran.r-project.org/bin/linux/debian)
+RUN apt-get install -y libssl-dev libcurl4-openssl-dev
 RUN apt-key adv --keyserver keys.gnupg.net --recv-key 'E19F5F87128899B192B1A2C2AD5F960A256A04AF' && \
 	echo "deb http://cloud.r-project.org/bin/linux/debian jessie-cran34/" >> /etc/apt/sources.list && \
 	apt-get update && \
