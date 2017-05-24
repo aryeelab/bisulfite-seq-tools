@@ -1,4 +1,4 @@
-FROM debian
+FROM debian:jessie
 MAINTAINER Andrew Dunford <adunford@broadinstitute.org>
 
 
