@@ -9,7 +9,7 @@ task bsmap {
   	 bsmap -a ${fastq1} -b ${fastq2} -d ${ref_genome} -p 4 -v 0.05 -s 16 -r 0 -u -S 1 -R -o ${sample}_raw_bs.bam
   }
   runtime {
-  	  docker: "adunford/methy:3"
+  	  docker: "adunford/methy:7"
 	  #memory: "16 GB"
 	  #defaultDisks: "local-disk 100 SSD"
   }
@@ -27,7 +27,7 @@ task samtools_sort {
           samtools sort ${raw_bs_bam} ${sample_id}_bs.sorted && samtools index ${sample_id}_bs.sorted.bam
   }
   runtime {
-          docker: "adunford/methy:3"
+          docker: "adunford/methy:7"
           #memory: "16 GB"
           #defaultDisks: "local-disk 100 SSD"
   }
@@ -41,40 +41,72 @@ task samtools_read_metrics{
      File sorted_bs_bam
      String sample_id
      command{
-	     echo ${sample_id} `samtools view ${sorted_bs_bam} | wc -l` `samtools view -F 4 ${sorted_bs_bam} | wc -l` > ${sample_id}.read_metrics.txt
+	echo ${sample_id} `samtools view ${sorted_bs_bam} | wc -l` `samtools view -F 4 ${sorted_bs_bam} | wc -l` > ${sample_id}.read_metrics.txt
      }
      runtime{
-	     docker: "adunford/methy:3"
+	docker: "adunford/methy:7"
      }
      output {
-     	     File read_metrics = "${sample_id}.read_metrics.txt"
+	File read_metrics = "${sample_id}.read_metrics.txt"
      }
-
 }
 
 task MethylDackel {
+        File genome
+        File sorted_bs_bam
+	String sample_id
+	command {
+		MethylDackel extract ${genome} ${sorted_bs_bam} -o ${sample_id}
+		grep -v '^track' ${sample_id}_CpG.bedGraph  > tmp
+		mv tmp ${sample_id}_CpG.bedGraph
+	}
+	runtime {
+		docker: "adunford/methy:7"
+	}
+	output {
+		File bed = "${sample_id}_CpG.bedGraph"
+	}
+}
+
+task MethylDackel_CHH {
      File genome
      File sorted_bs_bam
      String sample_id
      command {
-     	     MethylDackel extract ${genome} ${sorted_bs_bam} -o ${sample_id}
+	     MethylDackel extract --CHH ${genome} ${sorted_bs_bam} -o ${sample_id}
      }
      runtime {
-     	     docker: "adunford/methy:3"
+     	     docker: "adunford/methy:7"
      }
      output {
-     	    File bed = "${sample_id}_CpG.bedGraph"
+     	    File chh_bed = "${sample_id}_CHH.bedGraph"
+     }
+}
+
+task bs_conversion_rate{
+     File chh_bed
+     String sample_id
+     command {
+	     sh /executable_files/collect_bsconv_metrics.sh ${sample_id} ${chh_bed} 
+     }
+     runtime {
+     	     docker: "adunford/methy:7"
+     }
+     output{
+	     File bsconv = "${sample_id}_bsconv.txt"
      }
 }
 
 task create_rda {
      File bed
      String sample_id
+     File bsconv
+     File read_metrics
      command{
-	     Rscript /RScripts/create_rda.R -f ${bed} -o ${sample_id}
+	     Rscript /Rscripts/create_rda_wrapper.R -f ${bed} -o ${sample_id}.rda -b ${bsconv} -r ${read_metrics}
      }
      runtime {
-     	     docker: "adunford/methy:3"
+     	     docker: "adunford/methy:7"
      }
      output {
      	    File rda = "${sample_id}.rda"
@@ -88,6 +120,8 @@ workflow methpipe {
 	 call bsmap	{input: sample = sample_id, ref_genome = ref_genome}
 	 call samtools_sort {input: raw_bs_bam = bsmap.raw_bs_bam, sample_id = sample_id }
 	 call samtools_read_metrics {input: sorted_bs_bam = samtools_sort.sorted_bs_bam, sample_id = sample_id}
-	 call MethylDackel  {input: sorted_bs_bam = samtools_sort.sorted_bs_bam, sample_id = sample_id, genome = ref_genome}
-	 call create_rda    {input: bed = MethylDackel.bed, sample_id = sample_id}
+	 call MethylDackel {input: sorted_bs_bam = samtools_sort.sorted_bs_bam, sample_id = sample_id, genome = ref_genome}
+	 call MethylDackel_CHH  {input: sorted_bs_bam = samtools_sort.sorted_bs_bam, sample_id = sample_id, genome = ref_genome}
+	 call bs_conversion_rate {input: chh_bed = MethylDackel_CHH.chh_bed, sample_id = sample_id}
+	 call create_rda    {input: bed = MethylDackel.bed, sample_id = sample_id,bsconv = bs_conversion_rate.bsconv, read_metrics = samtools_read_metrics.read_metrics}
 }

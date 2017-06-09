@@ -36,7 +36,6 @@ RUN Rscript -e "source('http://bioconductor.org/biocLite.R');biocLite('bsseq');"
 RUN Rscript -e "source('http://bioconductor.org/biocLite.R');biocLite('BiocGenerics');"
 RUN Rscript -e "install.packages('optparse', repos='http://R-Forge.R-project.org')"
 RUN Rscript -e "install.packages('ggplot2',repos='http://R-Forge.R-project.org')"
-RUN Rscript -e "install.packages('yaml')"
 RUN Rscript -e "install.packages('foreach',repos='http://R-Forge.R-project.org')"
 RUN Rscript -e "install.packages('yaml',repos='https://mirror.las.iastate.edu/CRAN/')"
 RUN Rscript -e "install.packages('devtools',repos='https://mirror.las.iastate.edu/CRAN/')"
@@ -47,3 +46,13 @@ RUN Rscript -e "source('http://bioconductor.org/biocLite.R');biocLite('rtracklay
 RUN Rscript -e "source('http://bioconductor.org/biocLite.R');biocLite('BSgenome')"
 RUN Rscript -e "source('http://bioconductor.org/biocLite.R');biocLite('Ringo')"
 RUN Rscript -e "source('http://bioconductor.org/biocLite.R');biocLite('Repitools')"
+RUN mkdir /executable_files/
+COPY collect_bsconv_metrics.sh /executable_files/
+RUN Rscript -e "source('http://bioconductor.org/biocLite.R');biocLite('knitr')"
+RUN Rscript -e "source('http://bioconductor.org/biocLite.R');biocLite('AnnotationHub')"
+COPY scmeth-master /Rscripts/scmeth
+RUN  R CMD INSTALL /Rscripts/scmeth
+RUN Rscript -e "install.packages('rmarkdown',repos='https://mirror.las.iastate.edu/CRAN/')"
+COPY Rscripts/*.R /Rscripts/
+RUN apt-get install -y pandoc
+RUN Rscript -e "source('http://bioconductor.org/biocLite.R');biocLite('BSgenome.Mmusculus.UCSC.mm10')"
