@@ -50,9 +50,9 @@ RUN mkdir /executable_files/
 COPY collect_bsconv_metrics.sh /executable_files/
 RUN Rscript -e "source('http://bioconductor.org/biocLite.R');biocLite('knitr')"
 RUN Rscript -e "source('http://bioconductor.org/biocLite.R');biocLite('AnnotationHub')"
+RUN Rscript -e "source('http://bioconductor.org/biocLite.R');biocLite('BSgenome.Mmusculus.UCSC.mm10')"
+RUN Rscript -e "install.packages('rmarkdown',repos='https://mirror.las.iastate.edu/CRAN/')"
 COPY scmeth-master /Rscripts/scmeth
 RUN  R CMD INSTALL /Rscripts/scmeth
-RUN Rscript -e "install.packages('rmarkdown',repos='https://mirror.las.iastate.edu/CRAN/')"
 COPY Rscripts/*.R /Rscripts/
 RUN apt-get install -y pandoc
-RUN Rscript -e "source('http://bioconductor.org/biocLite.R');biocLite('BSgenome.Mmusculus.UCSC.mm10')"
