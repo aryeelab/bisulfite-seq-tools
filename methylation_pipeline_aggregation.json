@@ -1,0 +1,6 @@
+{
+    "methpipeagg.set_name" : "Mus_musculus",
+    "methpipeagg.genome" : "/home/adunford/Mus_musculus/Mus_musculus_assembly10.fasta",
+    "methpipeagg.combine_rda.individual_rdas" : ["/home/adunford/methylation_pipeline/cromwell-executions/methpipe/6ad122fc-45af-40a7-8a1d-71f6c495a7f9/call-create_rda/execution/sc-RRBS-zygote_01.rda","/home/adunford/methylation_pipeline/cromwell-executions/methpipe/3620abf0-2e2b-4d2b-850c-257b06e5d0fb/call-create_rda/execution/sc-RRBS-zygote_02.rda","/home/adunford/methylation_pipeline/cromwell-executions/methpipe/68f11773-b1b9-4934-acdc-59cea46a8f8a/call-create_rda/execution/sc-RRBS-zygote_03.rda"],
+    "methpipeagg.qc_report.outdir" : "."
+}
