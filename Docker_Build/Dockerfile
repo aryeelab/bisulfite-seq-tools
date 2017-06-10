@@ -52,6 +52,8 @@ RUN Rscript -e "source('http://bioconductor.org/biocLite.R');biocLite('knitr')"
 RUN Rscript -e "source('http://bioconductor.org/biocLite.R');biocLite('AnnotationHub')"
 RUN Rscript -e "source('http://bioconductor.org/biocLite.R');biocLite('BSgenome.Mmusculus.UCSC.mm10')"
 RUN Rscript -e "install.packages('rmarkdown',repos='https://mirror.las.iastate.edu/CRAN/')"
+RUN Rscript -e "install.packages('annotatr',repos='https://mirror.las.iastate.edu/CRAN/')"
+
 COPY scmeth-master /Rscripts/scmeth
 RUN  R CMD INSTALL /Rscripts/scmeth
 COPY Rscripts/*.R /Rscripts/
