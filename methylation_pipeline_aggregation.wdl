@@ -19,7 +19,7 @@ task qc_report {
      String outdir
      File genome
      command {
-	     Rscript /Rscripts/generate_qc_report.R -f ${combined_rda}  -o ${outdir} #-g ${genome} -r ${organism}
+	     Rscript /Rscripts/generate_qc_report.R -f ${combined_rda}  -o $PWD #-g ${genome} -r ${organism}
      }
      runtime {
      	     docker: "adunford/methy:9"
