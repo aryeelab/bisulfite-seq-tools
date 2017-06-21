@@ -28,8 +28,8 @@ RUN apt-key adv --keyserver keys.gnupg.net --recv-key 'E19F5F87128899B192B1A2C2A
 	echo "deb http://cloud.r-project.org/bin/linux/debian jessie-cran34/" >> /etc/apt/sources.list && \
 	apt-get update && \
 	apt-get install -y --force-yes r-base=3.4.0-1~jessiecran.0
-RUN mkdir /Rscripts/
-COPY *.R /Rscripts/
+#RUN mkdir /Rscripts/
+#COPY *.R /Rscripts/
 
 #Installing necessary R packages
 RUN Rscript -e "source('http://bioconductor.org/biocLite.R');biocLite('bsseq');"
@@ -46,15 +46,20 @@ RUN Rscript -e "source('http://bioconductor.org/biocLite.R');biocLite('rtracklay
 RUN Rscript -e "source('http://bioconductor.org/biocLite.R');biocLite('BSgenome')"
 RUN Rscript -e "source('http://bioconductor.org/biocLite.R');biocLite('Ringo')"
 RUN Rscript -e "source('http://bioconductor.org/biocLite.R');biocLite('Repitools')"
-RUN mkdir /executable_files/
-COPY collect_bsconv_metrics.sh /executable_files/
 RUN Rscript -e "source('http://bioconductor.org/biocLite.R');biocLite('knitr')"
 RUN Rscript -e "source('http://bioconductor.org/biocLite.R');biocLite('AnnotationHub')"
 RUN Rscript -e "source('http://bioconductor.org/biocLite.R');biocLite('BSgenome.Mmusculus.UCSC.mm10')"
 RUN Rscript -e "install.packages('rmarkdown',repos='https://mirror.las.iastate.edu/CRAN/')"
 RUN Rscript -e "source('http://bioconductor.org/biocLite.R');biocLite('annotatr')"
 
+
+#Install scmeth package for QC reports and methylation analysis
+RUN mkdir /Rscripts
 COPY scmeth-master /Rscripts/scmeth
 RUN  R CMD INSTALL /Rscripts/scmeth
 COPY Rscripts/*.R /Rscripts/
 RUN apt-get install -y pandoc
+
+#Include bash script for calculating bsconversion rate
+RUN mkdir /executable_files/
+COPY collect_bsconv_metrics.sh /executable_files/

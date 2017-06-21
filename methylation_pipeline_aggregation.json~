@@ -1,0 +1,18 @@
+{
+    "methpipeagg.set_name" : "Mus_musculus",
+    "methpipeagg.genome" : "/home/adunford/Mus_musculus/Mus_musculus_assembly10.fasta",
+    "methpipeagg.samples" : [ {"sample_id" : "sc-RRBS-zygote_01",
+			       "bsconv":"/home/adunford/scatter_gather/input/sc-RRBS-zygote_01_bsconv.txt",
+			       "read_metrics" : "/home/adunford/scatter_gather/input/sc-RRBS-zygote_01.read_metrics.txt",
+			       "bed" : "/home/adunford/scatter_gather/input/sc-RRBS-zygote_01_CpG.bedGraph"},
+			      {"sample_id" : "sc-RRBS-zygote_02",
+			       "bsconv":"/home/adunford/scatter_gather/input/sc-RRBS-zygote_02_bsconv.txt",
+			       "read_metrics" : "/home/adunford/scatter_gather/input/sc-RRBS-zygote_02.read_metrics.txt",
+			       "bed" : "/home/adunford/scatter_gather/input/sc-RRBS-zygote_02_CpG.bedGraph"},
+			      {"sample_id" : "sc-RRBS-zygote_03",
+			       "bsconv":"/home/adunford/scatter_gather/input/sc-RRBS-zygote_03_bsconv.txt",
+			       "read_metrics" : "/home/adunford/scatter_gather/input/sc-RRBS-zygote_03.read_metrics.txt",
+			       "bed" : "/home/adunford/scatter_gather/input/sc-RRBS-zygote_03_CpG.bedGraph"}],
+    
+    "methpipeagg.qc_report.outdir" : "."
+}
