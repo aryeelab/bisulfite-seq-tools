@@ -1,0 +1,4 @@
+entity:participant_id	bs_fastq1	bs_fastq2
+sc-RRBS-zygote_01	gs://fc-dceaadae-be69-41ab-a230-0b735c0556c1/sc-RRBS-zygote_01_R1.fastq.gz	gs://fc-dceaadae-be69-41ab-a230-0b735c0556c1/sc-RRBS-zygote_01_R2.fastq.gz
+sc-RRBS-zygote_02	gs://fc-dceaadae-be69-41ab-a230-0b735c0556c1/sc-RRBS-zygote_02_R1.fastq.gz	gs://fc-dceaadae-be69-41ab-a230-0b735c0556c1/sc-RRBS-zygote_02_R2.fastq.gz
+sc-RRBS-zygote_03	gs://fc-dceaadae-be69-41ab-a230-0b735c0556c1/sc-RRBS-zygote_03_R1.fastq.gz	gs://fc-dceaadae-be69-41ab-a230-0b735c0556c1/sc-RRBS-zygote_03_R2.fastq.gz

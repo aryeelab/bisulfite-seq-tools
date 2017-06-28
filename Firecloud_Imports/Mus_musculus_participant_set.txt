@@ -1,0 +1,4 @@
+membership:participant_set_id	participant_id
+Mus_musculus	sc-RRBS-zygote_01
+Mus_musculus	sc-RRBS-zygote_02
+Mus_musculus	sc-RRBS-zygote_03
