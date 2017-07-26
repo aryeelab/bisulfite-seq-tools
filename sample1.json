@@ -1,0 +1,6 @@
+{
+    "methpipeindv.ref_genome": "mm10.fa",
+    "methpipeindv.sample_id": "sample-01",
+    "methpipeindv.bsmap.fastq1": "testdata/small_01_R1.fastq.gz",
+    "methpipeindv.bsmap.fastq2": "testdata/small_01_R2.fastq.gz"
+}

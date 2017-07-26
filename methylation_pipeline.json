@@ -1,6 +1,15 @@
 {
-    "methpipe.ref_genome": "/home/adunford/Mus_musculus/Mus_musculus_assembly10.fasta",
-    "methpipe.sample_id": "sc-RRBS-zygote_01",
-    "methpipe.bsmap.fastq1": "/home/adunford/Mus_musculus/sc-RRBS-zygote_01_R1.fastq",
-    "methpipe.bsmap.fastq2": "/home/adunford/Mus_musculus/sc-RRBS-zygote_01_R2.fastq"
+    "methpipeagg.set_name" : "Mus_musculus",
+    "methpipeagg.genome" : "/home/adunford/Mus_musculus/Mus_musculus_assembly10.fasta",
+    "methpipeagg.samples" : [ {"sample_id" : "sc-RRBS-zygote_01",
+			       "fastq1":"/home/adunford/Mus_musculus/sc-RRBS-zygote_01_R1.fastq.gz",
+			       "fastq2" : "/home/adunford/Mus_musculus/sc-RRBS-zygote_01_R2.fastq.gz"},
+			      {"sample_id" : "sc-RRBS-zygote_02",
+			       "fastq1" : "/home/adunford/Mus_musculus/sc-RRBS-zygote_02_R1.fastq.gz",
+			       "fastq2" : "/home/adunford/Mus_musculus/sc-RRBS-zygote_02_R2.fastq.gz"},
+			      {"sample_id" : "sc-RRBS-zygote_03",
+			       "fastq1" : "/home/adunford/Mus_musculus/sc-RRBS-zygote_03_R1.fastq.gz",
+			       "fastq2" : "/home/adunford/Mus_musculus/sc-RRBS-zygote_03_R2.fastq.gz"}],
+    
+    "methpipeagg.qc_report.outdir" : "."
 }
