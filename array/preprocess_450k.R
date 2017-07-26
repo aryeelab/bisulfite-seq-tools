@@ -7,7 +7,7 @@ qc_intensity_cutoff <- 11
 
 # OUTPUT
 qc_file <- "qc.csv"
-preprocesed_genomic_ratio_set <- "gmset"
+preprocesed_genomic_ratio_set <- "gmset.rds"
 
 targets <- read.csv(sample_sheet, stringsAsFactors = FALSE)
 targets$Basename <- file.path(idat_base_dir, targets$Basename)
