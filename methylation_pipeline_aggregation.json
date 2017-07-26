@@ -1,8 +1,7 @@
 {
     "methpipeagg.set_name" : "small_set",
     "methpipeagg.combine_rda.individual_rdas" : [
-    "cromwell-executions/methpipeindv/81285121-40c8-48fc-b64e-008fed094eb3/call-create_rda/execution/sample-02.rda",
-	"cromwell-executions/methpipeindv/81285121-40c8-48fc-b64e-008fed094eb3/call-create_rda/execution/sample-02.rda",
+    "cromwell-executions/methpipeindv/07388868-ed15-4e6b-8418-a399fd538315/call-create_rda/execution/sample-01.rda",
 	"cromwell-executions/methpipeindv/81285121-40c8-48fc-b64e-008fed094eb3/call-create_rda/execution/sample-02.rda"
 	]
 }
