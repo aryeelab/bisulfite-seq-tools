@@ -6,17 +6,17 @@ task bsmap {
 
 
   command {
-         bsmap -a ${fastq1} -b ${fastq2} -d ${ref_genome} -p 3 -v 0.05 -s 16 -r 0 -u -S 1 -R -o ${sample}_raw_bs.bam
+         bsmap -a ${fastq1} -b ${fastq2} -d ${ref_genome} -p 4 -v 0.05 -s 16 -r 0 -u -S 1 -R -o ${sample}_raw_bs.bam
   }
   runtime {
           docker: "aryeelab/methy"
           memory: "16 GB"
           disks: "local-disk 100 SSD"
+          cpu: 4
+          preemptible: 1
   }
   output {
          File raw_bs_bam = "${sample}_raw_bs.bam"
-         #File genome = "${ref_genome}"
-         #String sample_id = "${sample}"
   }
 }
 
@@ -30,6 +30,7 @@ task samtools_sort {
           docker: "aryeelab/methy"
           memory: "16 GB"
           disks: "local-disk 100 SSD"
+          preemptible: 1
   }
   output {
          File sorted_bs_bam   = "${sample_id}_bs.sorted.bam"
@@ -47,6 +48,7 @@ task samtools_read_metrics{
         docker: "aryeelab/methy"
         memory: "16 GB"
         disks: "local-disk 100 SSD"
+        preemptible: 1        
      }
      output {
         File read_metrics = "${sample_id}.read_metrics.txt"
@@ -66,7 +68,7 @@ task MethylDackel {
               docker: "aryeelab/methy"
     	      memory: "16 GB"
 	          defaultDisks: "local-disk 100 SSD"
-
+	          preemptible: 1      
         }
         output {
                 File bed = "${sample_id}_CpG.bedGraph"
@@ -84,6 +86,7 @@ task MethylDackel_CHH {
              docker: "aryeelab/methy"
              memory: "16 GB"
              disks: "local-disk 100 SSD"
+             preemptible: 1
 
      }
      output {
@@ -99,6 +102,7 @@ task bs_conversion_rate{
      }
      runtime {
              docker: "aryeelab/methy"
+             preemptible: 1  
      }
      output{
              File bsconv = "${sample_id}_bsconv.txt"
@@ -114,6 +118,7 @@ task create_rda {
      }
      runtime {
              docker: "aryeelab/methy"
+             preemptible: 1   
      }
      output {
             File rda = "${sample_id}.rda"
