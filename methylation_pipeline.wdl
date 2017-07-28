@@ -14,7 +14,7 @@ task bsmap {
 	  #defaultDisks: "local-disk 100 SSD"
   }
   output {
-	 File raw_bs_bam = "./${sample}_raw_bs.bam"
+	 File raw_bs_bam = "${sample}_raw_bs.bam"
 
 
   }
