@@ -14,7 +14,7 @@ task bsmap {
           disks: "local-disk 100 SSD"
   }
   output {
-         File raw_bs_bam = "./${sample}_raw_bs.bam"
+         File raw_bs_bam = "${sample}_raw_bs.bam"
          #File genome = "${ref_genome}"
          #String sample_id = "${sample}"
   }
