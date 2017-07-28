@@ -10,8 +10,10 @@ task bsmap {
   }
   runtime {
   	  docker: "adunford/methy:9"
-	  #memory: "16 GB"
-	  #defaultDisks: "local-disk 100 SSD"
+	  memory: "16 GB"
+	  defaultDisks: "local-disk 100 SSD"
+	  cpu: 4
+	  preemptible: 1
   }
   output {
 	 File raw_bs_bam = "${sample}_raw_bs.bam"
@@ -28,8 +30,9 @@ task samtools_sort {
   }
   runtime {
           docker: "adunford/methy:9"
-          #memory: "16 GB"
-          #defaultDisks: "local-disk 100 SSD"
+          memory: "8 GB"
+          defaultDisks: "local-disk 100 SSD"
+          preemptible: 1
   }
   output {
          File sorted_bs_bam   = "${sample_id}_bs.sorted.bam"
@@ -45,6 +48,7 @@ task samtools_read_metrics{
      }
      runtime{
 	docker: "adunford/methy:9"
+	preemptible: 1
      }
      output {
 	File read_metrics = "${sample_id}.read_metrics.txt"
@@ -62,6 +66,7 @@ task MethylDackel {
 }
 	runtime {
 		docker: "adunford/methy:9"
+		preemptible: 1
 	}
 	output {
 		File bed = "${sample_id}_CpG.bedGraph"
@@ -77,6 +82,7 @@ task MethylDackel_CHH {
      }
      runtime {
      	     docker: "adunford/methy:9"
+     	     preemptible: 1
      }
      output {
      	    File chh_bed = "${sample_id}_CHH.bedGraph"
@@ -91,6 +97,7 @@ task bs_conversion_rate{
      }
      runtime {
      	     docker: "adunford/methy:9"
+     	     preemptible: 1
      }
      output{
 	     File bsconv = "${sample_id}_bsconv.txt"
@@ -107,6 +114,7 @@ task create_rda {
      }
      runtime {
      	     docker: "adunford/methy:9"
+     	     preemptible: 1
      }
      output {
      	    File rda = "${sample_id}.rda"
@@ -123,6 +131,7 @@ task combine_rda {
 	}
 	runtime {
 		docker: "adunford/methy:9"
+		preemptible: 1
 	}
 	output  {
 		File combined_rda = "${set_name}.combined.rda"
@@ -139,6 +148,7 @@ task qc_report {
      }
      runtime {
 	     docker: "adunford/methy:9"
+	     preemptible: 1
      }
      output {
      	    File qc_report = "qcReport.html"
