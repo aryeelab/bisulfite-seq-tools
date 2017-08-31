@@ -2,55 +2,57 @@ FROM debian:jessie
 MAINTAINER Andrew Dunford <adunford@broadinstitute.org>
 
 
-#install bsmap
-RUN apt-get update &&  apt-get install  -y build-essential zlib1g-dev samtools git
-RUN mkdir /src
-WORKDIR /src
-COPY bsmap-2.90.tgz .
-RUN tar zvxf bsmap-2.90.tgz
-WORKDIR bsmap-2.90
+RUN apt-get update &&  apt-get install  -y build-essential zlib1g-dev samtools git wget
 
-RUN make
-RUN make install
+# Install Bowtie2
+RUN apt-get install -y libtbb-dev && \
+	cd /src && \
+	wget -O bowtie2.zip https://sourceforge.net/projects/bowtie-bio/files/bowtie2/2.3.2/bowtie2-2.3.2-linux-x86_64.zip/download && \
+	unzip bowtie2.zip
+	ln -s /src/bowtie2-2.3.2/bowtie2* /usr/local/bin
 
-#install MethyDackel
-#COPY MethylDackel /src/MethylDackel
-WORKDIR /src
-RUN git clone https://github.com/dpryan79/MethylDackel.git && \
+# Install Bismark
+RUN cd /src && \
+	wget https://github.com/FelixKrueger/Bismark/archive/0.18.2.tar.gz && \
+	tar zxf 0.18.2.tar.gz && \
+	ln -s /src/Bismark-0.18.2/bismark* /usr/local/bin/
+
+
+# Install MethyDackel
+RUN cd /src && \
+	git clone https://github.com/dpryan79/MethylDackel.git && \
 	cd MethylDackel && \
 	git reset --hard ea29c16 && \
 	make && \
 	make install
 
 # Install R-3.4.0 (See https://cran.r-project.org/bin/linux/debian)
-RUN apt-get install -y libssl-dev libcurl4-openssl-dev
-RUN apt-key adv --keyserver keys.gnupg.net --recv-key 'E19F5F87128899B192B1A2C2AD5F960A256A04AF' && \
+RUN apt-get install -y libssl-dev libcurl4-openssl-dev && \
+	apt-key adv --keyserver keys.gnupg.net --recv-key 'E19F5F87128899B192B1A2C2AD5F960A256A04AF' && \
 	echo "deb http://cloud.r-project.org/bin/linux/debian jessie-cran34/" >> /etc/apt/sources.list && \
 	apt-get update && \
-	apt-get install -y --force-yes r-base=3.4.0-1~jessiecran.0
-#RUN mkdir /Rscripts/
-#COPY *.R /Rscripts/
+	apt-get install -y --force-yes r-base
 
 #Installing necessary R packages
-RUN Rscript -e "source('http://bioconductor.org/biocLite.R');biocLite('bsseq');"
-RUN Rscript -e "source('http://bioconductor.org/biocLite.R');biocLite('BiocGenerics');"
-RUN Rscript -e "install.packages('optparse', repos='http://R-Forge.R-project.org')"
-RUN Rscript -e "install.packages('ggplot2',repos='http://R-Forge.R-project.org')"
-RUN Rscript -e "install.packages('foreach',repos='http://R-Forge.R-project.org')"
-RUN Rscript -e "install.packages('yaml',repos='https://mirror.las.iastate.edu/CRAN/')"
-RUN Rscript -e "install.packages('devtools',repos='https://mirror.las.iastate.edu/CRAN/')"
-RUN apt-get install -y libxml2-dev
-RUN Rscript -e "source('http://bioconductor.org/biocLite.R');biocLite('XML')"
-RUN Rscript -e "source('http://bioconductor.org/biocLite.R');biocLite('genefilter')"
-RUN Rscript -e "source('http://bioconductor.org/biocLite.R');biocLite('rtracklayer')"
-RUN Rscript -e "source('http://bioconductor.org/biocLite.R');biocLite('BSgenome')"
-RUN Rscript -e "source('http://bioconductor.org/biocLite.R');biocLite('Ringo')"
-RUN Rscript -e "source('http://bioconductor.org/biocLite.R');biocLite('Repitools')"
-RUN Rscript -e "source('http://bioconductor.org/biocLite.R');biocLite('knitr')"
-RUN Rscript -e "source('http://bioconductor.org/biocLite.R');biocLite('AnnotationHub')"
-RUN Rscript -e "source('http://bioconductor.org/biocLite.R');biocLite('BSgenome.Mmusculus.UCSC.mm10')"
-RUN Rscript -e "install.packages('rmarkdown',repos='https://mirror.las.iastate.edu/CRAN/')"
-RUN Rscript -e "source('http://bioconductor.org/biocLite.R');biocLite('annotatr')"
+RUN Rscript -e "source('http://bioconductor.org/biocLite.R');biocLite('bsseq');" && \
+    Rscript -e "source('http://bioconductor.org/biocLite.R');biocLite('BiocGenerics');" && \
+    Rscript -e "install.packages('optparse', repos='http://R-Forge.R-project.org')" && \
+    Rscript -e "install.packages('ggplot2',repos='http://R-Forge.R-project.org')" && \
+    Rscript -e "install.packages('foreach',repos='http://R-Forge.R-project.org')" && \
+    Rscript -e "install.packages('yaml',repos='https://mirror.las.iastate.edu/CRAN/')" && \
+    Rscript -e "install.packages('devtools',repos='https://mirror.las.iastate.edu/CRAN/')" && \
+    apt-get install -y libxml2-dev && \
+    Rscript -e "source('http://bioconductor.org/biocLite.R');biocLite('XML')" && \
+    Rscript -e "source('http://bioconductor.org/biocLite.R');biocLite('genefilter')" && \
+    Rscript -e "source('http://bioconductor.org/biocLite.R');biocLite('rtracklayer')" && \
+    Rscript -e "source('http://bioconductor.org/biocLite.R');biocLite('BSgenome')" && \
+    Rscript -e "source('http://bioconductor.org/biocLite.R');biocLite('Ringo')" && \
+    Rscript -e "source('http://bioconductor.org/biocLite.R');biocLite('Repitools')" && \
+    Rscript -e "source('http://bioconductor.org/biocLite.R');biocLite('knitr')" && \
+    Rscript -e "source('http://bioconductor.org/biocLite.R');biocLite('AnnotationHub')" && \
+    Rscript -e "source('http://bioconductor.org/biocLite.R');biocLite('BSgenome.Mmusculus.UCSC.mm10')" && \
+    Rscript -e "install.packages('rmarkdown',repos='https://mirror.las.iastate.edu/CRAN/')" && \
+    Rscript -e "source('http://bioconductor.org/biocLite.R');biocLite('annotatr')" 
 
 
 #Install scmeth package for QC reports and methylation analysis
