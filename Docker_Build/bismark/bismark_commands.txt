@@ -1,0 +1,28 @@
+
+mkdir bismark_test
+cd bismark_test
+
+module load bowtie2
+module load aryee/samtools-1.3.1
+GENOME_FOLDER=/data/aryee/pub/genomes/bismark_index/grch38
+
+SAMPLE_NAME=small_01
+FASTQ_R1=../testdata/small_01_R1.fastq.gz
+FASTQ_R2=../testdata/small_01_R2.fastq.gz
+time /apps/lab/aryee/Bismark-0.18.2/bismark --genome $GENOME_FOLDER --basename $SAMPLE_NAME -1 $FASTQ_R1 -2 $FASTQ_R2
+time /apps/lab/aryee/Bismark-0.18.2/bismark_methylation_extractor --gzip --bedGraph --buffer_size 4G --genome_folder $GENOME_FOLDER ${SAMPLE_NAME}_pe.bam
+
+SAMPLE_NAME=small_02
+FASTQ_R1=../testdata/small_02_R1.fastq.gz
+FASTQ_R2=../testdata/small_02_R2.fastq.gz
+time /apps/lab/aryee/Bismark-0.18.2/bismark --genome $GENOME_FOLDER --basename $SAMPLE_NAME -1 $FASTQ_R1 -2 $FASTQ_R2
+time /apps/lab/aryee/Bismark-0.18.2/bismark_methylation_extractor --gzip --bedGraph --buffer_size 4G --genome_folder $GENOME_FOLDER ${SAMPLE_NAME}_pe.bam
+
+SAMPLE_NAME=small_03
+FASTQ_R1=../testdata/small_03_R1.fastq.gz
+FASTQ_R2=../testdata/small_03_R2.fastq.gz
+time /apps/lab/aryee/Bismark-0.18.2/bismark --genome $GENOME_FOLDER --basename $SAMPLE_NAME -1 $FASTQ_R1 -2 $FASTQ_R2
+time /apps/lab/aryee/Bismark-0.18.2/bismark_methylation_extractor --gzip --bedGraph --buffer_size 4G --genome_folder $GENOME_FOLDER ${SAMPLE_NAME}_pe.bam
+
+
+time Rscript --vanilla bismark_to_bsseq.R -i small_01,small_02,small_03 -o test_bs
