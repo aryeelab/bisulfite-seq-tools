@@ -1,6 +1,7 @@
-library(optparse)
-library(scmeth)
-
+library("optparse")
+library("scmeth")
+library("bsseq")
+library(rmarkdown)
 
 ### UPDATE THIS TO CUSTOMIZE GENOME
 library("BSgenome.Mmusculus.UCSC.mm10")
@@ -9,16 +10,14 @@ genome <- "mm10"
 
 
 option_list = list(
-        make_option(c("-f","--bsFile"),action="store",type='character',default=NULL,
-	                help="combined RDA file for entity set"),
+        make_option(c("-i","--inputBsseqHDF5"),action="store",type='character',default=NULL,
+	                help="Directory with bsseq HDF5SummarizedExperiment"),
 	make_option(c("-o","--outDir"),action="store",type='character',default=NULL,
 			help="output directory")
 	)
 
 opt_parse=OptionParser(option_list=option_list)
 opt = parse_args(opt_parse)
-bsfile <- opt$bsFile
-outdir <- opt$outDir
 
-load(bsfile)
-report(combined_rda,outdir,organism,genome)
+bs <- loadHDF5SummarizedExperiment(opt$inputBsseqHDF5)
+report(bs, opt$outDir, organism, genome)
