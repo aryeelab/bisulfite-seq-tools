@@ -1,0 +1,1 @@
+docker run -v /home/adunford:/home/adunford:rw adunford/methyarray Rscript Rscripts/preprocess_450k.R --data_dir ~/github/methylation-wdl/testdata/450k --sample_sheet ~/github/methylation-wdl/testdata/450k/samples.csv  --qc_intensity_cutoff 11 --beta_file 'beta.tsv' --preprocessed_genomic_ratio_set_rds gmset.rds --qc_file qc_report
