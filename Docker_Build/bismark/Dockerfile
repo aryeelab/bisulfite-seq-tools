@@ -49,12 +49,7 @@ RUN Rscript -e "source('http://bioconductor.org/biocLite.R');biocLite('bsseq');"
 
 
 #Install scmeth package for QC reports and methylation analysis
-RUN mkdir /Rscripts
-COPY scmeth-master /Rscripts/scmeth
-RUN  R CMD INSTALL /Rscripts/scmeth
-COPY Rscripts/*.R /Rscripts/
-RUN apt-get install -y pandoc
+RUN     Rscript -e "devtools::install_github('aryeelab/scmeth')" && \
+      apt-get install -y pandoc
 
-#Include bash script for calculating bsconversion rate
-RUN mkdir /executable_files/
-COPY collect_bsconv_metrics.sh /executable_files/
+
