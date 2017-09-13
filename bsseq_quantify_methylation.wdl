@@ -21,8 +21,8 @@ task bismark {
   output {
          File cov = "${sample_id}_pe.bismark.cov.gz"
          File report = "${sample_id}_PE_report.txt"
+         File mbias = "${sample_id}_pe.M-bias.txt"
   }
-
 }
 
 
