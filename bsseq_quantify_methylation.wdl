@@ -29,7 +29,7 @@ task bismark {
 workflow bspipe {
     File fastq1
     File fastq2
-    String genome_index
+    File genome_index
     String sample_id
     call bismark {input: fastq1 = fastq1, fastq2 = fastq2, sample_id = sample_id, genome_index = genome_index}
 }
