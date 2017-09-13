@@ -2,13 +2,14 @@ FROM debian:jessie
 MAINTAINER Andrew Dunford <adunford@broadinstitute.org>
 
 
-RUN apt-get update &&  apt-get install  -y build-essential zlib1g-dev samtools git wget
+RUN apt-get update &&  apt-get install  -y build-essential zlib1g-dev samtools git wget unzip
 
 # Install Bowtie2
 RUN apt-get install -y libtbb-dev && \
+	mkdir /src && \
 	cd /src && \
 	wget -O bowtie2.zip https://sourceforge.net/projects/bowtie-bio/files/bowtie2/2.3.2/bowtie2-2.3.2-linux-x86_64.zip/download && \
-	unzip bowtie2.zip
+	unzip bowtie2.zip && \
 	ln -s /src/bowtie2-2.3.2/bowtie2* /usr/local/bin
 
 # Install Bismark
@@ -17,14 +18,6 @@ RUN cd /src && \
 	tar zxf 0.18.2.tar.gz && \
 	ln -s /src/Bismark-0.18.2/bismark* /usr/local/bin/
 
-
-# Install MethyDackel
-RUN cd /src && \
-	git clone https://github.com/dpryan79/MethylDackel.git && \
-	cd MethylDackel && \
-	git reset --hard ea29c16 && \
-	make && \
-	make install
 
 # Install R-3.4.0 (See https://cran.r-project.org/bin/linux/debian)
 RUN apt-get install -y libssl-dev libcurl4-openssl-dev && \
@@ -56,12 +49,7 @@ RUN Rscript -e "source('http://bioconductor.org/biocLite.R');biocLite('bsseq');"
 
 
 #Install scmeth package for QC reports and methylation analysis
-RUN mkdir /Rscripts
-COPY scmeth-master /Rscripts/scmeth
-RUN  R CMD INSTALL /Rscripts/scmeth
-COPY Rscripts/*.R /Rscripts/
-RUN apt-get install -y pandoc
+RUN     Rscript -e "devtools::install_github('aryeelab/scmeth')" && \
+      apt-get install -y pandoc
 
-#Include bash script for calculating bsconversion rate
-RUN mkdir /executable_files/
-COPY collect_bsconv_metrics.sh /executable_files/
+
