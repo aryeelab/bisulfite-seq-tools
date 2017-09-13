@@ -1,11 +1,13 @@
-
 task bismark {
   File fastq1
   File fastq2
   File genome_index
   String sample_id
+  File monitoring_script
 
-  command {         
+  command {    
+  		chmod u+x ${monitoring_script}
+        ${monitoring_script} > monitoring.log &
         mkdir bismark_index
         tar zxf ${genome_index} -C bismark_index
         bismark --genome bismark_index --basename ${sample_id} -1 ${fastq1} -2 ${fastq2}
@@ -21,8 +23,9 @@ task bismark {
   output {
          File cov = "${sample_id}_pe.bismark.cov.gz"
          File report = "${sample_id}_PE_report.txt"
-         File mbias = "${sample_id}_pe.M-bias.txt"
+         File monitoring_log = "monitoring.log" 
   }
+
 }
 
 
@@ -31,5 +34,6 @@ workflow bspipe {
     File fastq2
     File genome_index
     String sample_id
-    call bismark {input: fastq1 = fastq1, fastq2 = fastq2, sample_id = sample_id, genome_index = genome_index}
+    File monitoring_script
+    call bismark {input: fastq1 = fastq1, fastq2 = fastq2, sample_id = sample_id, genome_index = genome_index, monitoring_script = monitoring_script}
 }
