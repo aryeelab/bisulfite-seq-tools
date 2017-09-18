@@ -19,20 +19,18 @@ opt = parse_args(opt_parse)
 
 library(minfi)
 # INPUTS
-cat('started processing inputs...')
+cat('Reading input parameters...')
 idat_base_dir <- opt$data_dir  #<- "testdata/450k"
 sample_sheet  <- opt$sample_sheet #<- "testdata/450k/samples.csv"
 qc_intensity_cutoff <- as.numeric(opt$qc_intensity_cutoff)  #<- 11
-cat('finished processing inputs\n')
 
 # OUTPUT
-cat('started processing outputs...')
+cat('Reading output parameters...')
 qc_file <- opt$qc_file #<- "qc.tsv"
 betas_file <- opt$beta_file #<- "beta.tsv"
 preprocesed_genomic_ratio_set_rds <- opt$preprocessed_genomic_ratio_rds #<- "gmset.rds"
-cat('finished processing outputs\n')
 
-cat('reading targets\n')
+cat('Reading targets\n')
 targets <- read.csv(sample_sheet, stringsAsFactors = FALSE)
 targets$Basename <- file.path(idat_base_dir, targets$Basename)
 
@@ -41,7 +39,6 @@ rgset <- read.metharray.exp(targets=targets)
 sampleNames(rgset) <- targets[,1]
 
 # QC
-cat('starting QC...')
 mset <- preprocessRaw(rgset) 
 qc <- cbind(pData(rgset), getQC(mset))
 bad_idx <- qc$mMed < qc_intensity_cutoff
@@ -50,12 +47,15 @@ qc$qc_pass <- ifelse(sampleNames(mset) %in% badsamples, "FAIL", "PASS")
 plotQC(qc, badSampleCutoff = qc_intensity_cutoff)
 cat('Done with QC\n')
 
+cat('Preprocessing...\n')
 # Preprocess and get betas
 grset_funnorm <- preprocessFunnorm(rgset[,!bad_idx], nPCs=2)  
 b <- getBeta(grset_funnorm)
 
+cat('Saving output files\n')
 # Save output files
 write.table(qc, file=qc_file, sep="\t", quote=FALSE, row.names=FALSE)
 write.table(b, file=betas_file, sep="\t", quote=FALSE, col.names=NA)
 saveRDS(grset_funnorm, file=preprocesed_genomic_ratio_set_rds)  
+cat('Done\n')
 
