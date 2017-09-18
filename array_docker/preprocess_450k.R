@@ -19,16 +19,16 @@ opt = parse_args(opt_parse)
 
 library(minfi)
 # INPUTS
-cat('Reading input parameters...')
+cat('Reading input parameters...\n')
 idat_base_dir <- opt$data_dir  #<- "testdata/450k"
 sample_sheet  <- opt$sample_sheet #<- "testdata/450k/samples.csv"
 qc_intensity_cutoff <- as.numeric(opt$qc_intensity_cutoff)  #<- 11
 
 # OUTPUT
-cat('Reading output parameters...')
+cat('Reading output parameters...\n')
 qc_file <- opt$qc_file #<- "qc.tsv"
 betas_file <- opt$beta_file #<- "beta.tsv"
-preprocesed_genomic_ratio_set_rds <- opt$preprocessed_genomic_ratio_rds #<- "gmset.rds"
+preprocessed_genomic_ratio_set_rds <- opt$preprocessed_genomic_ratio_set_rds #<- "gmset.rds"
 
 cat('Reading targets\n')
 targets <- read.csv(sample_sheet, stringsAsFactors = FALSE)
@@ -56,6 +56,6 @@ cat('Saving output files\n')
 # Save output files
 write.table(qc, file=qc_file, sep="\t", quote=FALSE, row.names=FALSE)
 write.table(b, file=betas_file, sep="\t", quote=FALSE, col.names=NA)
-saveRDS(grset_funnorm, file=preprocesed_genomic_ratio_set_rds)  
+saveRDS(grset_funnorm, file=preprocessed_genomic_ratio_set_rds)  
 cat('Done\n')
 
