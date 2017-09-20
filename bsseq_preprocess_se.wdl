@@ -10,7 +10,7 @@ task bismark {
         mkdir bismark_index
         tar zxf ${genome_index} -C bismark_index
         bismark --genome bismark_index --basename ${sample_id} ${fastq} 
-        bismark_methylation_extractor --gzip --bedGraph --buffer_size 50% --genome_folder bismark_index ${sample_id}.bam
+        bismark_methylation_extractor --gzip --buffer_size 50% --genome_folder bismark_index ${sample_id}.bam
   }
   runtime {
           docker: "aryeelab/bismark"
