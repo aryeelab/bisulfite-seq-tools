@@ -8,8 +8,9 @@
     gsutil cp gs://fc-dceaadae-be69-41ab-a230-0b735c0556c1/bismark_index/bismark_mm10_chr19.tar.gz testdata/
 
 ### Build docker image
-cd Docker/bismark
-docker build -t aryeelab/bismark .
+
+    cd Docker/bismark
+    docker build -t aryeelab/bismark .
 
 ### Run WDL in Cromwell
 
