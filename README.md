@@ -24,8 +24,11 @@ brew install cromwell
 ```
 
 #### Paired-end reads
+```
 cromwell run bsseq_preprocess_pe.wdl sample1_pe.json
+```
 
 #### Single-end reads
+```
 cromwell run bsseq_preprocess_se.wdl sample1_se.json
-
+```
