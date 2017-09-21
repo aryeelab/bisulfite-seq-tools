@@ -1,17 +1,23 @@
-# methylation-wdl
+# Firecloud/WDL DNA methylation workflows
+
+### Setup
+
+1. Clone this repository
+2. If you want to run the examples below, download this small genome index:
+
+    gsutil cp gs://fc-dceaadae-be69-41ab-a230-0b735c0556c1/bismark_index/bismark_mm10_chr19.tar.gz testdata/
 
 ### Build docker image
-cd Docker_Build
-docker build -t methy .
+cd Docker/bismark
+docker build -t aryeelab/bismark .
 
 ### Run WDL in Cromwell
-#### Note: On Macs this can be installed with `brew install cromwell`
-cromwell run methylation_pipeline.wdl methylation_pipeline_testsample.json 
-cromwell run methylation_pipeline.wdl methylation_pipeline_testsample2.json 
 
+Note: On Macs this can be installed with `brew install cromwell`
 
-cromwell run methylation_pipeline_aggregation.wdl methylation_pipeline_aggregation.json 
+#### Paired-end reads
+cromwell run bsseq_preprocess_pe.wdl sample1_pe.json
 
+#### Single-end reads
+cromwell run bsseq_preprocess_pe.wdl sample1_pe.json
 
-/Users/maryee/Dropbox/projects/methylation-wdl/cromwell-executions/methpipe/2c284299-5803-4854-ba10-83d69de61352/call-create_rda/execution/testsample_01.rda
-/Users/maryee/Dropbox/projects/methylation-wdl/cromwell-executions/methpipe/4d93cd3e-cdd4-472c-8f45-322369ba4f8e/call-create_rda/execution/testsample_02.rda
