@@ -9,8 +9,12 @@ task bismark {
         ${monitoring_script} > monitoring.log &
         mkdir bismark_index
         tar zxf ${genome_index} -C bismark_index
-        bismark --genome bismark_index --basename ${sample_id} ${fastq} 
-        bismark_methylation_extractor --gzip --buffer_size 50% --genome_folder bismark_index ${sample_id}.bam
+        bismark --genome bismark_index ${fastq}
+        # The file renaming is necessary since this version of bismark doesn't allow the 
+        # use of --multicore with --basename
+        mv *_bismark_bt2.bam ${sample_id}.bam
+        mv *bismark_bt2_SE_report.txt ${sample_id}_report.txt
+        bismark_methylation_extractor --gzip --bedGraph --buffer_size 50% --genome_folder bismark_index ${sample_id}.bam
   }
   runtime {
           docker: "aryeelab/bismark"
@@ -21,7 +25,7 @@ task bismark {
   }
   output {
          File cov = "${sample_id}.bismark.cov.gz"
-         File report = "${sample_id}_SE_report.txt"
+         File report = "${sample_id}_report.txt"
          File monitoring_log = "monitoring.log" 
   }
 
