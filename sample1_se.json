@@ -1,0 +1,11 @@
+{
+    "bspipe.genome_index": "testdata/bismark_mm10_chr19.tar.gz",
+    "bspipe.sample_id": "sample-01",
+    "bspipe.fastq": "testdata/small_01_R1.fastq.gz",
+    "bspipe.monitoring_script": "monitor.sh",
+    "bspipe.bismark.multicore": "1",
+    "bspipe.bismark.memory": "24 GB",
+    "bspipe.bismark.disks": "local-disk 100 SSD",
+    "bspipe.bismark.cpu": 4,
+    "bspipe.bismark.preemptible": 1
+}
