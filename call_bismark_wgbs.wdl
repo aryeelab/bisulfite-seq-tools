@@ -15,7 +15,9 @@ task step1_bismark_wgbs {
                 bismark --genome bismark_index --basename  ${samplename} -1 ${r1_fastq} -2 ${r2_fastq}
 		samtools sort -n -f ${samplename}_pe.bam ${samplename}_pe.sorted_by_readname.bam
 		/src/Bismark-0.18.2/deduplicate_bismark -p --bam ${samplename}_pe.sorted_by_readname.bam
-                bismark_methylation_extractor --gzip --bedGraph --buffer_size 4G --genome_folder bismark_index ${samplename}_pe.sorted_by_readname.deduplicated.bam
+		rm ${samplename}_pe.sorted_by_readname.bam ${samplename}_pe.bam
+		mv ${samplename}_pe.sorted_by_readname.deduplicated.bam ${samplename}_pe.bam
+                bismark_methylation_extractor --gzip --bedGraph --buffer_size 4G --genome_folder bismark_index ${samplename}_pe.bam
 		bismark2report --output ${samplename}_bismark_report.html
                 }
         output {
