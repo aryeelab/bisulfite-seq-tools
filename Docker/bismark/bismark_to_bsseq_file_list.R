@@ -77,7 +77,7 @@ getMethCov <- function(covgz_file, gr) {
                   col_types = "ciiiii",
                   col_names=c("chr", "pos", "pos2", "meth_percent", "m_count", "u_count"))
   tab_gr <- GRanges(tab$chr, IRanges(tab$pos, tab$pos))
-  m <- rep(NA, length(gr))
+  m <- rep(0, length(gr))
   cov <- rep(0, length(gr))
   ovl <- suppressWarnings(findOverlaps(tab_gr, gr))
   m[subjectHits(ovl)]   <- tab$m_count[queryHits(ovl)]
