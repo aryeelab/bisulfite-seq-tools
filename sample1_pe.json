@@ -1,12 +1,12 @@
 {
-    "bspipe.genome_index": "testdata/bismark_mm10_chr19.tar.gz",
-    "bspipe.sample_id": "sample-01",
-    "bspipe.fastq1": "testdata/small_01_R1.fastq.gz",
-    "bspipe.fastq2": "testdata/small_01_R2.fastq.gz",
-    "bspipe.monitoring_script": "monitor.sh",
-    "bspipe.bismark.multicore": "1",
-    "bspipe.bismark.memory": "24 GB",
-    "bspipe.bismark.disks": "local-disk 100 SSD",
-    "bspipe.bismark.cpu": 4,
-    "bspipe.bismark.preemptible": 1    
+    "call_bismark.step1_bismark_wgbs.genome_index": "testdata/bismark_mm10_chr19.tar.gz",
+    "call_bismark.step1_bismark_wgbs.samplename": "sample-01",
+    "call_bismark.step1_bismark_wgbs.r1_fastq": "testdata/small_01_R1.fastq.gz",
+    "call_bismark.step1_bismark_wgbs.r2_fastq": "testdata/small_01_R2.fastq.gz",
+    "call_bismark.step1_bismark_wgbs.monitoring_script": "monitor.sh",
+    "call_bismark.step1_bismark_wgbs.bismark.multicore": "1",
+    "call_bismark.step1_bismark_wgbs.bismark.memory": "24 GB",
+    "call_bismark.step1_bismark_wgbs.bismark.disks": "local-disk 100 SSD",
+    "call_bismark.step1_bismark_wgbs.bismark.cpu": 4,
+    "call_bismark.step1_bismark_wgbs.bismark.preemptible": 1    
 }

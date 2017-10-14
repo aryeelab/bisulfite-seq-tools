@@ -23,9 +23,9 @@ Note: On Macs cromwell can be installed with
 brew install cromwell
 ```
 
-#### Paired-end reads
+#### WGBS, Paired-end reads
 ```
-cromwell run bsseq_preprocess_pe.wdl sample1_pe.json
+cromwell run call_bismark_wgbs.wdl sample1_pe.json
 ```
 
 #### Single-end reads
