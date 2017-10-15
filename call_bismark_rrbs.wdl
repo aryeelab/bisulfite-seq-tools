@@ -9,25 +9,41 @@ task step1_bismark_rrbs {
         File genome_index
         File monitoring_script
         
+        String multicore
+        String memory
+        String disks
+        Int cpu
+        Int preemptible
+        
         command {
             chmod u+x ${monitoring_script}
             ${monitoring_script} > monitoring.log &
             mkdir bismark_index
             tar zxf ${genome_index} -C bismark_index
-            bismark --genome bismark_index --basename  ${samplename} -1 ${r1_fastq} -2 ${r2_fastq}
-            bismark_methylation_extractor --gzip --bedGraph --buffer_size 4G --genome_folder bismark_index ${samplename}_pe.bam
-            bismark2report --output ${samplename}_bismark_report.html
+            
+            bismark --genome bismark_index --multicore ${multicore} -1 ${r1_fastq} -2 ${r2_fastq}
+            # The file renaming below is necessary since this version of bismark doesn't allow the 
+            # use of --multicore with --basename
+            mv *bismark_bt2_pe.bam ${samplename}.bam
+            mv *bismark_bt2_PE_report.txt ${samplename}_report.txt
+            
+            bismark_methylation_extractor --multicore ${multicore} --gzip --bedGraph --buffer_size 50% --genome_folder bismark_index ${samplename}.bam
+            bismark2report --alignment_report ${samplename}_report.txt --output ${samplename}_bismark_report.html   
         }
                 
         output {
-            File output_covgz = "${samplename}_pe.bismark.cov.gz"
-            File output_pe_report = "${samplename}_PE_report.txt"
-            File mbias_report = "${samplename}_pe.M-bias.txt"
+            File output_covgz = "${samplename}.bismark.cov.gz"
+            File output_pe_report = "${samplename}_report.txt"
+            File mbias_report = "${samplename}.M-bias.txt"
             File bismark_report_html = "${samplename}_bismark_report.html"
         }
         
         runtime {
             continueOnReturnCode: false
             docker: "sowmyaiyer/methyl:latest"
+            memory: memory
+            disks: disks
+            cpu: cpu
+            preemptible: preemptible
         }
 }
