@@ -4,9 +4,9 @@
     "call_bismark.step1_bismark_wgbs.r1_fastq": "testdata/small_01_R1.fastq.gz",
     "call_bismark.step1_bismark_wgbs.r2_fastq": "testdata/small_01_R2.fastq.gz",
     "call_bismark.step1_bismark_wgbs.monitoring_script": "monitor.sh",
-    "call_bismark.step1_bismark_wgbs.bismark.multicore": "1",
-    "call_bismark.step1_bismark_wgbs.bismark.memory": "24 GB",
-    "call_bismark.step1_bismark_wgbs.bismark.disks": "local-disk 100 SSD",
-    "call_bismark.step1_bismark_wgbs.bismark.cpu": 4,
-    "call_bismark.step1_bismark_wgbs.bismark.preemptible": 1    
+    "call_bismark.step1_bismark_wgbs.multicore": "1",
+    "call_bismark.step1_bismark_wgbs.memory": "24 GB",
+    "call_bismark.step1_bismark_wgbs.disks": "local-disk 100 SSD",
+    "call_bismark.step1_bismark_wgbs.cpu": 4,
+    "call_bismark.step1_bismark_wgbs.preemptible": 1    
 }
