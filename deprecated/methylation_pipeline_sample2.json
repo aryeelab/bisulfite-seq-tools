@@ -1,0 +1,6 @@
+{
+    "methpipe.ref_genome": "/Users/maryee/Dropbox/projects/methylation-wdl/test_data/mm10.fa",
+    "methpipe.sample_id": "sc-RRBS-zygote_02",
+    "methpipe.bsmap.fastq1": "/Users/maryee/Dropbox/projects/methylation-wdl/test_data/sc-RRBS-zygote_02_R1.fastq.gz",
+    "methpipe.bsmap.fastq2": "/Users/maryee/Dropbox/projects/methylation-wdl/test_data/sc-RRBS-zygote_02_R2.fastq.gz"
+}

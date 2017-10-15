@@ -1,0 +1,6 @@
+{
+    "methpipe.ref_genome": "/Users/maryee/Dropbox/projects/methylation-wdl/test_data/mm10.fa",
+    "methpipe.sample_id": "testsample_01",
+    "methpipe.merge_fastqs.fastq1": ["/Users/maryee/Dropbox/projects/methylation-wdl/test_data/small_r1.fastq.gz"],
+    "methpipe.merge_fastqs.fastq2": ["/Users/maryee/Dropbox/projects/methylation-wdl/test_data/small_r2.fastq.gz"]
+}

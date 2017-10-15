@@ -1,0 +1,6 @@
+{
+    "methpipeagg.set_name" : "Mus_musculus",
+    "methpipeagg.genome" : "/Users/maryee/Dropbox/projects/methylation-wdl/test_data/mm10.fa",
+    "methpipeagg.combine_rda.individual_rdas" : ["/Users/maryee/Dropbox/projects/methylation-wdl/cromwell-executions/methpipe/2c284299-5803-4854-ba10-83d69de61352/call-create_rda/execution/testsample_01.rda","/Users/maryee/Dropbox/projects/methylation-wdl/cromwell-executions/methpipe/4d93cd3e-cdd4-472c-8f45-322369ba4f8e/call-create_rda/execution/testsample_02.rda"],
+    "methpipeagg.qc_report.outdir" : "."
+}

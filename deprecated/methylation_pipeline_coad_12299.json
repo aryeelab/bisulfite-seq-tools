@@ -1,0 +1,6 @@
+{
+    "methpipe.ref_genome": "/Users/maryee/Dropbox/projects/methylation-wdl/test_data/mm10.fa",
+    "methpipe.sample_id": "coad_12299",
+    "methpipe.merge_fastqs.fastq1": ["/Users/maryee/Downloads/tmp/Sample_12299/12299_ATGTCA_L001_R1_001.fastq.gz", "/Users/maryee/Downloads/tmp/Sample_12299/12299_ATGTCA_L002_R1_001.fastq.gz"],
+    "methpipe.merge_fastqs.fastq2": ["/Users/maryee/Downloads/tmp/Sample_12299/12299_ATGTCA_L001_R2_001.fastq.gz", "/Users/maryee/Downloads/tmp/Sample_12299/12299_ATGTCA_L002_R2_001.fastq.gz"]
+}
