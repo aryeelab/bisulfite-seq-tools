@@ -33,7 +33,7 @@ task step1_bismark_rrbs {
                 
         output {
             File output_covgz = "${samplename}.bismark.cov.gz"
-            File output_pe_report = "${samplename}_report.txt"
+            File output_report = "${samplename}_report.txt"
             File mbias_report = "${samplename}.M-bias.txt"
             File bismark_report_html = "${samplename}_bismark_report.html"
         }
