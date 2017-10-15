@@ -52,4 +52,11 @@ RUN Rscript -e "source('http://bioconductor.org/biocLite.R');biocLite('bsseq');"
 RUN     Rscript -e "devtools::install_github('aryeelab/scmeth')" && \
       apt-get install -y pandoc
 
-
+# Install bedtools
+RUN apt-get install -y python && \
+    cd /src && \
+    wget https://github.com/arq5x/bedtools2/releases/download/v2.26.0/bedtools-2.26.0.tar.gz && \
+    tar -zxf bedtools-2.26.0.tar.gz && \
+    cd bedtools2 && \
+    make && \
+	ln -s /src/bedtools2/bin/bedtools /usr/local/bin
