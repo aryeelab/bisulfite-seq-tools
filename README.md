@@ -25,15 +25,21 @@ brew install cromwell
 
 #### WGBS, Paired-end reads
 ```
-cromwell run call_bismark_wgbs.wdl sample1_pe.json
+cromwell run call_bismark_wgbs.wdl sample1_wgbs_pe.json
 ```
+
+#### RRBS, Paired-end reads
+```
+cromwell run call_bismark_rrbs.wdl sample1_rrbs_pe.json
+```
+
 
 #### Hybrid selection (capture) bisulfite sequencing, paired-end reads
 ```
-cromwell run call_bismark_hsbs.wdl sample1_hs_pe.json
+cromwell run call_bismark_hsbs.wdl sample1_hsbs_pe.json
 ```
 
-#### Single-end reads
+#### Single-end reads (Out of date)
 ```
 cromwell run bsseq_preprocess_se.wdl sample1_se.json
 ```
