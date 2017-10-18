@@ -23,12 +23,23 @@ Note: On Macs cromwell can be installed with
 brew install cromwell
 ```
 
-#### Paired-end reads
+#### WGBS, Paired-end reads
 ```
-cromwell run bsseq_preprocess_pe.wdl sample1_pe.json
+cromwell run call_bismark_wgbs.wdl sample1_wgbs_pe.json
 ```
 
-#### Single-end reads
+#### RRBS, Paired-end reads
+```
+cromwell run call_bismark_rrbs.wdl sample1_rrbs_pe.json
+```
+
+
+#### Hybrid selection (capture) bisulfite sequencing, paired-end reads
+```
+cromwell run call_bismark_hsbs.wdl sample1_hsbs_pe.json
+```
+
+#### Single-end reads (Out of date)
 ```
 cromwell run bsseq_preprocess_se.wdl sample1_se.json
 ```

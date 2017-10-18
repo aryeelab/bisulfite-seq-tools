@@ -1,0 +1,13 @@
+{
+    "call_bismark.step1_bismark_hsbs.genome_index": "testdata/bismark_mm10_chr19.tar.gz",
+    "call_bismark.step1_bismark_hsbs.target_region_bed": "testdata/hs_targets.bed",
+    "call_bismark.step1_bismark_hsbs.samplename": "sample-01",
+    "call_bismark.step1_bismark_hsbs.r1_fastq": "testdata/small_01_R1.fastq.gz",
+    "call_bismark.step1_bismark_hsbs.r2_fastq": "testdata/small_01_R2.fastq.gz",
+    "call_bismark.step1_bismark_hsbs.monitoring_script": "monitor.sh",
+    "call_bismark.step1_bismark_hsbs.multicore": "1",
+    "call_bismark.step1_bismark_hsbs.memory": "24 GB",
+    "call_bismark.step1_bismark_hsbs.disks": "local-disk 100 SSD",
+    "call_bismark.step1_bismark_hsbs.cpu": 4,
+    "call_bismark.step1_bismark_hsbs.preemptible": 1    
+}
