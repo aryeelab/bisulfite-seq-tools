@@ -40,7 +40,7 @@ task step1_bismark_rrbs {
         
         runtime {
             continueOnReturnCode: false
-            docker: "sowmyaiyer/methyl:latest"
+            docker: "sowmyaiyer/bismark_image:latest"
             memory: memory
             disks: disks
             cpu: cpu
