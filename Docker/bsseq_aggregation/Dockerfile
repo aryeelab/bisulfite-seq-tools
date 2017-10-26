@@ -14,6 +14,6 @@ RUN apt-get install -y libssl-dev libcurl4-openssl-dev && \
 #Installing necessary R packages
 
 RUN Rscript -e "source('http://bioconductor.org/biocLite.R');required_libraries <- c('BSgenome','readr','stringr','HDF5Array','bsseq','foreach','optparse','Biostrings','GenomeInfoDb','devtools');sapply(required_libraries, biocLite, ask=F)"
-RUN     Rscript -e "devtools::install_github('aryeelab/scmeth', ref = 'bismark')" && \
+RUN     Rscript -e "devtools::install_github('aryeelab/scmeth', ref = 'c0af657')" && \
       apt-get install -y pandoc
 ADD ./bismark_to_bsseq_file_list.R bismark_to_bsseq_file_list.R
