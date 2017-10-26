@@ -4,7 +4,6 @@
 
 required_libraries <- c("readr","stringr","HDF5Array","bsseq","foreach","optparse","Biostrings","GenomeInfoDb")
 sapply(required_libraries, library, character.only=TRUE)
-library(opt$bsgenome, character.only=TRUE)
 
 options(DelayedArray.block.size=4500e6)
 
@@ -23,6 +22,7 @@ option_list = list(
 )
 opt_parse=OptionParser(option_list=option_list)
 opt = parse_args(opt_parse);
+library(opt$bsgenome, character.only=TRUE)
 pe_report_files = scan(opt$input_pe_report_files, what="character")
 covgz_files = scan(opt$input_covgz_files,what="character")
 
