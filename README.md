@@ -7,7 +7,7 @@ This platform contains publicly accessible cloud-based preprocessing and quality
 4) enable integration and comparison between user-provided data and publicly available data (e.g. TCGA)
 
 
-### To run the analysis in the FireCloud platform
+## To run the analysis in the FireCloud platform
 Analysis should be run in two successive processes: 
 1) Alignment and methylation calling
 2) Aggregation and quality control analysis
@@ -16,7 +16,7 @@ Before running the processes, you need to generate participants file and partici
 
 
 ## Alignment and methylation calling
-In order to perform alignment and methylation calling choose *bsseq_preprocess_pe_dynamic_disk* method configuration
+In order to perform alignment and methylation calling choose *bismark_rrbs* or *bismark_wgbs* method configuration
 
 1) Upload the .fastq files to the google cloud bucket
 2) In the FireCloud workspace choose *bsseq_preprocess_pe_dynamic_disk* method configuration
@@ -26,6 +26,17 @@ In order to perform alignment and methylation calling choose *bsseq_preprocess_p
 6) Click **Launch**
 
 You can observe the status of the job by going to *Monitor* tab
+
+## Aggregation and Quality Control Analysis
+After the alignment anf methylation calling each sample will have their methylation information and metadata stored in RData format
+In order to aggregate all of them and obtain the quality control report
+1) Choose *aggregate_bismakr_output* method configuration
+2) Choose the right BSGenome package in the *BSGenome_package* option and choose the location of the tar.gz file in *BSGenome_tagz* option
+3) Save it and press *Launch Analysis* 
+4) Since this is the aggregation step the entity root type will be participant_set, so you will choose participant_set with participants of your interest
+5) Finally click **Launch**
+
+To check the results from any of the work flows, go to Monitor tab, click *View* in the Status columns and then click the *Workflow ID* in the bottom of the page.
 
 
 ### Setup
@@ -71,3 +82,6 @@ cromwell run call_bismark_hsbs.wdl sample1_hsbs_pe.json
 ```
 cromwell run bsseq_preprocess_se.wdl sample1_se.json
 ```
+
+
+FAQ
