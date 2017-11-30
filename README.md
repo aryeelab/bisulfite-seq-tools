@@ -30,7 +30,7 @@ You can observe the status of the job by going to *Monitor* tab
 ## Aggregation and Quality Control Analysis
 After the alignment anf methylation calling each sample will have their methylation information and metadata stored in RData format
 In order to aggregate all of them and obtain the quality control report
-1) Choose *aggregate_bismakr_output* method configuration
+1) Choose *aggregate_bismark_output* method configuration
 2) Choose the right BSGenome package in the *BSGenome_package* option and choose the location of the tar.gz file in *BSGenome_tagz* option
 3) Save it and press *Launch Analysis* 
 4) Since this is the aggregation step the entity root type will be participant_set, so you will choose participant_set with participants of your interest
@@ -39,6 +39,7 @@ In order to aggregate all of them and obtain the quality control report
 To check the results from any of the work flows, go to Monitor tab, click *View* in the Status columns and then click the *Workflow ID* in the bottom of the page.
 
 
+## Running the WDL workflow in local environment
 ### Setup
 
 1. Clone this repository
@@ -84,4 +85,4 @@ cromwell run bsseq_preprocess_se.wdl sample1_se.json
 ```
 
 
-FAQ
+##FAQ
