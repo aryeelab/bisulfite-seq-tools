@@ -30,7 +30,7 @@ task step2_create_combined_bsseq {
         }
         runtime {
         continueOnReturnCode: false
-        docker: "sowmyaiyer/methyl_aggregation:latest"
+        docker: "aryeelab/methyl_aggregation:latest"
         memory: "16GB"
         }
 }
