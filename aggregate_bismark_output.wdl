@@ -32,5 +32,6 @@ task step2_create_combined_bsseq {
         continueOnReturnCode: false
         docker: "aryeelab/bsseq_aggregation:latest"
         memory: "16GB"
+        disks: "local-disk 200 SSD"        
         }
 }
