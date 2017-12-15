@@ -21,7 +21,7 @@ In order to perform alignment and methylation calling choose *bismark_rrbs* or *
 is for data generated from Whole Genome Bisulfite Sequencing (WGBS).
 
 1) Upload the .fastq files to the google cloud bucket
-2) In the FireCloud workspace choose *bsseq_preprocess_pe_dynamic_disk* method configuration
+2) In the FireCloud workspace choose *bismark_rrbs* or *bismark_wgbs* method configuration
 3) In order to change the reference genome index, click **Edit Configuration** and change the genome_index in the list of inputs
 4) Change other parameters according to preference
 4) Press *Launch Analysis* in upper right hand corner
