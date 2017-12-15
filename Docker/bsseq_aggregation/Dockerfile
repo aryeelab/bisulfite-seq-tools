@@ -2,7 +2,7 @@ FROM debian:jessie
 MAINTAINER Andrew Dunford <adunford@broadinstitute.org>
 
 
-RUN apt-get update &&  apt-get install  -y build-essential zlib1g-dev unzip libxml2-dev
+RUN apt-get update &&  apt-get install  -y build-essential zlib1g-dev unzip libxml2-dev libmariadb-client-lgpl-dev
 
 # Install R-3.4.0 (See https://cran.r-project.org/bin/linux/debian)
 RUN apt-get install -y libssl-dev libcurl4-openssl-dev && \
@@ -13,7 +13,8 @@ RUN apt-get install -y libssl-dev libcurl4-openssl-dev && \
 
 #Installing necessary R packages
 
-RUN Rscript -e "source('http://bioconductor.org/biocLite.R');required_libraries <- c('BSgenome','readr','stringr','HDF5Array','bsseq','foreach','optparse','Biostrings','GenomeInfoDb','devtools');sapply(required_libraries, biocLite, ask=F)"
-RUN     Rscript -e "devtools::install_github('aryeelab/scmeth', ref = 'c0af657')" && \
+RUN Rscript -e "source('http://bioconductor.org/biocLite.R');required_libraries <- c('BSgenome','readr','stringr','HDF5Array','bsseq','foreach','optparse','Biostrings','GenomeInfoDb','devtools','annotatr');sapply(required_libraries, biocLite, ask=F)"
+RUN Rscript -e "source('http://bioconductor.org/biocLite.R');required_libraries <- c('annotatr');sapply(required_libraries, biocLite, ask=F)"
+RUN     Rscript -e "devtools::install_github('aryeelab/scmeth', ref = 'f6c41f0')" && \
       apt-get install -y pandoc
 ADD ./bismark_to_bsseq_file_list.R bismark_to_bsseq_file_list.R
