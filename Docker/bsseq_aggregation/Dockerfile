@@ -2,7 +2,7 @@ FROM debian:jessie
 MAINTAINER Andrew Dunford <adunford@broadinstitute.org>
 
 
-RUN apt-get update &&  apt-get install  -y build-essential zlib1g-dev unzip libxml2-dev libmariadb-client-lgpl-dev
+RUN apt-get update &&  apt-get install  -y build-essential zlib1g-dev unzip libxml2-dev libmariadb-client-lgpl-dev samtools
 
 # Install R-3.4.0 (See https://cran.r-project.org/bin/linux/debian)
 RUN apt-get install -y libssl-dev libcurl4-openssl-dev && \
