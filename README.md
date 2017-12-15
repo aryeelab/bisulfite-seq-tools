@@ -16,11 +16,14 @@ Before running the processes, you need to generate participants file and partici
 
 
 ## Alignment and methylation calling
-In order to perform alignment and methylation calling choose *bismark_rrbs* or *bismark_wgbs* method configuration
+In order to perform alignment and methylation calling choose *bismark_rrbs* or *bismark_wgbs* method configuration. As the name indicates
+*bismark_rrbs* is for samples that are generated from Reduced Representation Bisulfite Sequencing (RRBS) with Mspl digestion and *bismark_wgbs*
+is for data generated from Whole Genome Bisulfite Sequencing (WGBS).
 
 1) Upload the .fastq files to the google cloud bucket
 2) In the FireCloud workspace choose *bsseq_preprocess_pe_dynamic_disk* method configuration
 3) In order to change the reference genome index, click **Edit Configuration** and change the genome_index in the list of inputs
+4) Change other parameters according to preference
 4) Press *Launch Analysis* in upper right hand corner
 5) Choose the participants from the list of files
 6) Click **Launch**
@@ -28,7 +31,7 @@ In order to perform alignment and methylation calling choose *bismark_rrbs* or *
 You can observe the status of the job by going to *Monitor* tab
 
 ## Aggregation and Quality Control Analysis
-After the alignment anf methylation calling each sample will have their methylation information and metadata stored in RData format
+After the alignment and methylation calling each sample will have their methylation information and metadata stored in HDF5 format
 In order to aggregate all of them and obtain the quality control report
 1) Choose *aggregate_bismark_output* method configuration
 2) Choose the right BSGenome package in the *BSGenome_package* option and choose the location of the tar.gz file in *BSGenome_tagz* option
