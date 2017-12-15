@@ -17,12 +17,12 @@ option_list = list(
               help="Directory in which to save the BSseq HDF5SummarizedExperiment"),
   make_option(c("-d","--in_dir"),type='character',default=".",
               help="Input file directory"),
-  make_option(c("-g","--genome"),type='character',default=".",
-              help="Genome: hg38 or mm10")
+  make_option(c("-g","--bsgenome"),type='character',default=".",
+              help="Genome package")
 )
-cat("hello\n")
 opt_parse=OptionParser(option_list=option_list)
 opt = parse_args(opt_parse);
+library(opt$bsgenome, character.only=TRUE)
 pe_report_files = scan(opt$input_pe_report_files, what="character")
 covgz_files = scan(opt$input_covgz_files,what="character")
 
@@ -77,7 +77,7 @@ getMethCov <- function(covgz_file, gr) {
                   col_types = "ciiiii",
                   col_names=c("chr", "pos", "pos2", "meth_percent", "m_count", "u_count"))
   tab_gr <- GRanges(tab$chr, IRanges(tab$pos, tab$pos))
-  m <- rep(0, length(gr))
+  m <- rep(NA, length(gr))
   cov <- rep(0, length(gr))
   ovl <- suppressWarnings(findOverlaps(tab_gr, gr))
   m[subjectHits(ovl)]   <- tab$m_count[queryHits(ovl)]
@@ -86,9 +86,12 @@ getMethCov <- function(covgz_file, gr) {
 }
 #########################
 #########################
+cpg_gr <- DNAString("CG")
+cpg_gr <- vmatchPattern(cpg_gr, get(opt$bsgenome))
+cpg_gr <- keepStandardChromosomes(cpg_gr, pruning.mode="coarse")
+
 
 # Set up genome-wide CpG GRanges
-load(paste0("/CGStrings_",opt$genome,".Robj"))
 # On the plus strand we keep the left-most position of the match
 # On the minus strand we keep the right-most position of the match
 s <- start(cpg_gr)
