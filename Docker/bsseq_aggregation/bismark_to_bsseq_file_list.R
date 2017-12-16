@@ -121,8 +121,8 @@ for(covgz_file in covgz_files) {
   samplename <- gsub(samplename, pattern="_PE_report.txt", replacement="")
   hdf5_file <- paste0(samplename, ".hdf5")
   if(file.exists(hdf5_file)) file.remove(hdf5_file)
-  hdf5_m[[samplename]] <- writeHDF5Dataset(matrix(m), name="m", file=hdf5_file)
-  hdf5_cov[[samplename]] <- writeHDF5Dataset(matrix(cov), name="cov", file=hdf5_file)
+  hdf5_m[[samplename]] <- writeHDF5Array(matrix(m), name="m", file=hdf5_file)
+  hdf5_cov[[samplename]] <- writeHDF5Array(matrix(cov), name="cov", file=hdf5_file)
 }
 
 M <- do.call("cbind", hdf5_m)
