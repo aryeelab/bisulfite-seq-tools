@@ -16,12 +16,11 @@ Before running the processes, you need to generate participants file and partici
 
 
 ## Alignment and methylation calling
-In order to perform alignment and methylation calling choose *bismark_rrbs* or *bismark_wgbs* method configuration. As the name indicates
-*bismark_rrbs* is for samples that are generated from Reduced Representation Bisulfite Sequencing (RRBS) with Mspl digestion and *bismark_wgbs*
-is for data generated from Whole Genome Bisulfite Sequencing (WGBS).
+In order to perform alignment and methylation calling choose *bismark_rrbs*, *bismark_wgbs* or *bismark_hsbs* method configuration. As the name indicates
+*bismark_rrbs* is for samples that are generated from Reduced Representation Bisulfite Sequencing (RRBS) with Mspl digestion and *bismark_wgbs* is for data generated from Whole Genome Bisulfite Sequencing (WGBS). *bismark_hsbs* is for data generated from Hybrid Selection Bisulfite Sequencing (HSBS).
 
 1) Upload the .fastq files to the google cloud bucket
-2) In the FireCloud workspace choose *bismark_rrbs* or *bismark_wgbs* method configuration
+2) In the FireCloud workspace choose *bismark_rrbs*, *bismark_wgbs* or *bismark_hsbs* method configuration
 3) In order to change the reference genome index, click **Edit Configuration** and change the genome_index in the list of inputs
 4) Change other parameters according to preference
 4) Press *Launch Analysis* in upper right hand corner
@@ -88,4 +87,5 @@ cromwell run bsseq_preprocess_se.wdl sample1_se.json
 ```
 
 
-## FAQ
+## Questions and Comments
+Please use the Github Issue tracker with any issue you face with the platform. Any specific questions or comments, contact me at divyswar01@g.harvard.edu

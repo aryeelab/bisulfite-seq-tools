@@ -14,6 +14,8 @@ option_list = list(
               help="Output from bismark_methylation_extractor. Use comma-separated file names "),
   make_option(c("-j","--input_covgz_files"),type='character',default=NULL,
               help="Output from bismark_methylation_extractor. Use comma-separated sample names "),
+  make_option(c("-k","--input_mbias_files"),type='character',default=NULL,
+              help="Output from bismark_methylation_extractor. Use comma-separated file names "),
   make_option(c("-o","--output_bsseq_dir"),type='character',default=NULL,
               help="Directory in which to save the BSseq HDF5SummarizedExperiment"),
   make_option(c("-d","--in_dir"),type='character',default=".",
@@ -26,7 +28,7 @@ opt = parse_args(opt_parse);
 library(opt$bsgenome, character.only=TRUE)
 pe_report_files = scan(opt$input_pe_report_files, what="character")
 covgz_files = scan(opt$input_covgz_files,what="character")
-
+mbias_files = scan(opt$input_mbias_files,what="character")
 
 
 message("Output sampleset directory: ", opt$output_bsseq_dir)
@@ -85,6 +87,15 @@ getMethCov <- function(covgz_file, gr) {
   cov[subjectHits(ovl)] <- tab$m_count[queryHits(ovl)] + tab$u_count[queryHits(ovl)]
   return(list(m=m, cov=as.integer(cov)))
 }
+
+
+transferMbias <- function(mbias_file) {
+  fileName<-basename(mbias_file)
+  newPath<-paste0(opt$output_bsseq_dir,'/',fileName)
+  file.copy(from=mbias_file,to=newPath)
+}
+
+
 #########################
 #########################
 
