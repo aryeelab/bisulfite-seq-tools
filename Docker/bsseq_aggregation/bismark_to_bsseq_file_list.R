@@ -18,6 +18,8 @@ option_list = list(
               help="Output from bismark_methylation_extractor. Use comma-separated file names "),
   make_option(c("-o","--output_bsseq_dir"),type='character',default=NULL,
               help="Directory in which to save the BSseq HDF5SummarizedExperiment"),
+  make_option(c("-m","--mbias_dir"),type='character',default=NULL,
+              help="Directory in which to save the mbias files"),
   make_option(c("-d","--in_dir"),type='character',default=".",
               help="Input file directory"),
   make_option(c("-g","--bsgenome"),type='character',default=".",
@@ -91,7 +93,7 @@ getMethCov <- function(covgz_file, gr) {
 
 transferMbias <- function(mbias_file) {
   fileName<-basename(mbias_file)
-  newPath<-paste0(opt$output_bsseq_dir,'/',fileName)
+  newPath<-paste0(opt$mbias_dir,'/',fileName)
   file.copy(from=mbias_file,to=newPath)
 }
 
