@@ -123,6 +123,14 @@ end(cpg_gr) <- e
 cat(pe_report_files,sep="\n")
 pd <- foreach(pe_report_file=pe_report_files, .combine="rbind") %do% getPhenoData(pe_report_file)
 
+# Store the mbias file in a given directory
+cat(pe_report_files,sep="\n")
+pd <- foreach(pe_report_file=pe_report_files, .combine="rbind") %do% getPhenoData(pe_report_file)
+
+cat(mbias_files, sep='\n')
+foreach(mbias_file=mbias_files) %do% transferMbias(mbias_file)
+
+
 # Get methylation, coverage matrices
 hdf5_m <- list()
 hdf5_cov <- list()
