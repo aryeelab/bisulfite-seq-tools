@@ -65,25 +65,26 @@ Note: On Mac, cromwell can be installed with the following command
 brew install cromwell
 ```
 
+Following commnads are based on cromwell version 30. Edit the file paths in the json file according to your directory paths
 #### WGBS, Paired-end reads
 ```
-cromwell run call_bismark_wgbs.wdl sample1_wgbs_pe.json
+java -jar cromwell-30.2.jar run call_bismark_wgbs.wdl -i sample1_wgbs_pe.json
 ```
 
 #### RRBS, Paired-end reads
 ```
-cromwell run call_bismark_rrbs.wdl sample1_rrbs_pe.json
+java -jar cromwell-30.2.jar run call_bismark_rrbs.wdl -i sample1_rrbs_pe.json
 ```
 
 
 #### Hybrid selection (capture) bisulfite sequencing, paired-end reads
 ```
-cromwell run call_bismark_hsbs.wdl sample1_hsbs_pe.json
+java -jar cromwell-30.2.jar run call_bismark_hsbs.wdl -i sample1_hsbs_pe.json
 ```
 
 #### Single-end reads (Out of date)
 ```
-cromwell run bsseq_preprocess_se.wdl sample1_se.json
+java -jar cromwell-30.2.jar run bsseq_preprocess_se.wdl -i sample1_se.json
 ```
 
 
