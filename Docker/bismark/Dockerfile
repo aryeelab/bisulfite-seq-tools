@@ -1,8 +1,6 @@
 FROM debian:jessie
-MAINTAINER Andrew Dunford <adunford@broadinstitute.org>
 
-
-RUN apt-get update &&  apt-get install  -y build-essential zlib1g-dev samtools git wget unzip
+RUN apt-get update &&  apt-get install  -y build-essential zlib1g-dev libncurses5-dev libncursesw5-dev git wget unzip
 
 # Install Bowtie2
 RUN apt-get install -y libtbb-dev && \
@@ -60,3 +58,16 @@ RUN apt-get install -y python && \
     cd bedtools2 && \
     make && \
 	ln -s /src/bedtools2/bin/bedtools /usr/local/bin
+
+# Install samtools
+RUN cd /src && \
+    git clone https://github.com/samtools/htslib.git && \
+    cd htslib && \
+    git checkout tags/1.3 && \
+    make && \
+    cd .. && \
+    git clone https://github.com/samtools/samtools.git && \
+    cd samtools && \
+    git checkout tags/1.3 && \
+    make && \
+    ln -s /src/samtools/samtools /usr/local/bin
