@@ -7,9 +7,9 @@ task step1_bismark_hsbs {
         String samplename
         File genome_index
         File target_region_bed
-	    File monitoring_script
+	      File monitoring_script
 	    
-	    String multicore
+	      String multicore
         String memory
         String disks
         Int cpu
@@ -26,10 +26,12 @@ task step1_bismark_hsbs {
             mv *bismark_bt2_pe.bam ${samplename}.bam
             mv *bismark_bt2_PE_report.txt ${samplename}_report.txt
             
-            samtools sort -n -f ${samplename}.bam ${samplename}.sorted_by_readname.bam
+            samtools sort -n -o ${samplename}.sorted_by_readname.bam ${samplename}.bam 
             /src/Bismark-0.18.2/deduplicate_bismark -p --bam ${samplename}.sorted_by_readname.bam
-            samtools sort -f ${samplename}.sorted_by_readname.deduplicated.bam ${samplename}.sorted.deduplicated.bam
+            samtools sort -o ${samplename}.sorted.deduplicated.bam ${samplename}.sorted_by_readname.deduplicated.bam 
             mv ${samplename}.sorted.deduplicated.bam ${samplename}.bam
+            samtools index ${samplename}.bam ${samplename}.bai 
+            
             bismark_methylation_extractor --multicore ${multicore} --gzip --bedGraph --buffer_size 50% --genome_folder bismark_index ${samplename}.bam
             bismark2report --alignment_report ${samplename}_report.txt --output ${samplename}_bismark_report.html
 
@@ -47,13 +49,15 @@ task step1_bismark_hsbs {
         output {
             File output_covgz = "${samplename}.bismark.cov.gz"
             File output_report = "${samplename}_report.txt"
-		    File mbias_report = "${samplename}.M-bias.txt"
-		    File bismark_report_html = "${samplename}_bismark_report.html"
+            File output_bam = "${samplename}.bam"
+            File output_bai = "${samplename}.bai"
+		        File mbias_report = "${samplename}.M-bias.txt"
+		        File bismark_report_html = "${samplename}_bismark_report.html"
             File target_coverage_report = "${samplename}_target_coverage.bed"
         }
         runtime {
             continueOnReturnCode: false
-            docker: "aryeelab/bismark_image:latest"
+            docker: "aryeelab/bismark:latest"
             memory: memory
             disks: disks
             cpu: cpu

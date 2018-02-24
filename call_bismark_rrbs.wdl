@@ -24,23 +24,32 @@ task step1_bismark_rrbs {
             bismark --genome bismark_index --multicore ${multicore} -1 ${r1_fastq} -2 ${r2_fastq}
             # The file renaming below is necessary since this version of bismark doesn't allow the 
             # use of --multicore with --basename
+
+            
             mv *bismark_bt2_pe.bam ${samplename}.bam
             mv *bismark_bt2_PE_report.txt ${samplename}_report.txt
+  
+            samtools sort -o ${samplename}.sorted.bam ${samplename}.bam
+            samtools index ${samplename}.sorted.bam ${samplename}.sorted.bai
+          
+            
             
             bismark_methylation_extractor --multicore ${multicore} --gzip --bedGraph --buffer_size 50% --genome_folder bismark_index ${samplename}.bam
             bismark2report --alignment_report ${samplename}_report.txt --output ${samplename}_bismark_report.html   
         }
                 
         output {
+            File output_bam = "${samplename}.sorted.bam"
             File output_covgz = "${samplename}.bismark.cov.gz"
             File output_report = "${samplename}_report.txt"
             File mbias_report = "${samplename}.M-bias.txt"
             File bismark_report_html = "${samplename}_bismark_report.html"
+            File output_bai = "${samplename}.sorted.bai"
         }
         
         runtime {
             continueOnReturnCode: false
-            docker: "sowmyaiyer/bismark_image:latest"
+            docker: "aryeelab/bismark:latest"
             memory: memory
             disks: disks
             cpu: cpu
