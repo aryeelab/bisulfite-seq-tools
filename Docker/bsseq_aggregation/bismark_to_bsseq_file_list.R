@@ -91,6 +91,7 @@ getMethCov <- function(covgz_file, gr) {
 }
 
 message("Added transferMbias function")
+print(opt$mbias_dir)
 
 transferMbias <- function(mbias_file) {
   fileName<-basename(mbias_file)
@@ -102,10 +103,13 @@ transferMbias <- function(mbias_file) {
 #########################
 #########################
 
+message('start cpg gr')
+
 cpg_gr <- DNAString("CG")
 cpg_gr <- vmatchPattern(cpg_gr, get(opt$bsgenome))
 cpg_gr <- keepStandardChromosomes(cpg_gr, pruning.mode="coarse")
 
+message('end cpg gr')
 
 # Set up genome-wide CpG GRanges
 # On the plus strand we keep the left-most position of the match
