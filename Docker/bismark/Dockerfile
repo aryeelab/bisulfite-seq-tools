@@ -1,6 +1,6 @@
 FROM debian:jessie
 
-RUN apt-get update &&  apt-get install  -y build-essential zlib1g-dev libncurses5-dev libncursesw5-dev git wget unzip
+RUN apt-get update &&  apt-get install  -y build-essential zlib1g-dev libncurses5-dev libncursesw5-dev git wget unzip python-pip python-dev
 
 # Install Bowtie2
 RUN apt-get install -y libtbb-dev && \
@@ -71,3 +71,25 @@ RUN cd /src && \
     git checkout tags/1.3 && \
     make && \
     ln -s /src/samtools/samtools /usr/local/bin
+
+# Install bedgraphToBigwig
+RUN cd /usr/local/bin && \
+    wget http://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/bedGraphToBigWig && \
+    chmod +x bedGraphToBigWig
+
+# Install cutadapt (for Trimgalore)
+RUN pip install cutadapt
+
+# Install FastQC
+RUN apt-get install openjdk-7-jre && \
+    cd /src && \
+    wget https://www.bioinformatics.babraham.ac.uk/projects/fastqc/fastqc_v0.11.7.zip && \
+    unzip fastqc_v0.11.7.zip && \
+    ln -s /src/FastQC/fastqc /usr/local/bin/
+
+# Install Trimgalore
+RUN cd /tmp && \
+    wget https://github.com/FelixKrueger/TrimGalore/archive/0.4.5.zip && \
+    unzip 0.4.5.zip && \
+    cp TrimGalore-0.4.5/trim_galore /usr/local/bin && \
+    chmod +x /usr/local/bin/trim_galore
