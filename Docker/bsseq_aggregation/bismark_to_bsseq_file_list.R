@@ -117,7 +117,7 @@ e[plus_idx] <- s[plus_idx]  # Plus strand
 s[minus_idx] <- e[minus_idx] # Minus strand
 start(cpg_gr) <- s
 end(cpg_gr) <- e
-
+message("Generated CpG Genomic Ranges")
 
 # Get phenodata
 cat(pe_report_files,sep="\n")
@@ -126,6 +126,7 @@ pd <- foreach(pe_report_file=pe_report_files, .combine="rbind") %do% getPhenoDat
 # Store the mbias file in a given directory
 cat(mbias_files, sep='\n')
 foreach(mbias_file=mbias_files) %do% transferMbias(mbias_file)
+message("Transferred mbias files to directory: ", opt$mbias_dir)
 
 
 # Get methylation, coverage matrices
@@ -142,6 +143,7 @@ for(covgz_file in covgz_files) {
   hdf5_m[[samplename]] <- writeHDF5Array(matrix(m), name="m", file=hdf5_file)
   hdf5_cov[[samplename]] <- writeHDF5Array(matrix(cov), name="cov", file=hdf5_file)
 }
+message("Generated coverage and methylation info")
 
 M <- do.call("cbind", hdf5_m)
 Cov <- do.call("cbind", hdf5_cov)
