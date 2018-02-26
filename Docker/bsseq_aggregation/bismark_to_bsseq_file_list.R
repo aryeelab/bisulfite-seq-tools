@@ -126,6 +126,14 @@ e[plus_idx] <- s[plus_idx]  # Plus strand
 message('Plus strand')
 s[minus_idx] <- e[minus_idx] # Minus strand
 message('Minus strand')
+
+print(head(s))
+print(length(s))
+print(head(start(cpg_gr)))
+print(length(start(cpg_gr)))
+
+
+
 BiocGenerics::start(cpg_gr) <- s
 message('Specify s')
 BiocGenerics::end(cpg_gr) <- e
