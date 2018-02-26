@@ -115,13 +115,21 @@ message('end cpg gr')
 # On the plus strand we keep the left-most position of the match
 # On the minus strand we keep the right-most position of the match
 s <- start(cpg_gr)
+message('s')
 e <- end(cpg_gr)
+message('e')
 plus_idx <- as.logical(strand(cpg_gr)=="+")
+message('plus_idx')
 minus_idx <- as.logical(strand(cpg_gr)=="-")
+message('minus_idx')
 e[plus_idx] <- s[plus_idx]  # Plus strand
+message('Plus strand')
 s[minus_idx] <- e[minus_idx] # Minus strand
+message('Minus strand')
 start(cpg_gr) <- s
+message('Specify s')
 end(cpg_gr) <- e
+message('Specify e')
 message("Generated CpG Genomic Ranges")
 
 # Get phenodata
