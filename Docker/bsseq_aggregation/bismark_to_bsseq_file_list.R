@@ -90,6 +90,7 @@ getMethCov <- function(covgz_file, gr) {
   return(list(m=m, cov=as.integer(cov)))
 }
 
+message("Added transferMbias function")
 
 transferMbias <- function(mbias_file) {
   fileName<-basename(mbias_file)
