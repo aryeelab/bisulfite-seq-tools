@@ -134,9 +134,9 @@ print(length(start(cpg_gr)))
 
 
 
-BiocGenerics::start(cpg_gr) <- s
+#BiocGenerics::start(cpg_gr) <- s
 message('Specify s')
-BiocGenerics::end(cpg_gr) <- e
+#BiocGenerics::end(cpg_gr) <- e
 message('Specify e')
 message("Generated CpG Genomic Ranges")
 
