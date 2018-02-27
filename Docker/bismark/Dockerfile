@@ -81,7 +81,7 @@ RUN cd /usr/local/bin && \
 RUN pip install cutadapt
 
 # Install FastQC
-RUN apt-get install openjdk-7-jre && \
+RUN apt-get -y install openjdk-7-jre && \
     cd /src && \
     wget https://www.bioinformatics.babraham.ac.uk/projects/fastqc/fastqc_v0.11.7.zip && \
     unzip fastqc_v0.11.7.zip && \
