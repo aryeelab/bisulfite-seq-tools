@@ -1,0 +1,4 @@
+{
+  "call_bismark_pool.in_bam_files": ["testdata/pooling/sample-01_rep1.sorted.bam", "testdata/pooling/sample-01_rep2.sorted.bam", "testdata/pooling/sample-01_rep3.sorted.bam"],
+  "call_bismark_pool.samplename": "sample-01"
+}
