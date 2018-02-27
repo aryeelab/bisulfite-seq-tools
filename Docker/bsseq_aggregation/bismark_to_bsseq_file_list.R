@@ -9,35 +9,23 @@ sapply(required_libraries, library, character.only=TRUE)
 options(DelayedArray.block.size=4500e6)
 
 
-option_list = list(
-  make_option(c("-i","--input_pe_report_files"),type='character',default=NULL,
-              help="Output from bismark_methylation_extractor. Use comma-separated file names "),
-  make_option(c("-j","--input_covgz_files"),type='character',default=NULL,
-              help="Output from bismark_methylation_extractor. Use comma-separated sample names "),
-  make_option(c("-o","--output_bsseq_dir"),type='character',default=NULL,
-              help="Directory in which to save the BSseq HDF5SummarizedExperiment"),
-  make_option(c("-d","--in_dir"),type='character',default=".",
-              help="Input file directory"),
-  make_option(c("-g","--bsgenome"),type='character',default=".",
-              help="Genome package")
-)
 
-# #option_list = list(
-#   make_option(c("-i","--input_pe_report_files"),type='character',default=NULL,
-#               help="Output from bismark_methylation_extractor. Use comma-separated file names "),
-#   make_option(c("-j","--input_covgz_files"),type='character',default=NULL,
-#               help="Output from bismark_methylation_extractor. Use comma-separated sample names "),
-#   make_option(c("-k","--input_mbias_files"),type='character',default=NULL,
-#               help="Output from bismark_methylation_extractor. Use comma-separated file names "),
-#   make_option(c("-o","--output_bsseq_dir"),type='character',default=NULL,
-#               help="Directory in which to save the BSseq HDF5SummarizedExperiment"),
-#   make_option(c("-m","--mbias_dir"),type='character',default=NULL,
-#               help="Directory in which to save the mbias files"),
-#   make_option(c("-d","--in_dir"),type='character',default=".",
-#               help="Input file directory"),
-#   make_option(c("-g","--bsgenome"),type='character',default=".",
-#               help="Genome package")
-# )
+option_list = list(
+   make_option(c("-i","--input_pe_report_files"),type='character',default=NULL,
+               help="Output from bismark_methylation_extractor. Use comma-separated file names "),
+   make_option(c("-j","--input_covgz_files"),type='character',default=NULL,
+               help="Output from bismark_methylation_extractor. Use comma-separated sample names "),
+   make_option(c("-k","--input_mbias_files"),type='character',default=NULL,
+               help="Output from bismark_methylation_extractor. Use comma-separated file names "),
+   make_option(c("-o","--output_bsseq_dir"),type='character',default=NULL,
+               help="Directory in which to save the BSseq HDF5SummarizedExperiment"),
+   make_option(c("-m","--mbias_dir"),type='character',default=NULL,
+               help="Directory in which to save the mbias files"),
+   make_option(c("-d","--in_dir"),type='character',default=".",
+               help="Input file directory"),
+   make_option(c("-g","--bsgenome"),type='character',default=".",
+               help="Genome package")
+ )
 opt_parse=OptionParser(option_list=option_list)
 opt = parse_args(opt_parse);
 library(opt$bsgenome, character.only=TRUE)
@@ -103,26 +91,22 @@ getMethCov <- function(covgz_file, gr) {
   return(list(m=m, cov=as.integer(cov)))
 }
 
-message("Added transferMbias function")
-#print(opt$mbias_dir)
+print(opt$mbias_dir)
 
-#transferMbias <- function(mbias_file) {
-#  fileName<-basename(mbias_file)
-#  newPath<-paste0(opt$mbias_dir,'/',fileName)
-#  file.copy(from=mbias_file,to=newPath)
-#}
+transferMbias <- function(mbias_file) {
+  fileName<-basename(mbias_file)
+  newPath<-paste0(opt$mbias_dir,'/',fileName)
+  file.copy(from=mbias_file,to=newPath)
+}
 
 
 #########################
 #########################
-
-message('start cpg gr')
 
 cpg_gr <- DNAString("CG")
 cpg_gr <- vmatchPattern(cpg_gr, get(opt$bsgenome))
 cpg_gr <- keepStandardChromosomes(cpg_gr, pruning.mode="coarse")
 
-message('end cpg gr')
 
 # Set up genome-wide CpG GRanges
 # On the plus strand we keep the left-most position of the match
@@ -142,9 +126,9 @@ cat(pe_report_files,sep="\n")
 pd <- foreach(pe_report_file=pe_report_files, .combine="rbind") %do% getPhenoData(pe_report_file)
 
 # Store the mbias file in a given directory
-#cat(mbias_files, sep='\n')
-#foreach(mbias_file=mbias_files) %do% transferMbias(mbias_file)
-#message("Transferred mbias files to directory: ", opt$mbias_dir)
+cat(mbias_files, sep='\n')
+foreach(mbias_file=mbias_files) %do% transferMbias(mbias_file)
+message("Transferred mbias files to directory: ", opt$mbias_dir)
 
 
 # Get methylation, coverage matrices
