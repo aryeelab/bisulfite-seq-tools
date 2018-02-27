@@ -31,7 +31,7 @@ opt = parse_args(opt_parse);
 library(opt$bsgenome, character.only=TRUE)
 pe_report_files = scan(opt$input_pe_report_files, what="character")
 covgz_files = scan(opt$input_covgz_files,what="character")
-#mbias_files = scan(opt$input_mbias_files,what="character")
+mbias_files = scan(opt$input_mbias_files,what="character")
 
 
 message("Output sampleset directory: ", opt$output_bsseq_dir)
