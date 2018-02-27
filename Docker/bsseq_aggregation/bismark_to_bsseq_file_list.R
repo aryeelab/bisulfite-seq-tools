@@ -14,23 +14,36 @@ option_list = list(
               help="Output from bismark_methylation_extractor. Use comma-separated file names "),
   make_option(c("-j","--input_covgz_files"),type='character',default=NULL,
               help="Output from bismark_methylation_extractor. Use comma-separated sample names "),
-  make_option(c("-k","--input_mbias_files"),type='character',default=NULL,
-              help="Output from bismark_methylation_extractor. Use comma-separated file names "),
   make_option(c("-o","--output_bsseq_dir"),type='character',default=NULL,
               help="Directory in which to save the BSseq HDF5SummarizedExperiment"),
-  make_option(c("-m","--mbias_dir"),type='character',default=NULL,
-              help="Directory in which to save the mbias files"),
   make_option(c("-d","--in_dir"),type='character',default=".",
               help="Input file directory"),
   make_option(c("-g","--bsgenome"),type='character',default=".",
               help="Genome package")
 )
+
+# #option_list = list(
+#   make_option(c("-i","--input_pe_report_files"),type='character',default=NULL,
+#               help="Output from bismark_methylation_extractor. Use comma-separated file names "),
+#   make_option(c("-j","--input_covgz_files"),type='character',default=NULL,
+#               help="Output from bismark_methylation_extractor. Use comma-separated sample names "),
+#   make_option(c("-k","--input_mbias_files"),type='character',default=NULL,
+#               help="Output from bismark_methylation_extractor. Use comma-separated file names "),
+#   make_option(c("-o","--output_bsseq_dir"),type='character',default=NULL,
+#               help="Directory in which to save the BSseq HDF5SummarizedExperiment"),
+#   make_option(c("-m","--mbias_dir"),type='character',default=NULL,
+#               help="Directory in which to save the mbias files"),
+#   make_option(c("-d","--in_dir"),type='character',default=".",
+#               help="Input file directory"),
+#   make_option(c("-g","--bsgenome"),type='character',default=".",
+#               help="Genome package")
+# )
 opt_parse=OptionParser(option_list=option_list)
 opt = parse_args(opt_parse);
 library(opt$bsgenome, character.only=TRUE)
 pe_report_files = scan(opt$input_pe_report_files, what="character")
 covgz_files = scan(opt$input_covgz_files,what="character")
-mbias_files = scan(opt$input_mbias_files,what="character")
+#mbias_files = scan(opt$input_mbias_files,what="character")
 
 
 message("Output sampleset directory: ", opt$output_bsseq_dir)
@@ -91,13 +104,13 @@ getMethCov <- function(covgz_file, gr) {
 }
 
 message("Added transferMbias function")
-print(opt$mbias_dir)
+#print(opt$mbias_dir)
 
-transferMbias <- function(mbias_file) {
-  fileName<-basename(mbias_file)
-  newPath<-paste0(opt$mbias_dir,'/',fileName)
-  file.copy(from=mbias_file,to=newPath)
-}
+#transferMbias <- function(mbias_file) {
+#  fileName<-basename(mbias_file)
+#  newPath<-paste0(opt$mbias_dir,'/',fileName)
+#  file.copy(from=mbias_file,to=newPath)
+#}
 
 
 #########################
@@ -115,39 +128,23 @@ message('end cpg gr')
 # On the plus strand we keep the left-most position of the match
 # On the minus strand we keep the right-most position of the match
 s <- start(cpg_gr)
-message('s')
 e <- end(cpg_gr)
-message('e')
 plus_idx <- as.logical(strand(cpg_gr)=="+")
-message('plus_idx')
 minus_idx <- as.logical(strand(cpg_gr)=="-")
-message('minus_idx')
 e[plus_idx] <- s[plus_idx]  # Plus strand
-message('Plus strand')
 s[minus_idx] <- e[minus_idx] # Minus strand
-message('Minus strand')
+start(cpg_gr) <- s
+end(cpg_gr) <- e
 
-print(head(s))
-print(length(s))
-print(head(start(cpg_gr)))
-print(length(start(cpg_gr)))
-
-
-
-#BiocGenerics::start(cpg_gr) <- s
-message('Specify s')
-#BiocGenerics::end(cpg_gr) <- e
-message('Specify e')
-message("Generated CpG Genomic Ranges")
 
 # Get phenodata
 cat(pe_report_files,sep="\n")
 pd <- foreach(pe_report_file=pe_report_files, .combine="rbind") %do% getPhenoData(pe_report_file)
 
 # Store the mbias file in a given directory
-cat(mbias_files, sep='\n')
-foreach(mbias_file=mbias_files) %do% transferMbias(mbias_file)
-message("Transferred mbias files to directory: ", opt$mbias_dir)
+#cat(mbias_files, sep='\n')
+#foreach(mbias_file=mbias_files) %do% transferMbias(mbias_file)
+#message("Transferred mbias files to directory: ", opt$mbias_dir)
 
 
 # Get methylation, coverage matrices
