@@ -9,6 +9,7 @@ RUN apt-key adv --keyserver keys.gnupg.net --recv-key 'E19F5F87128899B192B1A2C2A
 	apt-get install -y --force-yes r-base #=3.4.0-1
 
 RUN apt-get install -y libxml2-dev
+RUN apt-get install libmariadb-client-lgpl-dev
 RUN Rscript -e "install.packages('optparse', repos='http://R-Forge.R-project.org')"
 #RUN Rscript -e "install.packages('ggplot2',repos='http://R-Forge.R-project.org')"
 RUN Rscript -e "install.packages('foreach',repos='http://R-Forge.R-project.org')"
