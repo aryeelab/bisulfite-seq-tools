@@ -1,0 +1,7 @@
+{
+    "call_bismark_pool.r1_fastq": "/Users/Divy/Documents/methylation-wdl/testdata/small_01_R1.fastq.gz, /Users/Divy/Documents/methylation-wdl/testdata/small_02_R1.fastq.gz , /Users/Divy/Documents/methylation-wdl/testdata/small_03_R1.fastq.gz",
+    "call_bismark_pool.r2_fastq": "/Users/Divy/Documents/methylation-wdl/testdata/small_01_R2.fastq.gz, /Users/Divy/Documents/methylation-wdl/testdata/small_02_R2.fastq.gz, /Users/Divy/Documents/methylation-wdl/testdata/small_03_R2.fastq.gz",
+    "call_bismark_pool.genome_index": "/Users/Divy/Documents/methylation-wdl/testdata/bismark_mm10_chr19.tar.gz",
+    "call_bismark_pool.multicore": "1"
+    
+}
