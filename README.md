@@ -1,5 +1,5 @@
 # Firecloud/WDL DNA methylation workflows
-This platform contains publicly accessible cloud-based preprocessing and quality control pipelines that go from raw data to CpG-level methylation estimates. The technologies covered include whole genome bisulfite sequencing (WGBS), reduced representation bisulfite sequencing (RRBS), hybrid selection (capture) bisulfite sequencing (HSBS) and Illumina methylation microarrays. Leveraging the Firecloud platform allows users to: 
+This platform contains publicly accessible cloud-based preprocessing and quality control pipelines that go from raw data to CpG-level methylation estimates. The technologies covered include whole genome bisulfite sequencing (WGBS), reduced representation bisulfite sequencing (RRBS) and hybrid selection (capture) bisulfite sequencing (HSBS). Leveraging the Firecloud platform allows users to: 
 
 1) ensure cross-platform reproducibility of analyses 
 2) achieve scalability to large whole genome datasets with 100GB+ of raw data per sample, and to single-cell datasets with thousands of cells 
@@ -19,26 +19,87 @@ Before running the processes, you need to generate participants file and partici
 In order to perform alignment and methylation calling choose *bismark_rrbs*, *bismark_wgbs* or *bismark_hsbs* method configuration. As the name indicates
 *bismark_rrbs* is for samples that are generated from Reduced Representation Bisulfite Sequencing (RRBS) with Mspl digestion and *bismark_wgbs* is for data generated from Whole Genome Bisulfite Sequencing (WGBS). *bismark_hsbs* is for data generated from Hybrid Selection Bisulfite Sequencing (HSBS).
 
-1) Upload the .fastq files to the google cloud bucket
+1) Upload the fastq files to the Google cloud bucket
 2) In the FireCloud workspace choose *bismark_rrbs*, *bismark_wgbs* or *bismark_hsbs* method configuration
-3) In order to change the reference genome index, click **Edit Configuration** and change the genome_index in the list of inputs
+3) In order to change the reference genome index, click **Edit Configuration** and change the genome_index in the list of inputs. chrom_sizes input should also be changed according to the species and genome build of interest
 4) Change other parameters according to preference
 4) Press *Launch Analysis* in upper right hand corner
 5) Choose the participants from the list of files
 6) Click **Launch**
 
+If you are interested in conducting alignment and methylation calling for entire participant set. Choose the participant set and in the box below Define the expression provide *this.participants*
+
 You can observe the status of the job by going to *Monitor* tab
+
+### Alignment and methylation calling specific parameters
+```
+- r1_fastq & r2_fastq
+```
+- Paired end FASTQ files
+
+```
+- samplename
+```
+- base name for a sample
+
+```
+- genome_index
+```
+- Reference genome to conduct bisulfite specicfic alignment
+
+```
+- n_bp_trim_read1 & n_bp_trim_read1
+```
+- Number of bases to trim in read 1 and read 2. This is only specified for wgbs and hsbs workflows. rrbs workflow uses the --rrbs option from trimGalore.
+
+```
+- chrom_sizes
+```
+- chrom_sizes file in order to generate the BIGWIG file
+
+
 
 ## Aggregation and Quality Control Analysis
 After the alignment and methylation calling each sample will have their methylation information and metadata stored in HDF5 format
 In order to aggregate all of them and obtain the quality control report
 1) Choose *aggregate_bismark_output* method configuration
-2) Choose the right BSGenome package in the *BSGenome_package* option and choose the location of the tar.gz file in *BSGenome_tagz* option
+2) Choose the right BSGenome package in the *BSGenome_package* option and choose the right tar.gz file in *BSGenome_tagz* option
 3) Save it and press *Launch Analysis* 
 4) Since this is the aggregation step the entity root type will be participant_set, so you will choose participant_set with participants of your interest
 5) Finally click **Launch**
 
 To check the results from any of the work flows, go to Monitor tab, click *View* in the Status columns and then click the *Workflow ID* in the bottom of the page.
+
+### Alignment and methylation calling specific parameters
+```
+- in_pe_reports_files
+```
+- Report files from the bismark alignment
+
+```
+- in_covgz_files
+```
+- coverage output file
+
+```
+- in_mbias_files
+```
+- M-bias file
+
+```
+- BSGenome_targz
+```
+- BSGenome targz file
+
+```
+- BSGenome_package
+```
+- Name of the BSGenome package
+
+```
+- Genome_build
+```
+- Name of the genome build, e.g. mm10, hg19 or hg38 
 
 
 ## Running the WDL workflow in local environment
@@ -65,7 +126,7 @@ Note: On Mac, cromwell can be installed with the following command
 brew install cromwell
 ```
 
-Following commnads are based on cromwell version 30. Edit the file paths in the json file according to your directory paths
+Following commands are based on cromwell version 30. Edit the file paths in the json file according to your directory paths to test the workflows.
 #### WGBS, Paired-end reads
 ```
 java -jar cromwell-30.2.jar run call_bismark_wgbs.wdl -i sample1_wgbs_pe.json
