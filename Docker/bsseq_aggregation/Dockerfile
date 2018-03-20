@@ -10,7 +10,7 @@ RUN Rscript -e "source('http://bioconductor.org/biocLite.R');biocLite(c('HDF5Arr
 RUN Rscript -e "source('http://bioconductor.org/biocLite.R');biocLite(c('foreach','optparse'), ask=F)"
 RUN Rscript -e "source('http://bioconductor.org/biocLite.R');biocLite(c('readr','stringr', 'devtools'), ask=F)"
 RUN Rscript -e "source('http://bioconductor.org/biocLite.R');biocLite(c('annotatr'), ask=F)"
-RUN Rscript -e "devtools::install_github('aryeelab/scmeth', ref = '30276d5')" 
+RUN Rscript -e "devtools::install_github('aryeelab/scmeth', ref = '3bdd3a4')" 
 
 ADD ./bismark_to_bsseq_file_list.R bismark_to_bsseq_file_list.R
 
