@@ -26,7 +26,7 @@ task step2_create_combined_bsseq {
                 echo """${sep="\n" in_covgz_files}""" > all_cov_gz.txt
                 echo """${sep="\n" in_mbias_files}""" > all_mbias.txt
                 Rscript --vanilla /bismark_to_bsseq_file_list.R -i all_pe_reports.txt -j all_cov_gz.txt -k all_mbias.txt --bsgenome ${BSGenome_package} -o outputdir_final -m mbias_files
-                Rscript -e "library(dplyr);library(scmeth);library('${BSGenome_package}', character.only = TRUE);bs <- SummarizedExperiment::loadHDF5SummarizedExperiment(dir='outputdir_final');report(bs, '/', get('${BSGenome_package}'), '${Genome_build}',mbiasDir='mbias_files')"
+                Rscript -e "library(dplyr);library(scmeth);library('${BSGenome_package}', character.only = TRUE);bs <- HDF5Array::loadHDF5SummarizedExperiment(dir='outputdir_final');report(bs, '/', get('${BSGenome_package}'), '${Genome_build}',mbiasDir='/mbias_files')"
                 mv /qcReport.html .
                 tar -cf outputdir_final.tar outputdir_final
         }
@@ -38,6 +38,6 @@ task step2_create_combined_bsseq {
         continueOnReturnCode: false
         docker: "aryeelab/bsseq_aggregation:latest"
         memory: "20GB"
-        disks: "local-disk 200 SSD"        
+        disks: "local-disk 500 SSD"        
         }
 }
