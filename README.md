@@ -33,27 +33,27 @@ You can observe the status of the job by going to *Monitor* tab
 
 ### Alignment and methylation calling specific parameters
 ```
-- r1_fastq & r2_fastq
+r1_fastq & r2_fastq
 ```
 - Paired end FASTQ files
 
 ```
-- samplename
+samplename
 ```
 - base name for a sample
 
 ```
-- genome_index
+genome_index
 ```
 - Reference genome to conduct bisulfite specicfic alignment
 
 ```
-- n_bp_trim_read1 & n_bp_trim_read1
+n_bp_trim_read1 & n_bp_trim_read1
 ```
 - Number of bases to trim in read 1 and read 2. This is only specified for wgbs and hsbs workflows. rrbs workflow uses the --rrbs option from trimGalore.
 
 ```
-- chrom_sizes
+chrom_sizes
 ```
 - chrom_sizes file in order to generate the BIGWIG file
 
@@ -72,32 +72,32 @@ To check the results from any of the work flows, go to Monitor tab, click *View*
 
 ### Alignment and methylation calling specific parameters
 ```
-- in_pe_reports_files
+in_pe_reports_files
 ```
 - Report files from the bismark alignment
 
 ```
-- in_covgz_files
+in_covgz_files
 ```
 - coverage output file
 
 ```
-- in_mbias_files
+in_mbias_files
 ```
 - M-bias file
 
 ```
-- BSGenome_targz
+BSGenome_targz
 ```
 - BSGenome targz file
 
 ```
-- BSGenome_package
+BSGenome_package
 ```
 - Name of the BSGenome package
 
 ```
-- Genome_build
+Genome_build
 ```
 - Name of the genome build, e.g. mm10, hg19 or hg38 
 
