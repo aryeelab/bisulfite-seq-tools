@@ -96,3 +96,6 @@ RUN cd /tmp && \
     unzip 0.4.5.zip && \
     cp TrimGalore-0.4.5/trim_galore /usr/local/bin && \
     chmod +x /usr/local/bin/trim_galore
+
+# added pooling report script
+ADD ./pool_report_files.R pool_report_files.R
