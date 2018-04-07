@@ -7,7 +7,7 @@ This platform contains publicly accessible cloud-based preprocessing and quality
 4) enable integration and comparison between user-provided data and publicly available data (e.g. TCGA)
 
 
-## To run the analysis in the FireCloud platform
+## Workflow steps
 Analysis should be run in two successive processes: 
 1) Alignment and methylation calling
 2) Aggregation and quality control analysis
@@ -16,16 +16,17 @@ Before running the processes, you need to generate participants file and partici
 
 
 ## Alignment and methylation calling
-In order to perform alignment and methylation calling choose *bismark_rrbs*, *bismark_wgbs* or *bismark_hsbs* method configuration. As the name indicates
-*bismark_rrbs* is for samples that are generated from Reduced Representation Bisulfite Sequencing (RRBS) with Mspl digestion and *bismark_wgbs* is for data generated from Whole Genome Bisulfite Sequencing (WGBS). *bismark_hsbs* is for data generated from Hybrid Selection Bisulfite Sequencing (HSBS).
+In order to perform alignment and methylation calling choose *bismark_pool_rrbs*, *bismark_pool_wgbs* or *bismark_pool_hsbs* method configurationwith appropriate reference genome suffix. As the name indicates
+*bismark_pool_rrbs* is for samples that are generated from Reduced Representation Bisulfite Sequencing (RRBS) with Mspl digestion and *bismark_pool_wgbs* is for data generated from Whole Genome Bisulfite Sequencing (WGBS). *bismark_pool_hsbs* is for data generated from Hybrid Selection Bisulfite Sequencing (HSBS). These worflows can also combine fastq files from multiple lanes if the samples are sequenced that way.
 
 1) Upload the fastq files to the Google cloud bucket
-2) In the FireCloud workspace choose *bismark_rrbs*, *bismark_wgbs* or *bismark_hsbs* method configuration
-3) In order to change the reference genome index, click **Edit Configuration** and change the genome_index in the list of inputs. chrom_sizes input should also be changed according to the species and genome build of interest
-4) Change other parameters according to preference
-4) Press *Launch Analysis* in upper right hand corner
-5) Choose the participants from the list of files
-6) Click **Launch**
+2) Upload additional files such as target coverage bed file for HSBS sequencing
+3) In the FireCloud workspace choose *bismark_pool_rrbs*, *bismark_pool_wgbs* or *bismark_pool_hsbs* method configuration
+4) In order to change the reference genome index, click **Edit Configuration** and change the genome_index in the list of inputs. chrom_sizes input should also be changed according to the species and genome build of interest
+5) Change other parameters according to preference
+6) Press *Launch Analysis* in upper right hand corner
+7) Choose the participants from the list of files
+8) Click **Launch**
 
 If you are interested in conducting alignment and methylation calling for entire participant set. Choose the participant set and in the box below Define the expression provide *this.participants*
 
@@ -62,15 +63,15 @@ chrom_sizes
 ## Aggregation and Quality Control Analysis
 After the alignment and methylation calling each sample will have their methylation information and metadata stored in HDF5 format
 In order to aggregate all of them and obtain the quality control report
-1) Choose *aggregate_bismark_output* method configuration
-2) Choose the right BSGenome package in the *BSGenome_package* option and choose the right tar.gz file in *BSGenome_tagz* option
+1) Choose *aggregate_bismark_output* method configuration with appropriate reference genome suffix
+2) Choose the right BSGenome package in the *BSGenome_package* option and choose the right tar.gz file in *BSGenome_targz* option
 3) Save it and press *Launch Analysis* 
 4) Since this is the aggregation step the entity root type will be participant_set, so you will choose participant_set with participants of your interest
 5) Finally click **Launch**
 
 To check the results from any of the work flows, go to Monitor tab, click *View* in the Status columns and then click the *Workflow ID* in the bottom of the page.
 
-### Alignment and methylation calling specific parameters
+### Aggregation specific parameters
 ```
 in_pe_reports_files
 ```
@@ -99,7 +100,36 @@ BSGenome_package
 ```
 Genome_build
 ```
-- Name of the genome build, e.g. mm10, hg19 or hg38 
+- Name of the genome build, e.g. mm10, hg19 etc. 
+
+
+### General parameters
+```
+cpu
+```
+- Number of CPUs
+
+```
+disks
+```
+- Name of the disk (Depends on the disk size)
+
+```
+memory
+```
+- Memory requirement
+
+```
+multicore
+```
+- Number of cores to use, especially during alignment
+
+```
+preemptible
+```
+- Preemptible option is to use preemptible virtual machine, if it is set to 0 the workflow runs uninterrupted. If it is set to any integer other than zero it may be interpreted that many times.
+
+
 
 
 ## Running the WDL workflow in local environment
@@ -114,7 +144,8 @@ cd Docker/bismark
 docker build -t aryeelab/bismark .
 ```
 
-3. If you want to run the examples below, download this small genome index:    
+3. If you want to run the examples below, download this small genome index: 
+
 ```
 gsutil cp gs://fc-dceaadae-be69-41ab-a230-0b735c0556c1/bismark_index/bismark_mm10_chr19.tar.gz testdata/
 ```
