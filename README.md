@@ -1,6 +1,7 @@
 # Firecloud/WDL DNA methylation workflows
-This platform contains publicly accessible cloud-based preprocessing and quality control pipelines that go from raw data to CpG-level methylation estimates. The technologies covered include whole genome bisulfite sequencing (WGBS), reduced representation bisulfite sequencing (RRBS) and hybrid selection (capture) bisulfite sequencing (HSBS). Leveraging the Firecloud platform allows users to: 
-
+<p style="text-align: justify;">
+This platform contains publicly accessible cloud-based preprocessing and quality control pipelines that go from raw data to CpG-level methylation estimates. The technologies covered include Whole Genome Bisulfite Sequencing (WGBS), Reduced Representation Bisulfite Sequencing (RRBS) and Hybrid Selection (capture) Bisulfite Sequencing (HSBS). Leveraging the Firecloud platform allows users to: 
+</p>
 1) ensure cross-platform reproducibility of analyses 
 2) achieve scalability to large whole genome datasets with 100GB+ of raw data per sample, and to single-cell datasets with thousands of cells 
 3) provide access to best-practice analysis pipelines  
@@ -12,23 +13,27 @@ Analysis should be run in two successive processes:
 1) Alignment and methylation calling
 2) Aggregation and quality control analysis
 
+<p style="text-align: justify;">
 Before running the processes, you need to generate participants file and participant_set file. Both of these files are tab separated text files. Examples of these files are shown in *Firecloud_imports* subdirectory.
-
+</p>
 
 ## Alignment and methylation calling
-In order to perform alignment and methylation calling choose *bismark_pool_rrbs*, *bismark_pool_wgbs* or *bismark_pool_hsbs* method configurationwith appropriate reference genome suffix. As the name indicates
-*bismark_pool_rrbs* is for samples that are generated from Reduced Representation Bisulfite Sequencing (RRBS) with Mspl digestion and *bismark_pool_wgbs* is for data generated from Whole Genome Bisulfite Sequencing (WGBS). *bismark_pool_hsbs* is for data generated from Hybrid Selection Bisulfite Sequencing (HSBS). These worflows can also combine fastq files from multiple lanes if the samples are sequenced that way.
+<p style="text-align: justify;">
+In order to perform alignment and methylation calling choose *bismark_pool_rrbs*, *bismark_pool_wgbs* or *bismark_pool_hsbs* method configuration with appropriate reference genome suffix. As the name indicates
+*bismark_pool_rrbs* is for samples that are generated from Reduced Representation Bisulfite Sequencing (RRBS) with Mspl digestion and *bismark_pool_wgbs* is for data generated from Whole Genome Bisulfite Sequencing (WGBS). *bismark_pool_hsbs* is for data generated from Hybrid Selection Bisulfite Sequencing (HSBS). These worflows can also combine fastq files from multiple lanes if the samples are sequenced in such a way.
+</p>
 
 1) Upload the fastq files to the Google cloud bucket
 2) Upload additional files such as target coverage bed file for HSBS sequencing
-3) In the FireCloud workspace choose *bismark_pool_rrbs*, *bismark_pool_wgbs* or *bismark_pool_hsbs* method configuration
-4) In order to change the reference genome index, click **Edit Configuration** and change the genome_index in the list of inputs. chrom_sizes input should also be changed according to the species and genome build of interest
-5) Change other parameters according to preference
-6) Press *Launch Analysis* in upper right hand corner
-7) Choose the participants from the list of files
-8) Click **Launch**
+3) In the FireCloud workspace choose *bismark_pool_rrbs*, *bismark_pool_wgbs* or *bismark_pool_hsbs* method configuration with appropriate reference genome suffix
+4) Change other parameters according to preference
+5) Press *Launch Analysis* in upper right hand corner
+6) Choose the participants from the list of files
+7) Click **Launch**
 
-If you are interested in conducting alignment and methylation calling for entire participant set. Choose the participant set and in the box below Define the expression provide *this.participants*
+<p style="text-align: justify;">
+If you are interested in conducting alignment and methylation calling for an entire participant set. Choose the participant set and in the box named **Define expression** type *this.participants*
+</p>
 
 You can observe the status of the job by going to *Monitor* tab
 
@@ -61,12 +66,14 @@ chrom_sizes
 
 
 ## Aggregation and Quality Control Analysis
+<p style="text-align: justify;">
 After the alignment and methylation calling each sample will have their methylation information and metadata stored in HDF5 format
+</p>
 In order to aggregate all of them and obtain the quality control report
 1) Choose *aggregate_bismark_output* method configuration with appropriate reference genome suffix
-2) Choose the right BSGenome package in the *BSGenome_package* option and choose the right tar.gz file in *BSGenome_targz* option
+2) Change other parameters according to preference
 3) Save it and press *Launch Analysis* 
-4) Since this is the aggregation step the entity root type will be participant_set, so you will choose participant_set with participants of your interest
+4) Since root entity type in aggregation step is participant set, you will choose participant_set with participants of your interest
 5) Finally click **Launch**
 
 To check the results from any of the work flows, go to Monitor tab, click *View* in the Status columns and then click the *Workflow ID* in the bottom of the page.
@@ -127,7 +134,7 @@ multicore
 ```
 preemptible
 ```
-- Preemptible option is to use preemptible virtual machine, if it is set to 0 the workflow runs uninterrupted. If it is set to any integer other than zero it may be interpreted that many times.
+- Preemptible option is to use preemptible virtual machine, if it is set to 0 the workflow runs uninterrupted. If it is set to any integer other than zero it may be interpreted that many times. However preemtible option reduces the computing cost significantly.
 
 
 
@@ -147,7 +154,7 @@ docker build -t aryeelab/bismark .
 3. If you want to run the examples below, download this small genome index: 
 
 ```
-gsutil cp gs://fc-dceaadae-be69-41ab-a230-0b735c0556c1/bismark_index/bismark_mm10_chr19.tar.gz testdata/
+wget https://storage.googleapis.com/aryeelab/bismark-index/mm10_chr19/bismark_mm10_chr19.tar.gz
 ```
 
 ### Running the WDL workflow in Cromwell
