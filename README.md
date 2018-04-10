@@ -1,7 +1,6 @@
 # Firecloud/WDL DNA methylation workflows
-<p style="text-align: justify;">
 This platform contains publicly accessible cloud-based preprocessing and quality control pipelines that go from raw data to CpG-level methylation estimates. The technologies covered include Whole Genome Bisulfite Sequencing (WGBS), Reduced Representation Bisulfite Sequencing (RRBS) and Hybrid Selection (capture) Bisulfite Sequencing (HSBS). Leveraging the Firecloud platform allows users to: 
-</p>
+
 1) ensure cross-platform reproducibility of analyses 
 2) achieve scalability to large whole genome datasets with 100GB+ of raw data per sample, and to single-cell datasets with thousands of cells 
 3) provide access to best-practice analysis pipelines  
@@ -13,15 +12,14 @@ Analysis should be run in two successive processes:
 1) Alignment and methylation calling
 2) Aggregation and quality control analysis
 
-<p style="text-align: justify;">
+
 Before running the processes, you need to generate participants file and participant_set file. Both of these files are tab separated text files. Examples of these files are shown in *Firecloud_imports* subdirectory.
-</p>
+
 
 ## Alignment and methylation calling
-<p style="text-align: justify;">
 In order to perform alignment and methylation calling choose *bismark_pool_rrbs*, *bismark_pool_wgbs* or *bismark_pool_hsbs* method configuration with appropriate reference genome suffix. As the name indicates
 *bismark_pool_rrbs* is for samples that are generated from Reduced Representation Bisulfite Sequencing (RRBS) with Mspl digestion and *bismark_pool_wgbs* is for data generated from Whole Genome Bisulfite Sequencing (WGBS). *bismark_pool_hsbs* is for data generated from Hybrid Selection Bisulfite Sequencing (HSBS). These worflows can also combine fastq files from multiple lanes if the samples are sequenced in such a way.
-</p>
+
 
 1) Upload the fastq files to the Google cloud bucket
 2) Upload additional files such as target coverage bed file for HSBS sequencing
@@ -31,9 +29,9 @@ In order to perform alignment and methylation calling choose *bismark_pool_rrbs*
 6) Choose the participants from the list of files
 7) Click **Launch**
 
-<p style="text-align: justify;">
+
 If you are interested in conducting alignment and methylation calling for an entire participant set. Choose the participant set and in the box named **Define expression** type *this.participants*
-</p>
+
 
 You can observe the status of the job by going to *Monitor* tab
 
@@ -66,9 +64,8 @@ chrom_sizes
 
 
 ## Aggregation and Quality Control Analysis
-<p style="text-align: justify;">
 After the alignment and methylation calling each sample will have their methylation information and metadata stored in HDF5 format
-</p>
+
 In order to aggregate all of them and obtain the quality control report
 1) Choose *aggregate_bismark_output* method configuration with appropriate reference genome suffix
 2) Change other parameters according to preference
@@ -165,6 +162,7 @@ brew install cromwell
 ```
 
 Following commands are based on cromwell version 30. Edit the file paths in the json file according to your directory paths to test the workflows.
+
 #### WGBS, Paired-end reads
 ```
 java -jar cromwell-30.2.jar run call_bismark_wgbs.wdl -i sample1_wgbs_pe.json
@@ -176,7 +174,7 @@ java -jar cromwell-30.2.jar run call_bismark_rrbs.wdl -i sample1_rrbs_pe.json
 ```
 
 
-#### Hybrid selection (capture) bisulfite sequencing, paired-end reads
+#### HSBS, paired-end reads
 ```
 java -jar cromwell-30.2.jar run call_bismark_hsbs.wdl -i sample1_hsbs_pe.json
 ```
