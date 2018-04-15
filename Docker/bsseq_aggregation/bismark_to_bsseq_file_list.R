@@ -34,7 +34,6 @@ covgz_files = scan(opt$input_covgz_files,what="character")
 mbias_files = scan(opt$input_mbias_files,what="character")
 
 
-message("Output sampleset directory: ", opt$output_bsseq_dir)
 
 #########################
 ### Utility functions ###
@@ -91,7 +90,7 @@ getMethCov <- function(covgz_file, gr) {
   return(list(m=m, cov=as.integer(cov)))
 }
 
-print(opt$mbias_dir)
+
 
 transferMbias <- function(mbias_file) {
   fileName<-basename(mbias_file)
@@ -128,7 +127,6 @@ pd <- foreach(pe_report_file=pe_report_files, .combine="rbind") %do% getPhenoDat
 # Store the mbias file in a given directory
 cat(mbias_files, sep='\n')
 foreach(mbias_file=mbias_files) %do% transferMbias(mbias_file)
-message("Transferred mbias files to directory: ", opt$mbias_dir)
 
 
 # Get methylation, coverage matrices
