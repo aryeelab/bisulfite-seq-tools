@@ -55,6 +55,7 @@ task step1_bismark_rrbs {
         }
                 
         output {
+            File monitoring_log = "monitoring.log"
             File output_bam = "${samplename}.sorted.bam"
             File output_covgz = "${samplename}.bismark.cov.gz"
             File output_report = "${samplename}_report.txt"

@@ -1,0 +1,15 @@
+{
+    "call_bismark.step1_bismark_wgbs.genome_index": "/Users/Divy/Downloads/bismark_mm10_chr19/bismark_mm10_chr19.tar.gz",
+    "call_bismark.step1_bismark_wgbs.samplename": "sample-01",
+    "call_bismark.step1_bismark_wgbs.r1_fastq": "/Users/Divy/Documents/methylation-wdl/testdata/small_01_R1.fastq.gz",
+    "call_bismark.step1_bismark_wgbs.r2_fastq": "/Users/Divy/Documents/methylation-wdl/testdata/small_01_R2.fastq.gz",
+    "call_bismark.step1_bismark_wgbs.chrom_sizes": "/Users/Divy/Downloads/mm10.chrom.sizes",
+    "call_bismark.step1_bismark_wgbs.monitoring_script": "/Users/Divy/Documents/methylation-wdl/monitor.sh",
+    "call_bismark.step1_bismark_wgbs.multicore": "1",
+    "call_bismark.step1_bismark_wgbs.n_bp_trim_read1": "3",
+    "call_bismark.step1_bismark_wgbs.n_bp_trim_read2": "3",
+    "call_bismark.step1_bismark_wgbs.memory": "24 GB",
+    "call_bismark.step1_bismark_wgbs.disks": "local-disk 100 SSD",
+    "call_bismark.step1_bismark_wgbs.cpu": 4,
+    "call_bismark.step1_bismark_wgbs.preemptible": 1    
+}

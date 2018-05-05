@@ -1,0 +1,12 @@
+{
+    "aggregate_bismark_output.in_pe_reports_files": ["/Users/Divy/Documents/methylation-wdl/testdata/aggregation/sample-01_report.txt", "/Users/Divy/Documents/methylation-wdl/testdata/aggregation/sample-1_report.txt"],
+    "aggregate_bismark_output.in_covgz_files": ["/Users/Divy/Documents/methylation-wdl/testdata/aggregation/sample-01.bismark.cov.gz", "/Users/Divy/Documents/methylation-wdl/testdata/aggregation/sample-1.bismark.cov.gz"] ,
+    "aggregate_bismark_output.in_mbias_files": ["/Users/Divy/Documents/methylation-wdl/testdata/aggregation/sample-01.M-bias.txt", "/Users/Divy/Documents/methylation-wdl/testdata/aggregation/sample-1.M-bias.txt"] ,
+    "aggregate_bismark_output.BSGenome_targz": "/Users/Divy/Documents/BSgenome-mm10/BSgenome.Mmusculus.UCSC.mm10_1.4.0.tar.gz",
+    "aggregate_bismark_output.BSGenome_package": "BSgenome.Mmusculus.UCSC.mm10",
+    "aggregate_bismark_output.Genome_build": "mm10",
+    "aggregate_bismark_output.preemptible": 1,
+    "aggregate_bismark_output.memory": "24 GB",
+    "aggregate_bismark_output.disks": "local-disk 100 SSD"
+      
+}

@@ -22,9 +22,9 @@ workflow call_bismark_pool {
   
   Array[Pair[File, File]] fastq_pairs = zip(fastq1.out, fastq2.out)
   
-  scatter (fastq_pair in fastq_pairs) { call align_replicates {input: r1_fastq = fastq_pair.left, r2_fastq = fastq_pair.right, genome_index = genome_index, multicore = multicore, monitoring_script = monitoring_script} }
+  scatter (fastq_pair in fastq_pairs) { call align_replicates {input: r1_fastq = fastq_pair.left, r2_fastq = fastq_pair.right, genome_index = genome_index, multicore = multicore, monitoring_script = monitoring_script,  memory = memory, disks = disks, cpu = cpu, preemptible = preemptible} }
 
-  call merge_replicates {input: bams = align_replicates.bam, samplename = samplename, chrom_sizes = chrom_sizes, genome_index = genome_index, multicore = multicore, monitoring_script = monitoring_script, memory = memory, disks = disks, cpu = cpu, preemptible = preemptible}
+  call merge_replicates {input: bams = align_replicates.bam, reports = align_replicates.output_report, samplename = samplename, chrom_sizes = chrom_sizes, genome_index = genome_index, multicore = multicore, monitoring_script = monitoring_script, memory = memory, disks = disks, cpu = cpu, preemptible = preemptible}
   
 }
 
@@ -54,8 +54,15 @@ task align_replicates{
   File monitoring_script
   
   String samplename = basename(r1_fastq)
+  Int n_bp_trim_read1
+	Int n_bp_trim_read2
   
   String multicore
+  
+  String memory
+  String disks
+  Int cpu
+  Int preemptible
 
   
   command {
@@ -80,7 +87,12 @@ task align_replicates{
   }
   
   	runtime {
+  	continueOnReturnCode: false
 		docker: "aryeelab/bismark:latest"
+		memory: memory
+    disks: disks
+    cpu: cpu
+    preemptible: preemptible
  }
   
 }
@@ -88,6 +100,7 @@ task align_replicates{
 task merge_replicates {
   String samplename
   Array[File] bams
+  Array[File] reports
   String multicore
   File monitoring_script
   File chrom_sizes
@@ -109,7 +122,12 @@ task merge_replicates {
     mkdir bismark_index
     tar zxf ${genome_index} -C bismark_index
     
-    samtools merge ${samplename}.bam ${sep=' ' bams}
+    samtools merge -n ${samplename}.bam ${sep=' ' bams}
+    
+    samtools sort -n -o ${samplename}.sorted_by_readname.bam ${samplename}.bam 
+		/src/Bismark-0.18.2/deduplicate_bismark -p --bam ${samplename}.sorted_by_readname.bam
+		rm ${samplename}.sorted_by_readname.bam ${samplename}.bam
+		mv ${samplename}.sorted_by_readname.deduplicated.bam ${samplename}.bam
     
     samtools sort -o ${samplename}.sorted.bam ${samplename}.bam
     samtools index ${samplename}.sorted.bam ${samplename}.sorted.bai
@@ -118,9 +136,20 @@ task merge_replicates {
             
     bismark_methylation_extractor --multicore ${multicore} --gzip --bedGraph --buffer_size 50% --genome_folder bismark_index ${samplename}.bam
     
+    TOTAL_READS=$(samtools view -F 4 ${samplename}.bam | wc -l | tr -d '[:space:]')
+		echo "# total_reads=$TOTAL_READS" | tee ${samplename}_target_coverage.bed
+		# How many reads overlap targets?
+		READS_OVERLAPPING_TARGETS=$(bedtools intersect -u -bed -a ${samplename}.bam -b ${target_region_bed} | wc -l | tr -d '[:space:]')
+		echo "# reads_overlapping_targets=$READS_OVERLAPPING_TARGETS" | tee -a ${samplename}_target_coverage.bed
+		# How many reads per target?
+		bedtools intersect -c -a ${target_region_bed} -b ${samplename}.bam >> ${samplename}_target_coverage.bed
     gunzip "${samplename}.bedGraph.gz"
-            
-    /usr/local/bin/bedGraphToBigWig ${samplename}.bedGraph ${chrom_sizes} ${samplename}.bw
+    
+    bedtools sort -i ${samplename}.bedGraph > ${samplename}.sorted.bedGraph        
+    /usr/local/bin/bedGraphToBigWig ${samplename}.sorted.bedGraph ${chrom_sizes} ${samplename}.bw
+    
+    echo """${sep="\n" reports}""" > all_reports.txt
+    Rscript --vanilla /pool_report_files.R -i all_reports.txt -s ${samplename}
     
    
   }
@@ -128,6 +157,7 @@ task merge_replicates {
   output {
             File output_bam = "${samplename}.sorted.bam"
             File output_covgz = "${samplename}.bismark.cov.gz"
+            File output_report = "${samplename}_report.txt"
             File mbias_report = "${samplename}.M-bias.txt"
             File output_bigwig = "${samplename}.bw"
             File output_bai = "${samplename}.sorted.bai"
@@ -142,5 +172,3 @@ task merge_replicates {
     preemptible: preemptible
   }
 }
-
-

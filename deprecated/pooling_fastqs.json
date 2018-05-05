@@ -1,0 +1,14 @@
+{
+    "call_bismark_pool.merge_replicates.genome_index": "/Users/Divy/Documents/methylation-wdl/testdata/bismark_mm10_chr19.tar.gz",
+    "call_bismark_pool.merge_replicates.samplename": "sample-01",
+    "call_bismark_pool.merge_replicates.r1_fastq": ["/Users/Divy/Documents/methylation-wdl/testdata/small_01_R1.fastq.gz","/Users/Divy/Documents/methylation-wdl/testdata/small_02_R1.fastq.gz", "/Users/Divy/Documents/methylation-wdl/testdata/small_03_R1.fastq.gz"],
+    "call_bismark_pool.merge_replicates.r2_fastq": ["/Users/Divy/Documents/methylation-wdl/testdata/small_01_R2.fastq.gz","/Users/Divy/Documents/methylation-wdl/testdata/small_02_R2.fastq.gz", "/Users/Divy/Documents/methylation-wdl/testdata/small_03_R2.fastq.gz"],
+    "call_bismark_pool.merge_replicates.monitoring_script": "/Users/Divy/Documents/methylation-wdl/monitor.sh",
+    "call_bismark_pool.merge_replicates.multicore": "1",
+    "call_bismark_pool.merge_replicates.n_bp_trim_read1": "3",
+    "call_bismark_pool.merge_replicates.n_bp_trim_read2": "3",
+    "call_bismark_pool.merge_replicates.memory": "24 GB",
+    "call_bismark_pool.merge_replicates.disks": "local-disk 100 SSD",
+    "call_bismark_pool.merge_replicates.cpu": 4,
+    "call_bismark_pool.merge_replicates.preemptible": 1    
+}

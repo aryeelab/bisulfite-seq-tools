@@ -1,0 +1,8 @@
+{
+    "aggregate_bismark.step1_bismark_rrbs.in_pe_reports_files": ,
+    "aggregate_bismark.step1_bismark_rrbs.in_covgz_files": ,
+    "aggregate_bismark.step1_bismark_rrbs.in_mbias_files": ,
+    "aggregate_bismark.step1_bismark_rrbs.BSGenome_targz": "	BSgenome.Mmusculus.UCSC.mm10_1.4.0.tar.gz",
+    "aggregate_bismark.step1_bismark_rrbs.BSGenome_package": "BSgenome.Mmusculus.UCSC.mm10"
+  
+}

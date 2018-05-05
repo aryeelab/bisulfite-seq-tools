@@ -2,11 +2,9 @@ workflow call_bismark_pool {
   call step1_bismark_rrbs { }
 }
 
-task step1_bismark_rrbs {
-  File r1_fastq
-  File r2_fastq
+task merge_replicates {
   String samplename
-  String libraryname
+  Array[File] bams
   File genome_index
   File monitoring_script
   
