@@ -1,8 +1,7 @@
 # Firecloud/WDL DNA methylation workflows
 This platform contains publicly accessible cloud-based preprocessing and quality control pipelines that go from raw data to CpG-level methylation estimates. The technologies covered include Whole Genome Bisulfite Sequencing (WGBS), Reduced Representation Bisulfite Sequencing (RRBS) and Hybrid Selection (capture) Bisulfite Sequencing (HSBS). Leveraging the Firecloud platform allows users to:
 
-  
-<ol>
+ <ol>
 <li>ensure cross-platform reproducibility of analyses</li>
 <li>achieve scalability to large whole genome datasets with 100GB+ of raw data per sample, and to single-cell datasets with thousands of cells</li> 
 <li>provide access to best-practice analysis pipelines</li>  
@@ -12,6 +11,7 @@ This platform contains publicly accessible cloud-based preprocessing and quality
 
 ## Workflow steps
 Analysis should be run in two successive processes: 
+
 <ol>
 <li>Alignment and methylation calling</li>
 <li>Aggregation and quality control analysis</li>
@@ -73,11 +73,13 @@ chrom_sizes
 After the alignment and methylation calling each sample will have their methylation information and metadata stored in HDF5 format
 
 In order to aggregate all of them and obtain the quality control report
-1) Choose *aggregate_bismark_output* method configuration with appropriate reference genome suffix
-2) Change other parameters according to preference
-3) Save it and press *Launch Analysis* 
-4) Since root entity type in aggregation step is participant set, you will choose participant_set with participants of your interest
-5) Finally click **Launch**
+<ol>
+<li>Choose <i>aggregate_bismark_output</i> method configuration with appropriate reference genome suffix</li>
+<li>Change other parameters according to preference</li>
+<li>Save it and press <i>Launch Analysis</i> </li>
+<li>Since root entity type in aggregation step is participant set, you will choose participant_set with participants of your interest</li>
+<li>Finally click <b>Launch</b></li>
+</ol>
 
 To check the results from any of the work flows, go to Monitor tab, click *View* in the Status columns and then click the *Workflow ID* in the bottom of the page.
 
@@ -171,18 +173,23 @@ Following commands are based on cromwell version 30. Edit the file paths in the 
 
 #### WGBS, Paired-end reads
 ```
-java -jar cromwell-30.2.jar run call_bismark_wgbs.wdl -i sample1_wgbs_pe.json
+java -jar cromwell-30.2.jar run bismark_wgbs.wdl -i bismark_wgbs.json
 ```
 
 #### RRBS, Paired-end reads
 ```
-java -jar cromwell-30.2.jar run call_bismark_rrbs.wdl -i sample1_rrbs_pe.json
+java -jar cromwell-30.2.jar run bismark_rrbs.wdl -i bismark_rrbs.json
 ```
 
 
 #### HSBS, paired-end reads
 ```
-java -jar cromwell-30.2.jar run call_bismark_hsbs.wdl -i sample1_hsbs_pe.json
+java -jar cromwell-30.2.jar run bismark_hsbs.wdl -i bismark_hsbs.json
+```
+
+#### Aggregation workflow
+```
+java -jar cromwell-30.2.jar run aggregate_bismark_output.wdl -i aggregate_bismark.json
 ```
 
 #### Single-end reads (Out of date)
