@@ -1,6 +1,7 @@
 # Firecloud/WDL DNA methylation workflows
 This platform contains publicly accessible cloud-based preprocessing and quality control pipelines that go from raw data to CpG-level methylation estimates. The technologies covered include Whole Genome Bisulfite Sequencing (WGBS), Reduced Representation Bisulfite Sequencing (RRBS) and Hybrid Selection (capture) Bisulfite Sequencing (HSBS). Leveraging the Firecloud platform allows users to:
 
+  
 <ol>
 <li>ensure cross-platform reproducibility of analyses</li>
 <li>achieve scalability to large whole genome datasets with 100GB+ of raw data per sample, and to single-cell datasets with thousands of cells</li> 
@@ -11,8 +12,10 @@ This platform contains publicly accessible cloud-based preprocessing and quality
 
 ## Workflow steps
 Analysis should be run in two successive processes: 
-1) Alignment and methylation calling
-2) Aggregation and quality control analysis
+<ol>
+<li>Alignment and methylation calling</li>
+<li>Aggregation and quality control analysis</li>
+ </ol>
 
 
 Before running the processes, you need to generate participants file and participant_set file. Both of these files are tab separated text files. Examples of these files are shown in *Firecloud_imports* subdirectory.
@@ -22,14 +25,15 @@ Before running the processes, you need to generate participants file and partici
 In order to perform alignment and methylation calling choose *bismark_rrbs*, *bismark_wgbs* or *bismark_hsbs* method configuration with appropriate reference genome suffix. As the name indicates
 *bismark_rrbs* is for samples that are generated from Reduced Representation Bisulfite Sequencing (RRBS) with Mspl digestion and *bismark_wgbs* is for data generated from Whole Genome Bisulfite Sequencing (WGBS). *bismark_hsbs* is for data generated from Hybrid Selection Bisulfite Sequencing (HSBS). These worflows can also combine fastq files from multiple lanes if the samples are sequenced in such a way.
 
-
-1) Upload the fastq files to the Google cloud bucket
-2) Upload additional files such as target coverage bed file for HSBS sequencing
-3) In the FireCloud workspace choose *bismark_rrbs*, *bismark_wgbs* or *bismark_hsbs* method configuration with appropriate reference genome suffix
-4) Change other parameters according to preference
-5) Press *Launch Analysis* in upper right hand corner
-6) Choose the participants from the list of files
-7) Click **Launch**
+<ol>
+<li>Upload the fastq files to the Google cloud bucket</li>
+<li>Upload additional files such as target coverage bed file for HSBS sequencing</li>
+<li>In the FireCloud workspace choose <i>bismark_rrbs</i>, <i>bismark_wgbs</i> or <i>bismark_hsbs</i> method configuration with appropriate reference genome suffix</li>
+<li>Change other parameters according to preference</li>
+<li>Press <i>Launch Analysis</i> in upper right hand corner</li>
+<li>Choose the participants from the list of files</li>
+<li>Click <b>Launch</b></li>
+ </ol>
 
 
 If you are interested in conducting alignment and methylation calling for an entire participant set. Choose the participant set and in the box named **Define expression** type *this.participants*
