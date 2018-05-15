@@ -1,10 +1,12 @@
 # Firecloud/WDL DNA methylation workflows
 This platform contains publicly accessible cloud-based preprocessing and quality control pipelines that go from raw data to CpG-level methylation estimates. The technologies covered include Whole Genome Bisulfite Sequencing (WGBS), Reduced Representation Bisulfite Sequencing (RRBS) and Hybrid Selection (capture) Bisulfite Sequencing (HSBS). Leveraging the Firecloud platform allows users to:
 
-1. ensure cross-platform reproducibility of analyses
-2. achieve scalability to large whole genome datasets with 100GB+ of raw data per sample, and to single-cell datasets with thousands of cells 
-3. provide access to best-practice analysis pipelines  
-4. enable integration and comparison between user-provided data and publicly available data (e.g. TCGA)
+<ol>
+<li>ensure cross-platform reproducibility of analyses</li>
+<li>achieve scalability to large whole genome datasets with 100GB+ of raw data per sample, and to single-cell datasets with thousands of cells</li> 
+<li>provide access to best-practice analysis pipelines</li>  
+<li>enable integration and comparison between user-provided data and publicly available data (e.g. TCGA)</li>
+</ol>
 
 
 ## Workflow steps
