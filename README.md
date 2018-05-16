@@ -1,4 +1,6 @@
 # Firecloud/WDL DNA methylation workflows
+[] is a suite of tools to conduct methylation data analysis. It is maintained by Divy Kangeyan at the <a href="http://aryee.mgh.harvard.edu">Aryee Lab</a>
+
 This platform contains publicly accessible cloud-based preprocessing and quality control pipelines that go from raw data to CpG-level methylation estimates. The technologies covered include Whole Genome Bisulfite Sequencing (WGBS), Reduced Representation Bisulfite Sequencing (RRBS) and Hybrid Selection (capture) Bisulfite Sequencing (HSBS). Leveraging the Firecloud platform allows users to:
 
  <ol>
@@ -141,6 +143,9 @@ preemptible
 ```
 - Preemptible option is to use preemptible virtual machine, if it is set to 0 the workflow runs uninterrupted. If it is set to any integer other than zero it may be interpreted that many times. However preemtible option reduces the computing cost significantly.
 
+## scmeth
+Quality control analysis is conducted via the bioconductor package <a href="http://bioconductor.org/packages/release/bioc/html/scmeth.html">scmeth</a>. QC analysis can be done independently with this package given that you have the appropriate objects.
+
 
 
 
@@ -199,4 +204,4 @@ java -jar cromwell-30.2.jar run bsseq_preprocess_se.wdl -i sample1_se.json
 
 
 ## Questions and Comments
-Please use the Github Issue tracker with any issue you face with the platform. Any specific questions or comments, contact me at divyswar01@g.harvard.edu
+Please use the Github Issue tracker with any issue you face with the platform. Any specific questions or comments, contact me at <a href="mailto:divyswar01@g.harvard.edu">divyswar01@g.harvard.edu</a>
