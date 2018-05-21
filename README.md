@@ -1,4 +1,4 @@
-[![Documentation Status](https://readthedocs.org/projects/methylation-wdl/badge/?version=latest)](http://methylation-wdl.readthedocs.io/en/latest/?badge=latest)
+
 
 # Firecloud/WDL DNA methylation workflows
 [] is a suite of tools to conduct methylation data analysis. It is maintained by Divy Kangeyan at the <a href="http://aryee.mgh.harvard.edu">Aryee Lab</a>
