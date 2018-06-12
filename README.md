@@ -1,7 +1,7 @@
 
 
 # Firecloud/WDL DNA methylation workflows
-[] is a suite of tools to conduct methylation data analysis. It is maintained by Divy Kangeyan at the <a href="http://aryee.mgh.harvard.edu">Aryee Lab</a>
+This repository contains a suite of tools to conduct methylation data analysis. It is maintained by Divy Kangeyan at the <a href="http://aryee.mgh.harvard.edu">Aryee Lab</a>
 
 This platform contains publicly accessible cloud-based preprocessing and quality control pipelines that go from raw data to CpG-level methylation estimates. The technologies covered include Whole Genome Bisulfite Sequencing (WGBS), Reduced Representation Bisulfite Sequencing (RRBS) and Hybrid Selection (capture) Bisulfite Sequencing (HSBS). Leveraging the Firecloud platform allows users to:
 
