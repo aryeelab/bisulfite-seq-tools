@@ -1,15 +1,19 @@
 
 
 # Firecloud/WDL DNA methylation workflows
+<p align="justify">
 This repository contains a suite of tools to conduct methylation data analysis. It is maintained by Divy Kangeyan at the <a href="http://aryee.mgh.harvard.edu">Aryee Lab</a>
+</p>
 
+<p align="justify">
 This platform contains publicly accessible cloud-based preprocessing and quality control pipelines that go from raw data to CpG-level methylation estimates. The technologies covered include Whole Genome Bisulfite Sequencing (WGBS), Reduced Representation Bisulfite Sequencing (RRBS) and Hybrid Selection (capture) Bisulfite Sequencing (HSBS). Leveraging the Firecloud platform allows users to:
+</p>
 
  <ol>
-<li>ensure cross-platform reproducibility of analyses</li>
-<li>achieve scalability to large whole genome datasets with 100GB+ of raw data per sample, and to single-cell datasets with thousands of cells</li> 
-<li>provide access to best-practice analysis pipelines</li>  
-<li>enable integration and comparison between user-provided data and publicly available data (e.g. TCGA)</li>
+<li>Ensure cross-platform reproducibility of analyses</li>
+<li>Achieve scalability to large whole genome datasets with 100GB+ of raw data per sample, and to single-cell datasets with thousands of cells</li> 
+<li>Provide access to best-practice analysis pipelines</li>  
+<li>Enable integration and comparison between user-provided data and publicly available data (e.g. TCGA)</li>
 </ol>
 
 
@@ -17,17 +21,29 @@ This platform contains publicly accessible cloud-based preprocessing and quality
 Analysis should be run in two successive processes: 
 
 <ol>
-<li>Alignment and methylation calling</li>
+<li>Per-sample preprocessing</li>
 <li>Aggregation and quality control analysis</li>
  </ol>
 
+## Getting started
+<p align="justify">
+If you plan to use the WDL workflows in your local computing environment, then this repository should be cloned. If you are using FireCloud, then you should either clone the FireCloud workspace <b>aryee-lab/dna-methylation</b> or if you already have your own workspace you can import the method configuration of your interest from <b>aryee-lab/dna-methylation</b> workspace.
+ </p>
 
-Before running the processes, you need to generate participants file and participant_set file. Both of these files are tab separated text files. Examples of these files are shown in *Firecloud_imports* subdirectory.
+## Uploading the files to FireCloud
+<p align="justify">
+FASTQ files and target coverage files can be uploaded to FireCloud using gsutil (https://pypi.org/project/gsutil/)
+ </p>
 
+## Participant and Participant Set file
+<p align="justify">
+Before running the processes, you need to generate participants file and participant_set file. Each line in participant file specify a single sample. entity:participant_id column specificy the sample name and two subsequent columns are for paired end FASTQ file. If one sample has multiple FASTQ files for different lanes or runs they can be added in the same column with comma separation. Each line in participant_set file specify a set of samples that should be aggregated and analyzed together. First column in the participant_set file is the name of the participant_set and second column indicates the participant_id/sample name. Both of these files are tab separated text files. Examples of these files are shown in <i>Firecloud_imports</i> subdirectory.
+</p>
 
 ## Alignment and methylation calling
-In order to perform alignment and methylation calling choose *bismark_rrbs*, *bismark_wgbs* or *bismark_hsbs* method configuration with appropriate reference genome suffix. As the name indicates
-*bismark_rrbs* is for samples that are generated from Reduced Representation Bisulfite Sequencing (RRBS) with Mspl digestion and *bismark_wgbs* is for data generated from Whole Genome Bisulfite Sequencing (WGBS). *bismark_hsbs* is for data generated from Hybrid Selection Bisulfite Sequencing (HSBS). These worflows can also combine fastq files from multiple lanes if the samples are sequenced in such a way.
+<p align="justify">
+In order to perform alignment and methylation calling choose <i>bismark_rrbs</i>, <i>bismark_wgbs</i> or <i>bismark_hsbs</i> method configuration with appropriate reference genome suffix. As the name indicates <i>bismark_rrbs</i> is for samples that are generated from Reduced Representation Bisulfite Sequencing (RRBS) with Mspl digestion and <i>bismark_wgbs</i> is for data generated from Whole Genome Bisulfite Sequencing (WGBS). <i>bismark_hsbs</i> is for data generated from Hybrid Selection Bisulfite Sequencing (HSBS). These worflows can also combine fastq files from multiple lanes if the samples are sequenced in such a way.
+ </p>
 
 <ol>
 <li>Upload the fastq files to the Google cloud bucket</li>
