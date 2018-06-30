@@ -2,7 +2,7 @@
 
 # Firecloud/WDL DNA methylation workflows
 <p align="justify">
-This repository contains a suite of tools to conduct methylation data analysis. It is maintained by Divy Kangeyan at the <a href="http://aryee.mgh.harvard.edu">Aryee Lab</a>
+This repository (https://github.com/aryeelab/methylation-wdl) contains a suite of tools to conduct methylation data analysis. It is maintained by Divy Kangeyan at the <a href="http://aryee.mgh.harvard.edu">Aryee Lab</a>
 </p>
 
 <p align="justify">
