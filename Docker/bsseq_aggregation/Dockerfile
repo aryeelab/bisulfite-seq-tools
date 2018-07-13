@@ -1,6 +1,13 @@
-FROM rocker/r-ver:devel
+FROM debian:jessie
 
 MAINTAINER Divy Kangeyan <divyswar01@g.harvard.edu>
+
+# Install R-3.5.0 (See https://cran.r-project.org/bin/linux/debian)
+RUN apt-get install -y libssl-dev libcurl4-openssl-dev && \
+apt-key adv --keyserver keys.gnupg.net --recv-key 'E19F5F87128899B192B1A2C2AD5F960A256A04AF' && \
+echo "deb http://cloud.r-project.org/bin/linux/debian jessie-cran35/" >> /etc/apt/sources.list && \
+apt-get update && \
+apt-get install -y --force-yes r-base
 
 RUN apt-get update &&  apt-get install -y build-essential zlib1g-dev unzip libxml2-dev libssl-dev libcurl4-openssl-dev libmariadb-client-lgpl-dev pandoc
 
