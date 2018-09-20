@@ -40,7 +40,7 @@ task step2_create_combined_bsseq {
                 mv /qcReport.html .
                 mv /QC_Summary.txt .
                 mv /Downsample_Table.txt .
-                mv /mbias_table.txt .
+                mv /mbias_Table.txt .
                 tar -cf outputdir_final.tar outputdir_final
         }
         output {

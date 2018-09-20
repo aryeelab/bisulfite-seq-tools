@@ -17,8 +17,8 @@ workflow call_bismark_pool {
   
   
    # Split the comma-separated string of fastq file names into arrays
-  call split_string_into_array as fastq1 {input: str = r1_fastq}
-  call split_string_into_array as fastq2 {input: str = r2_fastq}
+  call split_string_into_array as fastq1 {input: str = r1_fastq,memory = memory, disks = disks, cpu = cpu, preemptible = preemptible}
+  call split_string_into_array as fastq2 {input: str = r2_fastq,memory = memory, disks = disks, cpu = cpu, preemptible = preemptible}
   
   Array[Pair[File, File]] fastq_pairs = zip(fastq1.out, fastq2.out)
   
@@ -31,6 +31,12 @@ workflow call_bismark_pool {
 task split_string_into_array {
     String str 
     String arr = "{ARR[@]}"
+    
+    String memory
+    String disks
+    Int cpu
+    Int preemptible
+    
     command {
         IFS=',' read -ra ARR <<< "${str}"
         for i in "$${arr}"; do
@@ -40,6 +46,10 @@ task split_string_into_array {
 
     runtime {
         docker: "debian:stretch"
+		    memory: memory
+        disks: disks
+        cpu: cpu
+        preemptible: preemptible
     }
     
     output {
@@ -71,7 +81,7 @@ task align_replicates{
     
     ln -s ${r1_fastq} r1.fastq.gz
 		ln -s ${r2_fastq} r2.fastq.gz
-            
+    
     trim_galore --rrbs --paired r1.fastq.gz r2.fastq.gz
     
     bismark --genome bismark_index --multicore ${multicore} -1 r1_val_1.fq.gz -2 r2_val_2.fq.gz
