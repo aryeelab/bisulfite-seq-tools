@@ -155,12 +155,14 @@ task merge_replicates {
   }
   
   output {
+            File monitoring_log = "monitoring.log"
             File output_bam = "${samplename}.sorted.bam"
             File output_covgz = "${samplename}.bismark.cov.gz"
             File output_report = "${samplename}_report.txt"
             File mbias_report = "${samplename}.M-bias.txt"
             File output_bigwig = "${samplename}.bw"
             File output_bai = "${samplename}.sorted.bai"
+            File target_coverage_report = "${samplename}_target_coverage.bed"
   }
   
   runtime {

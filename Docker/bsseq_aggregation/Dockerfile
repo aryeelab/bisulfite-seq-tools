@@ -25,7 +25,7 @@ RUN Rscript -e "source('http://bioconductor.org/biocLite.R');biocLite(c('org.Mm.
 RUN Rscript -e "source('http://bioconductor.org/biocLite.R');biocLite(c('TxDb.Hsapiens.UCSC.hg38.knownGene'), ask=F)"
 RUN Rscript -e "source('http://bioconductor.org/biocLite.R');biocLite(c('TxDb.Hsapiens.UCSC.hg19.knownGene'), ask=F)"
 RUN Rscript -e "source('http://bioconductor.org/biocLite.R');biocLite(c('org.Hs.eg.db'), ask=F)"
-RUN Rscript -e "devtools::install_github('aryeelab/scmeth', ref = '197ff9e')" 
+RUN Rscript -e "devtools::install_github('aryeelab/scmeth', ref = 'a76d74d')" 
 #RUN Rscript -e "source('http://bioconductor.org/biocLite.R');biocLite(c('scmeth'), ask=F)"
 
 ADD ./bismark_to_bsseq_file_list.R bismark_to_bsseq_file_list.R

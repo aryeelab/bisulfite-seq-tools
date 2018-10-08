@@ -179,10 +179,14 @@ cd Docker/bismark
 docker build -t aryeelab/bismark .
 ```
 
-3. If you want to run the examples below, download this small genome index: 
+3. If you want to run the examples below, download this small genome index and chrom.sizes file for mm10 - chr 19: 
 
 ```
 wget https://storage.googleapis.com/aryeelab/bismark-index/mm10_chr19/bismark_mm10_chr19.tar.gz
+```
+
+```
+wget https://storage.googleapis.com/aryeelab/chrom.sizes/mm10_chr19.chrom.sizes
 ```
 
 ### Running the WDL workflow in Cromwell
