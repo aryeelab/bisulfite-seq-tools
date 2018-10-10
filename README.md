@@ -172,6 +172,12 @@ Quality control analysis is conducted via the bioconductor package <a href="http
 
 1. Clone this repository
 
+2. Change the directory
+
+```
+cd dna-methylation-tools
+```
+
 2. Build the docker image
 
 ```
@@ -186,7 +192,7 @@ wget https://storage.googleapis.com/aryeelab/bismark-index/mm10_chr19/bismark_mm
 ```
 
 ```
-wget https://storage.googleapis.com/aryeelab/chrom.sizes/mm10_chr19.chrom.sizes
+wget https://storage.googleapis.com/aryeelab/chrom.sizes/bismark_mm10_chr19.tar.gz
 ```
 
 ### Running the WDL workflow in Cromwell
@@ -196,7 +202,9 @@ Note: On Mac, cromwell can be installed with the following command
 brew install cromwell
 ```
 
-Following commands are based on cromwell version 30. Edit the file paths in the json file according to your directory paths to test the workflows.
+Following commands are based on cromwell version 30. 
+
+**Edit the file paths for FASTQ files, genome index, chrom.sizes file and monitoring script in the json file according to your directory paths to run the test sample.**
 
 #### WGBS, Paired-end reads
 ```
