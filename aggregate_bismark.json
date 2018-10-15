@@ -1,8 +1,8 @@
 {
-    "aggregate_bismark_output.in_pe_reports_files": ["/Users/Divy/Documents/dna-methylation-tools/testdata/aggregation/sample-01_report.txt", "/Users/Divy/Documents/dna-methylation-tools/testdata/aggregation/sample-02_report.txt", "/Users/Divy/Documents/dna-methylation-tools/testdata/aggregation/sample-03_report.txt"],
-    "aggregate_bismark_output.in_covgz_files": ["/Users/Divy/Documents/dna-methylation-tools/testdata/aggregation/sample-01.bismark.cov.gz", "/Users/Divy/Documents/dna-methylation-tools/testdata/aggregation/sample-02.bismark.cov.gz", "/Users/Divy/Documents/dna-methylation-tools/testdata/aggregation/sample-03.bismark.cov.gz"] ,
-    "aggregate_bismark_output.in_mbias_files": ["/Users/Divy/Documents/dna-methylation-tools/testdata/aggregation/sample-01.M-bias.txt", "/Users/Divy/Documents/dna-methylation-tools/testdata/aggregation/sample-02.M-bias.txt", "/Users/Divy/Documents/dna-methylation-tools/testdata/aggregation/sample-03.M-bias.txt"] ,
-    "aggregate_bismark_output.BSGenome_targz": "/Users/Divy/Documents/BSgenome-mm10/BSgenome.Mmusculus.UCSC.mm10_1.4.0.tar.gz",
+    "aggregate_bismark_output.in_pe_reports_files": ["[INSERT WORKING DIRECTORY]/dna-methylation-tools/testdata/aggregation/sample-01_report.txt", "[INSERT WORKING DIRECTORY]/dna-methylation-tools/testdata/aggregation/sample-02_report.txt", "[INSERT WORKING DIRECTORY]/dna-methylation-tools/testdata/aggregation/sample-03_report.txt"],
+    "aggregate_bismark_output.in_covgz_files": ["[INSERT WORKING DIRECTORY]/dna-methylation-tools/testdata/aggregation/sample-01.bismark.cov.gz", "[INSERT WORKING DIRECTORY]/dna-methylation-tools/testdata/aggregation/sample-02.bismark.cov.gz", "[INSERT WORKING DIRECTORY]/dna-methylation-tools/testdata/aggregation/sample-03.bismark.cov.gz"] ,
+    "aggregate_bismark_output.in_mbias_files": ["[INSERT WORKING DIRECTORY]/dna-methylation-tools/testdata/aggregation/sample-01.M-bias.txt", "[INSERT WORKING DIRECTORY]/dna-methylation-tools/testdata/aggregation/sample-02.M-bias.txt", "[INSERT WORKING DIRECTORY]/dna-methylation-tools/testdata/aggregation/sample-03.M-bias.txt"] ,
+    "aggregate_bismark_output.BSGenome_targz": "[INSERT WORKING DIRECTORY]/BSgenome-mm10/BSgenome.Mmusculus.UCSC.mm10_1.4.0.tar.gz",
     "aggregate_bismark_output.BSGenome_package": "BSgenome.Mmusculus.UCSC.mm10",
     "aggregate_bismark_output.Genome_build": "mm10",
     "aggregate_bismark_output.preemptible": 1,
