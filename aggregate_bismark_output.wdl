@@ -52,7 +52,7 @@ task step2_create_combined_bsseq {
         }
         runtime {
         continueOnReturnCode: false
-        docker: "aryeelab/bsseq_aggregation:latest"
+        docker: "aryeelab/bsseq_aggregation:v1.0"
         memory: memory
         disks: disks
         preemptible: preemptible 

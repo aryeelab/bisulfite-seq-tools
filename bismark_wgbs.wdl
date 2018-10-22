@@ -166,7 +166,7 @@ task merge_replicates {
   
   runtime {
     continueOnReturnCode: false
-    docker: "aryeelab/bismark:latest"
+    docker: "aryeelab/bismark:v1.0"
     memory: memory
     disks: disks
     cpu: cpu
