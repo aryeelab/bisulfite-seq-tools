@@ -46,12 +46,9 @@ RUN Rscript -e "source('http://bioconductor.org/biocLite.R');biocLite('bsseq');"
     Rscript -e "source('http://bioconductor.org/biocLite.R');biocLite('AnnotationHub')" && \
     Rscript -e "source('http://bioconductor.org/biocLite.R');biocLite('BSgenome.Mmusculus.UCSC.mm10')" && \
     Rscript -e "install.packages('rmarkdown',repos='https://mirror.las.iastate.edu/CRAN/')" && \
-    Rscript -e "source('http://bioconductor.org/biocLite.R');biocLite('annotatr')" 
+    Rscript -e "source('http://bioconductor.org/biocLite.R');biocLite('annotatr')" && \
+    Rscript -e "source('http://bioconductor.org/biocLite.R');biocLite('scmeth')" 
 
-
-#Install scmeth package for QC reports and methylation analysis
-RUN     Rscript -e "devtools::install_github('aryeelab/scmeth')" && \
-      apt-get install -y pandoc
 
 # Install bedtools
 RUN apt-get install -y python && \
