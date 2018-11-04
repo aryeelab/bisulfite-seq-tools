@@ -161,6 +161,14 @@ preemptible
 ```
 - Preemptible option is to use preemptible virtual machine, if it is set to 0 the workflow runs uninterrupted. If it is set to any integer other than zero it may be interpreted that many times. However preemtible option reduces the computing cost significantly.
 
+### WDL specifications for the workflows
+
+#### Per-sample preprocessing
+Per-sample preprocessing step has slight variation in the merges replicates task depending on the assay. Input parameters usually consists of input file, genome index, memory, cpu and preemptible specifications. Runtime parameters includes disk, cpu, memory, preemptible and docker image to be executed.
+
+#### Aggregation and Quality Control Analysis
+WDL file for aggregation and QC step has one workflow that takes output from the per-sample preprocessing workflow such as mbias and coverage files and outputs QC report, aggregated methylation tables and other summary tables.
+
 ## scmeth
 Quality control analysis is conducted via the bioconductor package <a href="http://bioconductor.org/packages/release/bioc/html/scmeth.html">scmeth</a>. QC analysis can be done independently with this package given that you have the appropriate objects.
 
@@ -182,14 +190,8 @@ git clone aryeelab/dna-methylation-tools
 cd dna-methylation-tools
 ```
 
-3. Build the docker image
 
-```
-cd Docker/bismark
-docker build -t aryeelab/bismark .
-```
-
-4. If you want to run the examples below, download this small genome index and chrom.sizes file for mm10-chr 19: 
+3. If you want to run the examples below, download this small genome index and chrom.sizes file for mm10_chr 19: 
 
 ```
 wget https://storage.googleapis.com/aryeelab/bismark-index/mm10_chr19/bismark_mm10_chr19.tar.gz
@@ -210,6 +212,18 @@ Following commands are based on cromwell version 30.
 
 **Edit the file paths for FASTQ files, genome index, chrom.sizes file and monitoring script in the json file according to your directory paths to run the test sample.**
 
+```
+{
+  "call_bismark_pool.r1_fastq": "[INSERT WORKING DIRECTORY]/dna-methylation-tools/testdata/small_01_R1.fastq.gz",
+  "call_bismark_pool.r2_fastq": "[INSERT WORKING DIRECTORY]/dna-methylation-tools/testdata/small_01_R2.fastq.gz",
+  "call_bismark_pool.chrom_sizes": "[INSERT WORKING DIRECTORY]/dna-methylation-tools/mm10.chrom.sizes",
+  "call_bismark_pool.monitoring_script": "[INSERT WORKING DIRECTORY]/dna-methylation-tools/monitor.sh",
+  "call_bismark_pool.genome_index": "[INSERT WORKING DIRECTORY]/dna-methylation-tools/bismark_mm10_chr19.tar.gz"
+    
+}
+```
+
+
 #### WGBS, Paired-end reads
 ```
 java -jar cromwell-30.2.jar run bismark_wgbs.wdl -i bismark_wgbs.json
@@ -221,7 +235,7 @@ java -jar cromwell-30.2.jar run bismark_rrbs.wdl -i bismark_rrbs.json
 ```
 
 
-#### HSBS, paired-end reads
+#### HSBS, Paired-end reads
 ```
 java -jar cromwell-30.2.jar run bismark_hsbs.wdl -i bismark_hsbs.json
 ```
@@ -236,6 +250,22 @@ java -jar cromwell-30.2.jar run aggregate_bismark_output.wdl -i aggregate_bismar
 java -jar cromwell-30.2.jar run bsseq_preprocess_se.wdl -i sample1_se.json
 ```
 
+### Cost & Time Analysis in FireCloud
+We estimated the time and cost for Whole Genome Bisulfite Sequencing (WGBS) sample from TCGA that contains approximately 290 million reads.
+
+![](TCGA_Time_Cost_Analysis.svg)
+
+Also following plot shows the time & cost estimates for single cell samples in non-preemptible machine
+
+![](10Sample_Time_Cost_Analysis.svg) ![](25Sample_Time_Cost_Analysis.svg)
+
+Plots below are for same sample set but in preemptible machine
+
+![](10Sample_preemptible_Time_Cost_Analysis.svg) ![](25Sample_preemptible_Time_Cost_Analysis.svg)
+
+We also conducted similar analysis for the aggregation step
+
+![](Aggregation_10_sampleSet.svg) ![](Aggregation_25_sampleSet.svg) ![](Aggregation_100_sampleSet.svg)
 
 ## Questions and Comments
-Please use the Github Issue tracker with any issue you face with the platform. Any specific questions or comments, contact me at <a href="mailto:divyswar01@g.harvard.edu">divyswar01@g.harvard.edu</a>
+Please use the Github Issues tracker with any issue you face with the platform. Any specific questions or comments, contact me at <a href="mailto:divyswar01@g.harvard.edu">divyswar01@g.harvard.edu</a>
