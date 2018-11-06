@@ -163,11 +163,7 @@ preemptible
 
 ### WDL specifications for the workflows
 
-#### Per-sample preprocessing
-Per-sample preprocessing step has slight variation in the merges replicates task depending on the assay. Input parameters usually consists of input file, genome index, memory, cpu and preemptible specifications. Runtime parameters includes disk, cpu, memory, preemptible and docker image to be executed.
-
-#### Aggregation and Quality Control Analysis
-WDL file for aggregation and QC step has one workflow that takes output from the per-sample preprocessing workflow such as mbias and coverage files and outputs QC report, aggregated methylation tables and other summary tables.
+The per-sample preprocessing WDL workflow input parameters consist primarily of input file names and the Bismark genome index to use. A subset of the outputs from this step (Mbias files and methylated and unmethylated read coverage tables) are passed on as inputs to the subsequent aggregation and QC WDL workflow which in turn produces a QC report, aggregated methylation tables and a Bioconductor (bsseq) object. All tasks specify runtime parameters including disk size, CPU and memory requirements, and the docker image version to be executed.
 
 ## scmeth
 Quality control analysis is conducted via the bioconductor package <a href="http://bioconductor.org/packages/release/bioc/html/scmeth.html">scmeth</a>. QC analysis can be done independently with this package given that you have the appropriate objects.
@@ -214,11 +210,11 @@ Following commands are based on cromwell version 30.
 
 ```
 {
-  "call_bismark_pool.r1_fastq": "[INSERT WORKING DIRECTORY]/dna-methylation-tools/testdata/small_01_R1.fastq.gz",
-  "call_bismark_pool.r2_fastq": "[INSERT WORKING DIRECTORY]/dna-methylation-tools/testdata/small_01_R2.fastq.gz",
-  "call_bismark_pool.chrom_sizes": "[INSERT WORKING DIRECTORY]/dna-methylation-tools/mm10.chrom.sizes",
-  "call_bismark_pool.monitoring_script": "[INSERT WORKING DIRECTORY]/dna-methylation-tools/monitor.sh",
-  "call_bismark_pool.genome_index": "[INSERT WORKING DIRECTORY]/dna-methylation-tools/bismark_mm10_chr19.tar.gz"
+  "call_bismark_pool.r1_fastq": "[INSERT ABSOLUTE PATH]/dna-methylation-tools/testdata/small_01_R1.fastq.gz",
+  "call_bismark_pool.r2_fastq": "[INSERT ABSOLUTE PATH]/dna-methylation-tools/testdata/small_01_R2.fastq.gz",
+  "call_bismark_pool.chrom_sizes": "[INSERT ABSOLUTE PATH]/dna-methylation-tools/mm10.chrom.sizes",
+  "call_bismark_pool.monitoring_script": "[INSERT ABSOLUTE PATH]/dna-methylation-tools/monitor.sh",
+  "call_bismark_pool.genome_index": "[INSERT ABSOLUTE PATH]/dna-methylation-tools/bismark_mm10_chr19.tar.gz"
     
 }
 ```
@@ -256,6 +252,10 @@ We estimated the time and cost for Whole Genome Bisulfite Sequencing (WGBS) samp
 ![](TCGA_Time_Cost_Analysis.svg)
 
 Also following plot shows the time & cost estimates for single cell samples in non-preemptible machine
+
+For 10 sample set: samples were sequenced with a median of 741,214 reads (range of 414,443 to 1,825,672)
+
+For 25 sample set: samples were sequenced with a median of 1,044,720 reads (range of 10,507 to 3,644,360)
 
 ![](10Sample_Time_Cost_Analysis.svg) ![](25Sample_Time_Cost_Analysis.svg)
 
