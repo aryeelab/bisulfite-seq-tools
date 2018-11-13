@@ -1,12 +1,12 @@
 
 
-# Firecloud/WDL DNA methylation workflows
+# FireCloud/WDL DNA methylation workflows
 <p align="justify">
 This repository <a href="https://github.com/aryeelab/dna-methylation-tools">https://github.com/aryeelab/dna-methylation-tools</a> contains a suite of tools to conduct DNA methylation data analysis. It is maintained by Divy Kangeyan at the <a href="http://aryee.mgh.harvard.edu">Aryee Lab</a>
 </p>
 
 <p align="justify">
-This platform contains publicly accessible cloud-based preprocessing and quality control pipelines that go from raw data to CpG-level methylation estimates. The technologies covered include Whole Genome Bisulfite Sequencing (WGBS), Reduced Representation Bisulfite Sequencing (RRBS) and Hybrid Selection (capture) Bisulfite Sequencing (HSBS). Leveraging the Firecloud platform allows users to:
+This platform contains publicly accessible cloud-based preprocessing and quality control pipelines that go from raw data to CpG-level methylation estimates. The technologies covered include Whole Genome Bisulfite Sequencing (WGBS), Reduced Representation Bisulfite Sequencing (RRBS) and Hybrid Selection (capture) Bisulfite Sequencing (HSBS). Leveraging the FireCloud platform allows users to:
 </p>
 
  <ol>
@@ -35,9 +35,27 @@ If you plan to use the WDL workflows in your local computing environment, then t
 FASTQ files and target coverage files can be uploaded to FireCloud using gsutil (https://pypi.org/project/gsutil/)
  </p>
 
-## Participant and Participant Set file
+## Data model
+
+### Participant file
 <p align="justify">
-Before running the processes, you need to generate participants file and participant_set file. Each line in participant file specify a single sample. entity:participant_id column specificy the sample name and two subsequent columns are for paired end FASTQ file. If one sample has multiple FASTQ files for different lanes or runs they can be added in the same column with comma separation. Each line in participant_set file specify a set of samples that should be aggregated and analyzed together. First column in the participant_set file is the name of the participant_set and second column indicates the participant_id/sample name. Both of these files are tab separated text files. Examples of these files are shown in <i>Firecloud_imports</i> subdirectory.
+Before running the processes, you need to generate participants file and participant_set file. Each line in participant file specify a single sample. 
+
+entity:participant_id column specifies the sample name 
+
+bs_fastq1	& bs_fastq2 specify the paired fastq files.
+
+If one sample has multiple FASTQ files for different lanes or runs they can be added in the same column with comma separation. 
+
+### Participant Set file
+
+Each line in participant_set file specify a set of samples that should be aggregated and analyzed together. 
+ 
+membership:participant_set_id specify the name of the participant set.
+ 
+participant_id column specify the names of the participants in the set.  
+
+Both of these files are tab separated text files. Examples of these files are shown in <i>Firecloud_imports</i> subdirectory.
 </p>
 
 ## Alignment and methylation calling
@@ -204,6 +222,12 @@ Note: On Mac, cromwell can be installed with the following command
 brew install cromwell
 ```
 
+Users can also use the following command in order to install cromwell from the docker image in this repo.
+```
+docker build Docker/cromwell
+```
+
+
 Following commands are based on cromwell version 30. 
 
 **Edit the file paths for FASTQ files, genome index, chrom.sizes file and monitoring script in the json file according to your directory paths to run the test sample.**
@@ -266,6 +290,9 @@ Plots below are for same sample set but in preemptible machine
 We also conducted similar analysis for the aggregation step
 
 ![](Aggregation_10_sampleSet.svg) ![](Aggregation_25_sampleSet.svg) ![](Aggregation_100_sampleSet.svg)
+
+## TCGA data
+We have preprocessed and made available 47 WGBS samples available from TCGA. The raw (FASTQ) data, processed data and workflows are made available in a FireCloud workspace (See https://portal.firecloud.org/#workspaces/aryee-merkin/TCGA_WGBS_hg19). Processed data can also be found in bsseq format in tcgaWGBSData.hg19 package (https://bioconductor.org/packages/release/data/experiment/html/tcgaWGBSData.hg19.html).
 
 ## Questions and Comments
 Please use the Github Issues tracker with any issue you face with the platform. Any specific questions or comments, contact me at <a href="mailto:divyswar01@g.harvard.edu">divyswar01@g.harvard.edu</a>
