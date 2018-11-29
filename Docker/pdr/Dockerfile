@@ -1,11 +1,12 @@
-FROM debian:jessie
+FROM ubuntu
 
-RUN apt-get install python
-
-# Install procps (to get free and top)
-RUN apt-get install -y procps
-
-FROM python:3
+# Update
+RUN apt-get update
+RUN apt-get install -y python 
+RUN apt-get install -y python-pip
+ 
+# Install app dependencies
+RUN pip install --upgrade pip
 
 RUN pip install pandas
 RUN pip install numpy

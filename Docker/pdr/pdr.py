@@ -1,4 +1,5 @@
-#2018.11.19 Summarize Bismark output
+# 2018.11.19 Summarize Bismark output
+# author: Ziao Lin
 import sys
 import pandas as pd
 import numpy as np
