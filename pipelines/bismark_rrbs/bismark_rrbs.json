@@ -1,0 +1,14 @@
+{
+    "call_bismark_pool.r1_fastq": "/Users/Divy/Documents//dna-methylation-tools/testdata/small_01_R1.fastq.gz, /Users/Divy/Documents//dna-methylation-tools/testdata/small_02_R1.fastq.gz , /Users/Divy/Documents//dna-methylation-tools/testdata/small_03_R1.fastq.gz",
+    "call_bismark_pool.r2_fastq": "/Users/Divy/Documents//dna-methylation-tools/testdata/small_01_R2.fastq.gz, /Users/Divy/Documents//dna-methylation-tools/testdata/small_02_R2.fastq.gz, /Users/Divy/Documents//dna-methylation-tools/testdata/small_03_R2.fastq.gz",
+    "call_bismark_pool.chrom_sizes": "/Users/Divy/Downloads/mm10.chrom.sizes",
+    "call_bismark_pool.monitoring_script": "/Users/Divy/Documents//dna-methylation-tools/monitor.sh",
+    "call_bismark_pool.genome_index": "/Users/Divy/Downloads/bismark_mm10_chr19.tar.gz",
+    "call_bismark_pool.multicore": "1",
+    "call_bismark_pool.memory": "24 GB",
+    "call_bismark_pool.disks": "local-disk 100 SSD",
+    "call_bismark_pool.cpu": 4,
+    "call_bismark_pool.preemptible": 1,
+    "call_bismark_pool.samplename": "sample-1"
+    
+}
