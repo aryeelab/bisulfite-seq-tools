@@ -142,7 +142,7 @@ task merge_replicates {
           
             
             
-    bismark_methylation_extractor --multicore ${multicore} --gzip --buffer_size 50% --genome_folder bismark_index ${samplename}.bam
+    bismark_methylation_extractor --multicore ${multicore} --gzip --bedGraph --buffer_size 50% --genome_folder bismark_index ${samplename}.bam
     
     gunzip "${samplename}.bedGraph.gz"
     

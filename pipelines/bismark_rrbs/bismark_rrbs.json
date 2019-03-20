@@ -1,14 +1,14 @@
 {
-    "call_bismark_pool.r1_fastq": "gs://fc-21fe2637-2e89-4814-b248-a0173bedbbe3/testdata_human_singlecell/small_01_R1.fastq.gz, gs://fc-21fe2637-2e89-4814-b248-a0173bedbbe3/testdata_human_singlecell/small_02_R1.fastq.gz , gs://fc-21fe2637-2e89-4814-b248-a0173bedbbe3/testdata_human_singlecell/small_03_R1.fastq.gz",
-    "call_bismark_pool.r2_fastq": "gs://fc-21fe2637-2e89-4814-b248-a0173bedbbe3/testdata_human_singlecell/small_01_R2.fastq.gz, gs://fc-21fe2637-2e89-4814-b248-a0173bedbbe3/testdata_human_singlecell/small_02_R2.fastq.gz , gs://fc-21fe2637-2e89-4814-b248-a0173bedbbe3/testdata_human_singlecell/small_03_R2.fastq.gz",
-    "call_bismark_pool.chrom_sizes": "gs://fc-21fe2637-2e89-4814-b248-a0173bedbbe3/chrom.sizes/mm10.chrom.sizes",
-    "call_bismark_pool.monitoring_script": "gs://fc-21fe2637-2e89-4814-b248-a0173bedbbe3/scripts/monitor.sh",
-    "call_bismark_pool.genome_index": "gs://fc-21fe2637-2e89-4814-b248-a0173bedbbe3/bismark-index/bismark_mm10_chr19.tar.gz",
-    "call_bismark_pool.multicore": "1",
-    "call_bismark_pool.memory": "24 GB",
-    "call_bismark_pool.disks": "local-disk 100 SSD",
-    "call_bismark_pool.cpu": 4,
-    "call_bismark_pool.preemptible": 1,
-    "call_bismark_pool.samplename": "sample-1"
+    "call_bismark_pool.r1_fastq": "${this.bs_fastq1}",
+    "call_bismark_pool.r2_fastq": "${this.bs_fastq2}",
+    "call_bismark_pool.chrom_sizes": "gs://terra-featured-workspaces/methylation-preprocessing/chrom.sizes/mm10.chrom.sizes",
+    "call_bismark_pool.monitoring_script": "gs://terra-featured-workspaces/methylation-preprocessing/scripts/monitor.sh",
+    "call_bismark_pool.genome_index": "gs://terra-featured-workspaces/methylation-preprocessing/bismark-index/bismark_mm10_chr19.tar.gz",
+    "call_bismark_pool.multicore": "2",
+    "call_bismark_pool.memory": "26 GB",
+    "call_bismark_pool.disks": "local-disk 500 SSD",
+    "call_bismark_pool.cpu": "${4}",
+    "call_bismark_pool.preemptible": "${1}",
+    "call_bismark_pool.samplename": "${this.participant_id}"
     
 }
