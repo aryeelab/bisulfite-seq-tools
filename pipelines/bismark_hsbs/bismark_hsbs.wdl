@@ -5,7 +5,10 @@ workflow call_bismark_pool {
   File genome_index
   File monitoring_script
   File chrom_sizes
+  File target_region_bed
   String samplename
+  Int n_bp_trim_read1
+  Int n_bp_trim_read2
   
   String multicore
   
@@ -22,9 +25,9 @@ workflow call_bismark_pool {
   
   Array[Pair[File, File]] fastq_pairs = zip(fastq1.out, fastq2.out)
   
-  scatter (fastq_pair in fastq_pairs) { call align_replicates {input: r1_fastq = fastq_pair.left, r2_fastq = fastq_pair.right, genome_index = genome_index, multicore = multicore, monitoring_script = monitoring_script,  memory = memory, disks = disks, cpu = cpu, preemptible = preemptible} }
+  scatter (fastq_pair in fastq_pairs) { call align_replicates {input: r1_fastq = fastq_pair.left, r2_fastq = fastq_pair.right, n_bp_trim_read1 = n_bp_trim_read1, n_bp_trim_read2 = n_bp_trim_read2, genome_index = genome_index, multicore = multicore, monitoring_script = monitoring_script,  memory = memory, disks = disks, cpu = cpu, preemptible = preemptible} }
 
-  call merge_replicates {input: bams = align_replicates.bam, reports = align_replicates.output_report, samplename = samplename, chrom_sizes = chrom_sizes, genome_index = genome_index, multicore = multicore, monitoring_script = monitoring_script, memory = memory, disks = disks, cpu = cpu, preemptible = preemptible}
+  call merge_replicates {input: bams = align_replicates.bam, reports = align_replicates.output_report, samplename = samplename, chrom_sizes = chrom_sizes, target_region_bed = target_region_bed, genome_index = genome_index, multicore = multicore, monitoring_script = monitoring_script, memory = memory, disks = disks, cpu = cpu, preemptible = preemptible}
   
 }
 
@@ -55,7 +58,7 @@ task align_replicates{
   
   String samplename = basename(r1_fastq)
   Int n_bp_trim_read1
-	Int n_bp_trim_read2
+  Int n_bp_trim_read2
   
   String multicore
   
@@ -71,7 +74,12 @@ task align_replicates{
     mkdir bismark_index
     tar zxf ${genome_index} -C bismark_index
     
-    bismark --genome bismark_index --multicore ${multicore} -1 ${r1_fastq} -2 ${r2_fastq}
+    ln -s ${r1_fastq} r1.fastq.gz
+	ln -s ${r2_fastq} r2.fastq.gz
+		
+	trim_galore --paired --clip_R1 ${n_bp_trim_read1} --clip_R2 ${n_bp_trim_read2} r1.fastq.gz r2.fastq.gz
+        	
+	bismark --genome bismark_index --multicore ${multicore} -1 r1_val_1.fq.gz -2 r2_val_2.fq.gz
     mv *bismark_bt2_pe.bam ${samplename}.bam
     mv *bismark_bt2_PE_report.txt ${samplename}_report.txt
     
@@ -105,6 +113,7 @@ task merge_replicates {
   File monitoring_script
   File chrom_sizes
   File genome_index
+  File target_region_bed
 
   String memory
   String disks
@@ -125,9 +134,9 @@ task merge_replicates {
     samtools merge -n ${samplename}.bam ${sep=' ' bams}
     
     samtools sort -n -o ${samplename}.sorted_by_readname.bam ${samplename}.bam 
-		/src/Bismark-0.18.2/deduplicate_bismark -p --bam ${samplename}.sorted_by_readname.bam
-		rm ${samplename}.sorted_by_readname.bam ${samplename}.bam
-		mv ${samplename}.sorted_by_readname.deduplicated.bam ${samplename}.bam
+	/src/Bismark-0.18.2/deduplicate_bismark -p --bam ${samplename}.sorted_by_readname.bam
+	rm ${samplename}.sorted_by_readname.bam ${samplename}.bam
+	mv ${samplename}.sorted_by_readname.deduplicated.bam ${samplename}.bam
     
     samtools sort -o ${samplename}.sorted.bam ${samplename}.bam
     samtools index ${samplename}.sorted.bam ${samplename}.sorted.bai
@@ -137,14 +146,14 @@ task merge_replicates {
     bismark_methylation_extractor --multicore ${multicore} --gzip --bedGraph --buffer_size 50% --genome_folder bismark_index ${samplename}.bam
     
     TOTAL_READS=$(samtools view -F 4 ${samplename}.bam | wc -l | tr -d '[:space:]')
-		echo "# total_reads=$TOTAL_READS" | tee ${samplename}_target_coverage.bed
-		# How many reads overlap targets?
-		READS_OVERLAPPING_TARGETS=$(bedtools intersect -u -bed -a ${samplename}.bam -b ${target_region_bed} | wc -l | tr -d '[:space:]')
-		echo "# reads_overlapping_targets=$READS_OVERLAPPING_TARGETS" | tee -a ${samplename}_target_coverage.bed
-		# How many reads per target?
-		bedtools intersect -c -a ${target_region_bed} -b ${samplename}.bam >> ${samplename}_target_coverage.bed
-    gunzip "${samplename}.bedGraph.gz"
+	echo "# total_reads=$TOTAL_READS" | tee ${samplename}_target_coverage.bed
+	# How many reads overlap targets?
+	READS_OVERLAPPING_TARGETS=$(bedtools intersect -u -bed -a ${samplename}.bam -b ${target_region_bed} | wc -l | tr -d '[:space:]')
+	echo "# reads_overlapping_targets=$READS_OVERLAPPING_TARGETS" | tee -a ${samplename}_target_coverage.bed
+	# How many reads per target?
+	bedtools intersect -c -a ${target_region_bed} -b ${samplename}.bam >> ${samplename}_target_coverage.bed
     
+    gunzip "${samplename}.bedGraph.gz"
     bedtools sort -i ${samplename}.bedGraph > ${samplename}.sorted.bedGraph        
     /usr/local/bin/bedGraphToBigWig ${samplename}.sorted.bedGraph ${chrom_sizes} ${samplename}.bw
     
@@ -155,7 +164,7 @@ task merge_replicates {
   }
   
   output {
-            File monitoring_log = "monitoring.log"
+            File monitoring_log = "monitoring.log" 
             File output_bam = "${samplename}.sorted.bam"
             File output_covgz = "${samplename}.bismark.cov.gz"
             File output_report = "${samplename}_report.txt"
