@@ -24,7 +24,7 @@ workflow call_bismark_pool {
   
   Array[Pair[File, File]] fastq_pairs = zip(fastq1.out, fastq2.out)
   
-  scatter (fastq_pair in fastq_pairs) { call align_replicates {input: r1_fastq = fastq_pair.left, r2_fastq = fastq_pair.right, n_bp_trim_read1 = n_bp_trim_read1, n_bp_trim_read2 = n_bp_trim_read2, genome_index = genome_index, multicore = multicore, monitoring_script = monitoring_script,  memory = memory, disks = disks, cpu = cpu, preemptible = preemptible} }
+  scatter (fastq_pair in fastq_pairs) { call align_replicates {input: r1_fastq = fastq_pair.left, r2_fastq = fastq_pair.right, n_bp_trim_read1 = n_bp_trim_read1, n_bp_trim_read2 = n_bp_trim_read2, genome_index = genome_index, samplename = samplename, multicore = multicore, monitoring_script = monitoring_script,  memory = memory, disks = disks, cpu = cpu, preemptible = preemptible} }
 
   call merge_replicates {input: bams = align_replicates.bam, reports = align_replicates.output_report, samplename = samplename, chrom_sizes = chrom_sizes, genome_index = genome_index, multicore = multicore, monitoring_script = monitoring_script, memory = memory, disks = disks, cpu = cpu, preemptible = preemptible}
   
@@ -54,8 +54,8 @@ task align_replicates{
   File r2_fastq
   File genome_index
   File monitoring_script
-  
-  String samplename = basename(r1_fastq)
+  String samplename
+  #String samplename = basename(r1_fastq)
   Int n_bp_trim_read1
 	Int n_bp_trim_read2
   
@@ -70,19 +70,26 @@ task align_replicates{
   command {
     chmod u+x ${monitoring_script}
     ${monitoring_script} > monitoring.log &
+    WORK_DIR=$PWD
+    cd /tmp
     mkdir bismark_index
-    tar zxf ${genome_index} -C bismark_index
     
-		ln -s ${r1_fastq} r1.fastq.gz
-		ln -s ${r2_fastq} r2.fastq.gz
+    tar zxvf ${genome_index} -C bismark_index
+    md5sum ${genome_index}
+    wc -l bismark_index/chr19.fa 
+    head bismark_index/chr19.fa 
+
+    
+	ln -s ${r1_fastq} r1.fastq.gz
+	ln -s ${r2_fastq} r2.fastq.gz
 		
-		trim_galore --paired --clip_R1 ${n_bp_trim_read1} --clip_R2 ${n_bp_trim_read2} r1.fastq.gz r2.fastq.gz
+	trim_galore --paired --clip_R1 ${n_bp_trim_read1} --clip_R2 ${n_bp_trim_read2} r1.fastq.gz r2.fastq.gz
         	
-		bismark --genome bismark_index --multicore ${multicore} -1 r1_val_1.fq.gz -2 r2_val_2.fq.gz
-    mv *bismark_bt2_pe.bam ${samplename}.bam
-    mv *bismark_bt2_PE_report.txt ${samplename}_report.txt
+	bismark --genome bismark_index --multicore ${multicore} -1 r1_val_1.fq.gz -2 r2_val_2.fq.gz
+    mv *bismark_bt2_pe.bam $WORK_DIR/${samplename}.bam
+    mv *bismark_bt2_PE_report.txt $WORK_DIR/${samplename}_report.txt
     
-    bismark2report --alignment_report ${samplename}_report.txt --output ${samplename}_bismark_report.html  
+    bismark2report --alignment_report $WORK_DIR/${samplename}_report.txt --output $WORK_DIR/${samplename}_bismark_report.html  
   
   }
   
