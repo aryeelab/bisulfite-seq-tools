@@ -1,5 +1,7 @@
 workflow call_bismark_pool {
 
+  String version = "dev"
+  
   String r1_fastq
   String r2_fastq
   File genome_index
@@ -7,7 +9,7 @@ workflow call_bismark_pool {
   File chrom_sizes
   String samplename
   Int n_bp_trim_read1
-	Int n_bp_trim_read2
+  Int n_bp_trim_read2
   
   String multicore
   
@@ -16,9 +18,7 @@ workflow call_bismark_pool {
   Int cpu
   Int preemptible
   
-  
-  
-   # Split the comma-separated string of fastq file names into arrays
+  # Split the comma-separated string of fastq file names into arrays
   call split_string_into_array as fastq1 {input: str = r1_fastq}
   call split_string_into_array as fastq2 {input: str = r2_fastq}
   
@@ -27,6 +27,16 @@ workflow call_bismark_pool {
   scatter (fastq_pair in fastq_pairs) { call align_replicates {input: r1_fastq = fastq_pair.left, r2_fastq = fastq_pair.right, n_bp_trim_read1 = n_bp_trim_read1, n_bp_trim_read2 = n_bp_trim_read2, genome_index = genome_index, samplename = samplename, multicore = multicore, monitoring_script = monitoring_script,  memory = memory, disks = disks, cpu = cpu, preemptible = preemptible} }
 
   call merge_replicates {input: bams = align_replicates.bam, reports = align_replicates.output_report, samplename = samplename, chrom_sizes = chrom_sizes, genome_index = genome_index, multicore = multicore, monitoring_script = monitoring_script, memory = memory, disks = disks, cpu = cpu, preemptible = preemptible}
+  
+  output {
+        File bam = merge_replicates.output_bam
+        File bai = merge_replicates.output_bai
+        File cov_gz = merge_replicates.output_covgz
+        File report = merge_replicates.output_report
+        File mbias = merge_replicates.mbias_report
+        File bigwig = merge_replicates.output_bigwig
+        String pipeline_version = version
+  }
   
 }
 
@@ -55,9 +65,8 @@ task align_replicates{
   File genome_index
   File monitoring_script
   String samplename
-  #String samplename = basename(r1_fastq)
   Int n_bp_trim_read1
-	Int n_bp_trim_read2
+  Int n_bp_trim_read2
   
   String multicore
   
@@ -92,6 +101,15 @@ task align_replicates{
     bismark2report --alignment_report $WORK_DIR/${samplename}_report.txt --output $WORK_DIR/${samplename}_bismark_report.html  
   
   }
+
+  runtime {
+  	continueOnReturnCode: false
+	docker: "aryeelab/bismark:latest"
+	memory: memory
+    disks: disks
+    cpu: cpu
+    preemptible: preemptible
+ }
   
   output {
     File bam = "${samplename}.bam"
@@ -100,14 +118,6 @@ task align_replicates{
     File monitoring_log = "monitoring.log"
   }
   
-  	runtime {
-  	continueOnReturnCode: false
-		docker: "aryeelab/bismark:latest"
-		memory: memory
-    disks: disks
-    cpu: cpu
-    preemptible: preemptible
- }
   
 }
 
@@ -126,9 +136,7 @@ task merge_replicates {
   Int preemptible
   
   command {
-
     
- 
     # The file renaming below is necessary since this version of bismark doesn't allow the 
     # use of --multicore with --basename
     chmod u+x ${monitoring_script}
@@ -145,9 +153,7 @@ task merge_replicates {
     
     samtools sort -o ${samplename}.sorted.bam ${samplename}.bam
     samtools index ${samplename}.sorted.bam ${samplename}.sorted.bai
-          
-            
-            
+              
     bismark_methylation_extractor --multicore ${multicore} --gzip --bedGraph --buffer_size 50% --genome_folder bismark_index ${samplename}.bam
     
     gunzip "${samplename}.bedGraph.gz"
@@ -157,8 +163,15 @@ task merge_replicates {
     
     echo """${sep="\n" reports}""" > all_reports.txt
     Rscript --vanilla /pool_report_files.R -i all_reports.txt -s ${samplename}
-    
-   
+  }
+  
+  runtime {
+    continueOnReturnCode: false
+    docker: "aryeelab/bismark:latest"
+    memory: memory
+    disks: disks
+    cpu: cpu
+    preemptible: preemptible
   }
   
   output {
@@ -170,13 +183,5 @@ task merge_replicates {
             File output_bigwig = "${samplename}.bw"
             File output_bai = "${samplename}.sorted.bai"
   }
-  
-  runtime {
-    continueOnReturnCode: false
-    docker: "aryeelab/bismark:latest"
-    memory: memory
-    disks: disks
-    cpu: cpu
-    preemptible: preemptible
-  }
+
 }
