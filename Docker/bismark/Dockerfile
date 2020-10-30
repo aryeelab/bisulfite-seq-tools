@@ -1,8 +1,16 @@
-FROM debian:jessie
+FROM ubuntu:20.04
 
 ARG VERSION=__specify_in_build_arg__
 
-RUN apt-get update &&  apt-get install  -y build-essential zlib1g-dev libncurses5-dev libncursesw5-dev git wget unzip python-pip python-dev
+ENV DEBIAN_FRONTEND=noninteractive
+
+RUN apt-get update && \ 
+    apt-get install -y build-essential zlib1g-dev \
+                       libxml2-dev libncurses5-dev libncursesw5-dev git wget unzip \
+                       python python-dev python3-pip \
+                       libssl-dev libcurl4-openssl-dev dirmngr gnupg \
+                       apt-transport-https ca-certificates software-properties-common\
+                       fastqc
 
 # Install procps (to get free and top)
 RUN apt-get install -y procps
@@ -21,40 +29,36 @@ RUN cd /src && \
 	tar zxf 0.18.2.tar.gz && \
 	ln -s /src/Bismark-0.18.2/bismark* /usr/local/bin/
 
-
-# Install R-3.4.0 (See https://cran.r-project.org/bin/linux/debian)
-RUN apt-get install -y libssl-dev libcurl4-openssl-dev && \
-	apt-key adv --keyserver keys.gnupg.net --recv-key 'E19F5F87128899B192B1A2C2AD5F960A256A04AF' && \
-	echo "deb http://cloud.r-project.org/bin/linux/debian jessie-cran34/" >> /etc/apt/sources.list && \
+# Install R
+RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E298A3A825C0D65DFD57CBB651716619E084DAB9 && \
+	add-apt-repository 'deb https://cloud.r-project.org/bin/linux/ubuntu focal-cran40/' && \
 	apt-get update && \
 	apt-get install -y --force-yes r-base
-
+	
 #Installing necessary R packages
-RUN Rscript -e "source('http://bioconductor.org/biocLite.R');biocLite('bsseq');" && \
-    Rscript -e "source('http://bioconductor.org/biocLite.R');biocLite('BiocGenerics');" && \
+RUN Rscript -e "install.packages('BiocManager');" && \
     Rscript -e "install.packages('optparse', repos='http://R-Forge.R-project.org')" && \
     Rscript -e "install.packages('ggplot2',repos='http://R-Forge.R-project.org')" && \
     Rscript -e "install.packages('foreach',repos='http://R-Forge.R-project.org')" && \
     Rscript -e "install.packages('yaml',repos='https://mirror.las.iastate.edu/CRAN/')" && \
     Rscript -e "install.packages('devtools',repos='https://mirror.las.iastate.edu/CRAN/')" && \
-    apt-get install -y libxml2-dev && \
-    Rscript -e "source('http://bioconductor.org/biocLite.R');biocLite('XML')" && \
-    Rscript -e "source('http://bioconductor.org/biocLite.R');biocLite('genefilter')" && \
-    Rscript -e "source('http://bioconductor.org/biocLite.R');biocLite('rtracklayer')" && \
-    Rscript -e "source('http://bioconductor.org/biocLite.R');biocLite('BSgenome')" && \
-    Rscript -e "source('http://bioconductor.org/biocLite.R');biocLite('Ringo')" && \
-    Rscript -e "source('http://bioconductor.org/biocLite.R');biocLite('Repitools')" && \
-    Rscript -e "source('http://bioconductor.org/biocLite.R');biocLite('knitr')" && \
-    Rscript -e "source('http://bioconductor.org/biocLite.R');biocLite('AnnotationHub')" && \
-    Rscript -e "source('http://bioconductor.org/biocLite.R');biocLite('BSgenome.Mmusculus.UCSC.mm10')" && \
     Rscript -e "install.packages('rmarkdown',repos='https://mirror.las.iastate.edu/CRAN/')" && \
-    Rscript -e "source('http://bioconductor.org/biocLite.R');biocLite('annotatr')" && \
-    Rscript -e "source('http://bioconductor.org/biocLite.R');biocLite('scmeth')" 
-
+    Rscript -e "BiocManager::install('bsseq');" && \
+    Rscript -e "BiocManager::install('BiocGenerics');" && \
+    Rscript -e "BiocManager::install('XML')" && \
+    Rscript -e "BiocManager::install('genefilter')" && \
+    Rscript -e "BiocManager::install('rtracklayer')" && \
+    Rscript -e "BiocManager::install('BSgenome')" && \
+    Rscript -e "BiocManager::install('Ringo')" && \
+    Rscript -e "BiocManager::install('Repitools')" && \
+    Rscript -e "BiocManager::install('knitr')" && \
+    Rscript -e "BiocManager::install('AnnotationHub')" && \
+    Rscript -e "BiocManager::install('BSgenome.Mmusculus.UCSC.mm10')" && \
+    Rscript -e "BiocManager::install('annotatr')" && \
+    Rscript -e "BiocManager::install('scmeth')" 
 
 # Install bedtools
-RUN apt-get install -y python && \
-    cd /src && \
+RUN cd /src && \
     wget https://github.com/arq5x/bedtools2/releases/download/v2.26.0/bedtools-2.26.0.tar.gz && \
     tar -zxf bedtools-2.26.0.tar.gz && \
     cd bedtools2 && \
@@ -80,14 +84,7 @@ RUN cd /usr/local/bin && \
     chmod +x bedGraphToBigWig
 
 # Install cutadapt (for Trimgalore)
-RUN pip install cutadapt
-
-# Install FastQC
-RUN apt-get -y install openjdk-7-jre && \
-    cd /src && \
-    wget https://www.bioinformatics.babraham.ac.uk/projects/fastqc/fastqc_v0.11.7.zip && \
-    unzip fastqc_v0.11.7.zip && \
-    ln -s /src/FastQC/fastqc /usr/local/bin/
+RUN pip3 install cutadapt
 
 # Install Trimgalore
 RUN cd /tmp && \
