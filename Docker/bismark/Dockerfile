@@ -1,5 +1,7 @@
 FROM debian:jessie
 
+ARG VERSION=__specify_in_build_arg__
+
 RUN apt-get update &&  apt-get install  -y build-essential zlib1g-dev libncurses5-dev libncursesw5-dev git wget unzip python-pip python-dev
 
 # Install procps (to get free and top)
@@ -96,3 +98,5 @@ RUN cd /tmp && \
 
 # added pooling report script
 ADD ./pool_report_files.R pool_report_files.R
+
+RUN echo $VERSION > /VERSION
