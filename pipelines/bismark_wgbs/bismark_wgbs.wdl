@@ -2,6 +2,10 @@ workflow call_bismark_pool {
 
   String version = "dev"
   
+  # 'dev' pipeline versions use the image with the 'latest' tag.
+  # release pipeline versions use images tagged with the version number itself
+  String image_id = sub(version, "dev", "latest")
+
   String r1_fastq
   String r2_fastq
   File genome_index
@@ -24,9 +28,9 @@ workflow call_bismark_pool {
   
   Array[Pair[File, File]] fastq_pairs = zip(fastq1.out, fastq2.out)
   
-  scatter (fastq_pair in fastq_pairs) { call align_replicates {input: r1_fastq = fastq_pair.left, r2_fastq = fastq_pair.right, n_bp_trim_read1 = n_bp_trim_read1, n_bp_trim_read2 = n_bp_trim_read2, genome_index = genome_index, samplename = samplename, multicore = multicore, monitoring_script = monitoring_script,  memory = memory, disks = disks, cpu = cpu, preemptible = preemptible} }
+  scatter (fastq_pair in fastq_pairs) { call align_replicates {input: r1_fastq = fastq_pair.left, r2_fastq = fastq_pair.right, n_bp_trim_read1 = n_bp_trim_read1, n_bp_trim_read2 = n_bp_trim_read2, genome_index = genome_index, samplename = samplename, multicore = multicore, monitoring_script = monitoring_script,  memory = memory, disks = disks, cpu = cpu, preemptible = preemptible, image_id = image_id} }
 
-  call merge_replicates {input: bams = align_replicates.bam, reports = align_replicates.output_report, samplename = samplename, chrom_sizes = chrom_sizes, genome_index = genome_index, multicore = multicore, monitoring_script = monitoring_script, memory = memory, disks = disks, cpu = cpu, preemptible = preemptible}
+  call merge_replicates {input: bams = align_replicates.bam, reports = align_replicates.output_report, samplename = samplename, chrom_sizes = chrom_sizes, genome_index = genome_index, multicore = multicore, monitoring_script = monitoring_script, memory = memory, disks = disks, cpu = cpu, preemptible = preemptible, image_id = image_id}
   
   output {
         File bam = merge_replicates.output_bam
@@ -60,6 +64,7 @@ task split_string_into_array {
 }
 
 task align_replicates{
+  String image_id
   File r1_fastq
   File r2_fastq
   File genome_index
@@ -104,7 +109,7 @@ task align_replicates{
 
   runtime {
   	continueOnReturnCode: false
-	docker: "aryeelab/bismark:latest"
+	docker: "aryeelab/bismark:${image_id}"
 	memory: memory
     disks: disks
     cpu: cpu
@@ -122,6 +127,7 @@ task align_replicates{
 }
 
 task merge_replicates {
+  String image_id
   String samplename
   Array[File] bams
   Array[File] reports
@@ -167,7 +173,7 @@ task merge_replicates {
   
   runtime {
     continueOnReturnCode: false
-    docker: "aryeelab/bismark:latest"
+    docker: "aryeelab/bismark:${image_id}"
     memory: memory
     disks: disks
     cpu: cpu
