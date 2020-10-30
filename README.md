@@ -1,12 +1,12 @@
 
 
-# FireCloud/WDL DNA methylation workflows
+# Terra/WDL DNA methylation workflows
 <p align="justify">
 This repository <a href="https://github.com/aryeelab/dna-methylation-tools">https://github.com/aryeelab/dna-methylation-tools</a> contains a suite of tools to conduct DNA methylation data analysis. It is maintained by Divy Kangeyan at the <a href="http://aryee.mgh.harvard.edu">Aryee Lab</a>
 </p>
 
 <p align="justify">
-This platform contains publicly accessible cloud-based preprocessing and quality control pipelines that go from raw data to CpG-level methylation estimates. The technologies covered include Whole Genome Bisulfite Sequencing (WGBS), Reduced Representation Bisulfite Sequencing (RRBS) and Hybrid Selection (capture) Bisulfite Sequencing (HSBS). Leveraging the FireCloud platform allows users to:
+This platform contains publicly accessible cloud-based preprocessing and quality control pipelines that go from raw data to CpG-level methylation estimates. The technologies covered include Whole Genome Bisulfite Sequencing (WGBS), Reduced Representation Bisulfite Sequencing (RRBS) and Hybrid Selection (capture) Bisulfite Sequencing (HSBS). Leveraging the Terra platform allows users to:
 </p>
 
  <ol>
@@ -27,12 +27,12 @@ Analysis should be run in two successive processes:
 
 ## Getting started
 <p align="justify">
-If you plan to use the WDL workflows in your local computing environment, then this repository should be cloned. If you are using FireCloud, then you should either clone the FireCloud workspace <b>aryee-lab/dna-methylation</b> or if you already have your own workspace you can import the method configuration of your interest from <b>aryee-lab/dna-methylation</b> workspace.
+If you plan to use the WDL workflows in your local computing environment, then this repository should be cloned. If you are using Terra, then you should either clone the Terra workspace <b>aryee-lab/dna-methylation</b> or if you already have your own workspace you can import the method configuration of your interest from <b>aryee-lab/dna-methylation</b> workspace.
  </p>
 
-## Uploading the files to FireCloud
+## Uploading the files to Terra
 <p align="justify">
-FASTQ files and target coverage files can be uploaded to FireCloud using gsutil (https://pypi.org/project/gsutil/)
+FASTQ files and target coverage files can be uploaded to Terra using gsutil (https://pypi.org/project/gsutil/)
  </p>
 
 ## Data model
@@ -55,7 +55,7 @@ membership:participant_set_id specify the name of the participant set.
  
 participant_id column specify the names of the participants in the set.  
 
-Both of these files are tab separated text files. Examples of these files are shown in <i>Firecloud_imports</i> subdirectory.
+Both of these files are tab separated text files. Examples of these files are shown in <i>Terra_imports</i> subdirectory.
 </p>
 
 ## Alignment and methylation calling
@@ -66,7 +66,7 @@ In order to perform alignment and methylation calling choose <i>bismark_rrbs</i>
 <ol>
 <li>Upload the fastq files to the Google cloud bucket</li>
 <li>Upload additional files such as target coverage bed file for HSBS sequencing</li>
-<li>In the FireCloud workspace choose <i>bismark_rrbs</i>, <i>bismark_wgbs</i> or <i>bismark_hsbs</i> method configuration with appropriate reference genome suffix</li>
+<li>In the Terra workspace choose <i>bismark_rrbs</i>, <i>bismark_wgbs</i> or <i>bismark_hsbs</i> method configuration with appropriate reference genome suffix</li>
 <li>Change other parameters according to preference</li>
 <li>Press <i>Launch Analysis</i> in upper right hand corner</li>
 <li>Choose the participants from the list of files</li>
@@ -208,10 +208,8 @@ cd dna-methylation-tools
 3. If you want to run the examples below, download this small genome index and chrom.sizes file for mm10_chr 19: 
 
 ```
+cd testdata
 wget https://storage.googleapis.com/aryeelab/bismark-index/mm10_chr19/bismark_mm10_chr19.tar.gz
-```
-
-```
 wget https://storage.googleapis.com/aryeelab/chrom.sizes/mm10_chr19.chrom.sizes
 ```
 
@@ -246,31 +244,20 @@ Following commands are based on cromwell version 30.
 
 #### WGBS, Paired-end reads
 ```
-java -jar cromwell-30.2.jar run bismark_wgbs.wdl -i bismark_wgbs.json
-```
-
-#### RRBS, Paired-end reads
-```
-java -jar cromwell-30.2.jar run bismark_rrbs.wdl -i bismark_rrbs.json
-```
-
-
-#### HSBS, Paired-end reads
-```
-java -jar cromwell-30.2.jar run bismark_hsbs.wdl -i bismark_hsbs.json
+cromwell run -i ../pipelines/bismark_wgbs/bismark_wgbs.json ../pipelines/bismark_wgbs/bismark_wgbs.wdl 
 ```
 
 #### Aggregation workflow
 ```
-java -jar cromwell-30.2.jar run aggregate_bismark_output.wdl -i aggregate_bismark.json
+cromwell run aggregate_bismark_output.wdl -i aggregate_bismark.json
 ```
 
 #### Single-end reads (Out of date)
 ```
-java -jar cromwell-30.2.jar run bsseq_preprocess_se.wdl -i sample1_se.json
+cromwell run bsseq_preprocess_se.wdl -i sample1_se.json
 ```
 
-### Cost & Time Analysis in FireCloud
+### Cost & Time Analysis in Terra
 We estimated the time and cost for Whole Genome Bisulfite Sequencing (WGBS) sample from TCGA that contains approximately 290 million reads.
 
 ![](TCGA_Time_Cost_Analysis.svg)
@@ -292,7 +279,7 @@ We also conducted similar analysis for the aggregation step
 ![](Aggregation_10_sampleSet.svg) ![](Aggregation_25_sampleSet.svg) ![](Aggregation_100_sampleSet.svg)
 
 ## TCGA data
-We have preprocessed and made available 47 WGBS samples available from TCGA. The raw (FASTQ) data, processed data and workflows are made available in a FireCloud workspace (See https://portal.firecloud.org/#workspaces/aryee-merkin/TCGA_WGBS_hg19). Processed data can also be found in bsseq format in tcgaWGBSData.hg19 package (https://bioconductor.org/packages/release/data/experiment/html/tcgaWGBSData.hg19.html).
+We have preprocessed and made available 47 WGBS samples available from TCGA. The raw (FASTQ) data, processed data and workflows are made available in a Terra workspace (See https://portal.firecloud.org/#workspaces/aryee-merkin/TCGA_WGBS_hg19). Processed data can also be found in bsseq format in tcgaWGBSData.hg19 package (https://bioconductor.org/packages/release/data/experiment/html/tcgaWGBSData.hg19.html).
 
 
 ## Questions and Comments

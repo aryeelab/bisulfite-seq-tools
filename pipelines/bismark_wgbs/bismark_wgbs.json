@@ -1,6 +1,6 @@
 {
-    "call_bismark_pool.r1_fastq": "../testdata/small_01_R1.fastq.gz",
-    "call_bismark_pool.r2_fastq": "../testdata/small_01_R2.fastq.gz",
+    "call_bismark_pool.r1_fastq": "./small_01_R1.fastq.gz",
+    "call_bismark_pool.r2_fastq": "./small_01_R2.fastq.gz",
     "call_bismark_pool.n_bp_trim_read1": 3,
     "call_bismark_pool.n_bp_trim_read2": 3,
     "call_bismark_pool.chrom_sizes": "./mm10_chr19.chrom.sizes",
