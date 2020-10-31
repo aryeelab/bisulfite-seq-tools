@@ -2,6 +2,7 @@ steps:
 - name: 'gcr.io/cloud-builders/docker'
   dir: 'Docker/geomx-dnd'
   args: ['build', '-t', 'gcr.io/aryeelab/bismark:$TAG_NAME', '-t', 'gcr.io/aryeelab/bismark:latest', '--build-arg', 'VERSION=$TAG_NAME', '.']
+  timeout: 14400s
 
 images: ['gcr.io/aryeelab/bismark']
-timeout: 3600s
+timeout: 14400s

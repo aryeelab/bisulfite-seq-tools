@@ -3,6 +3,7 @@ steps:
   id: build-docker
   dir: 'Docker/bismark'
   args: ['build', '-t', 'gcr.io/aryeelab/bismark:$SHORT_SHA', '-t', 'gcr.io/aryeelab/bismark:latest', '--build-arg', 'VERSION=$SHORT_SHA', '.']
+  timeout: 14400s
 
 images: ['gcr.io/aryeelab/bismark']
-timeout: 3600s
+timeout: 14400s
