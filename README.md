@@ -189,23 +189,33 @@ Quality control analysis is conducted via the bioconductor package <a href="http
 
 
 
-## Running the WDL workflow in local environment
+
+## Development and local execution
+
 ### Setup
 
-1. Clone this repository
+In order to push/pull images from the Google container registry you must first authenticate with Google:
+
+```bash
+gcloud auth login
+```
+
+You then need to run a one-time setup to configure docker to use Google authentication:
+
+```bash
+gcloud auth configure-docker
+```
+
+
+Clone this repository
 
 ```
 git clone aryeelab/dna-methylation-tools
-```
-
-2. Change the directory
-
-```
 cd dna-methylation-tools
 ```
 
 
-3. If you want to run the examples below, download this small genome index and chrom.sizes file for mm10_chr 19: 
+If you want to run the examples below, download this small genome index and chrom.sizes file for mm10_chr 19: 
 
 ```
 cd testdata
@@ -226,8 +236,6 @@ docker build Docker/cromwell
 ```
 
 
-Following commands are based on cromwell version 30. 
-
 **Edit the file paths for FASTQ files, genome index, chrom.sizes file and monitoring script in the json file according to your directory paths to run the test sample.**
 
 ```
@@ -241,21 +249,20 @@ Following commands are based on cromwell version 30.
 }
 ```
 
-
 #### WGBS, Paired-end reads
 ```
 cromwell run -i ../pipelines/bismark_wgbs/bismark_wgbs.json ../pipelines/bismark_wgbs/bismark_wgbs.wdl 
 ```
 
 #### Aggregation workflow
+
+This step is only necessary if you want to combine multiple samples into a 
+single Bioconductor `bsseq` object.
+
 ```
-cromwell run aggregate_bismark_output.wdl -i aggregate_bismark.json
+cromwell run ../pipelines/aggregate_bismark_output/aggregate_bismark_output.wdl -i ../pipelines/aggregate_bismark_output/aggregate_bismark.json
 ```
 
-#### Single-end reads (Out of date)
-```
-cromwell run bsseq_preprocess_se.wdl -i sample1_se.json
-```
 
 ### Cost & Time Analysis in Terra
 We estimated the time and cost for Whole Genome Bisulfite Sequencing (WGBS) sample from TCGA that contains approximately 290 million reads.
