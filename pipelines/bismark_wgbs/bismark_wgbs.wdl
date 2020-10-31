@@ -109,7 +109,7 @@ task align_replicates{
 
   runtime {
   	continueOnReturnCode: false
-	docker: "aryeelab/bismark:${image_id}"
+	docker: "gcr.io/aryeelab/bismark:${image_id}"
 	memory: memory
     disks: disks
     cpu: cpu
@@ -173,7 +173,7 @@ task merge_replicates {
   
   runtime {
     continueOnReturnCode: false
-    docker: "aryeelab/bismark:${image_id}"
+    docker: "gcr.io/aryeelab/bismark:${image_id}"
     memory: memory
     disks: disks
     cpu: cpu
