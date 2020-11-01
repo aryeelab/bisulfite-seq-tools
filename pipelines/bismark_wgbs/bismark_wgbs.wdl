@@ -12,8 +12,8 @@ workflow call_bismark_pool {
   File monitoring_script
   File chrom_sizes
   String samplename
-  Int n_bp_trim_read1
-  Int n_bp_trim_read2
+  Int n_bp_trim_read1 = 0
+  Int n_bp_trim_read2 = 0
   
   String multicore
   
@@ -64,6 +64,7 @@ task split_string_into_array {
 }
 
 task align_replicates{
+
   String image_id
   File r1_fastq
   File r2_fastq
@@ -85,20 +86,36 @@ task align_replicates{
     chmod u+x ${monitoring_script}
     ${monitoring_script} > monitoring.log &
     WORK_DIR=$PWD
-    cd /tmp
+    mkdir tmp
+    cd tmp
     mkdir bismark_index
     
     tar zxvf ${genome_index} -C bismark_index
+    echo "Genome index MD5sum:"
     md5sum ${genome_index}
-    wc -l bismark_index/chr19.fa 
-    head bismark_index/chr19.fa 
-
     
-	ln -s ${r1_fastq} r1.fastq.gz
-	ln -s ${r2_fastq} r2.fastq.gz
-		
-	trim_galore --paired --clip_R1 ${n_bp_trim_read1} --clip_R2 ${n_bp_trim_read2} r1.fastq.gz r2.fastq.gz
-        	
+    ln -s ${r1_fastq} r1.fastq.gz
+    ln -s ${r2_fastq} r2.fastq.gz
+	
+	echo "Trimming options:"
+	echo "  n_bp_trim_read1 = ${n_bp_trim_read1}"
+	echo "  n_bp_trim_read2 = ${n_bp_trim_read2}"	
+	
+    if (( ${n_bp_trim_read1} > 0 && ${n_bp_trim_read2} > 0)); then
+        echo "Trimming both read 1 and read 2 from the 5' end"
+    	trim_galore --paired --clip_R1 ${n_bp_trim_read1} --clip_R2 ${n_bp_trim_read2} r1.fastq.gz r2.fastq.gz
+    elif (( ${n_bp_trim_read1} > 0 && ${n_bp_trim_read2} == 0)); then
+        echo "Trimming only read 1 from the 5' end"
+        trim_galore --paired --clip_R1 ${n_bp_trim_read1} r1.fastq.gz r2.fastq.gz
+    elif (( ${n_bp_trim_read1} == 0 && ${n_bp_trim_read2} > 0)); then
+        echo "Trimming only read 2 from the 5' end"
+        trim_galore --paired --clip_R2 ${n_bp_trim_read2} r1.fastq.gz r2.fastq.gz
+    else
+        echo "Not trimming reads"
+        cp r1.fastq.gz r1_val_1.fq.gz
+        cp r2.fastq.gz r2_val_2.fq.gz
+    fi
+            	
 	bismark --genome bismark_index --multicore ${multicore} -1 r1_val_1.fq.gz -2 r2_val_2.fq.gz
     mv *bismark_bt2_pe.bam $WORK_DIR/${samplename}.bam
     mv *bismark_bt2_PE_report.txt $WORK_DIR/${samplename}_report.txt
