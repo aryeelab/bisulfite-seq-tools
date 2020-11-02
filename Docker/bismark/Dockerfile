@@ -19,15 +19,9 @@ RUN apt-get install -y procps
 RUN apt-get install -y libtbb-dev && \
 	mkdir /src && \
 	cd /src && \
-	wget -O bowtie2.zip https://sourceforge.net/projects/bowtie-bio/files/bowtie2/2.3.2/bowtie2-2.3.2-linux-x86_64.zip/download && \
+	wget -O bowtie2.zip https://sourceforge.net/projects/bowtie-bio/files/bowtie2/2.4.2/bowtie2-2.4.2-linux-x86_64.zip/download && \
 	unzip bowtie2.zip && \
-	ln -s /src/bowtie2-2.3.2/bowtie2* /usr/local/bin
-
-# Install Bismark
-RUN cd /src && \
-	wget https://github.com/FelixKrueger/Bismark/archive/0.18.2.tar.gz && \
-	tar zxf 0.18.2.tar.gz && \
-	ln -s /src/Bismark-0.18.2/bismark* /usr/local/bin/
+	ln -s /src/bowtie2-2.4.2/bowtie2* /usr/local/bin
 
 # Install R
 RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E298A3A825C0D65DFD57CBB651716619E084DAB9 && \
@@ -88,10 +82,16 @@ RUN pip3 install cutadapt
 
 # Install Trimgalore
 RUN cd /tmp && \
-    wget https://github.com/FelixKrueger/TrimGalore/archive/0.4.5.zip && \
-    unzip 0.4.5.zip && \
-    cp TrimGalore-0.4.5/trim_galore /usr/local/bin && \
+    wget https://github.com/FelixKrueger/TrimGalore/archive/0.6.5.zip && \
+    unzip 0.6.5.zip && \
+    cp TrimGalore-0.6.5/trim_galore /usr/local/bin && \
     chmod +x /usr/local/bin/trim_galore
+
+# Install Bismark
+RUN cd /src && \
+	wget https://github.com/FelixKrueger/Bismark/archive/0.22.3.tar.gz && \
+	tar zxf 0.22.3.tar.gz && \
+	ln -s /src/Bismark-0.22.3/bismark* /usr/local/bin/
 
 # added pooling report script
 ADD ./pool_report_files.R pool_report_files.R
