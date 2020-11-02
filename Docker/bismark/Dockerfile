@@ -91,8 +91,9 @@ RUN cd /tmp && \
 RUN cd /src && \
 	wget https://github.com/FelixKrueger/Bismark/archive/0.22.3.tar.gz && \
 	tar zxf 0.22.3.tar.gz && \
-	ln -s /src/Bismark-0.22.3/bismark* /usr/local/bin/
-
+	ln -s /src/Bismark-0.22.3/bismark* /usr/local/bin/ && \
+	ln -s /src/Bismark-0.22.3/deduplicate_bismark /usr/local/bin/
+	
 # added pooling report script
 ADD ./pool_report_files.R pool_report_files.R
 
