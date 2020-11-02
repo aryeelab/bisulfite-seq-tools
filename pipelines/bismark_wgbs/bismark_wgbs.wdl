@@ -191,9 +191,9 @@ task merge_replicates {
     samtools merge -n ${samplename}.bam ${sep=' ' bams}
     
     samtools sort -n -o ${samplename}.sorted_by_readname.bam ${samplename}.bam 
-		/src/Bismark-0.18.2/deduplicate_bismark -p --bam ${samplename}.sorted_by_readname.bam
-		rm ${samplename}.sorted_by_readname.bam ${samplename}.bam
-		mv ${samplename}.sorted_by_readname.deduplicated.bam ${samplename}.bam
+    deduplicate_bismark -p --bam ${samplename}.sorted_by_readname.bam
+    rm ${samplename}.sorted_by_readname.bam ${samplename}.bam
+    mv ${samplename}.sorted_by_readname.deduplicated.bam ${samplename}.bam
     
     samtools sort -o ${samplename}.sorted.bam ${samplename}.bam
     samtools index ${samplename}.sorted.bam ${samplename}.sorted.bai
