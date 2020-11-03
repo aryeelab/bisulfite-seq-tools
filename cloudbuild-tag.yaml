@@ -1,7 +1,15 @@
 steps:
 - name: 'gcr.io/cloud-builders/docker'
+  id: get-cached-layers
+  entrypoint: 'bash'
+  args: ['-c', 'docker pull gcr.io/aryeelab/bismark:latest || exit 0']
+- name: 'gcr.io/cloud-builders/docker'
+  id: build-docker
   dir: 'Docker/bismark'
-  args: ['build', '-t', 'gcr.io/aryeelab/bismark:$TAG_NAME', '-t', 'gcr.io/aryeelab/bismark:latest', '--build-arg', 'VERSION=$TAG_NAME', '.']
+  args: ['build', '-t', 'gcr.io/aryeelab/bismark:$TAG_NAME', 
+                  '-t', 'gcr.io/aryeelab/bismark:latest', 
+                  '--cache-from', 'gcr.io/aryeelab/bismark:latest',
+                  '--build-arg', 'VERSION=$TAG_NAME', '.']
   timeout: 14400s
 
 images: ['gcr.io/aryeelab/bismark']

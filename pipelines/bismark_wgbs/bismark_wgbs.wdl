@@ -1,6 +1,6 @@
 workflow call_bismark_pool {
 
-  String version = "v1.2.1"
+  String version = "1.3"
   
   # 'dev' pipeline versions use the image with the 'latest' tag.
   # release pipeline versions use images tagged with the version number itself
@@ -22,6 +22,8 @@ workflow call_bismark_pool {
   Int cpu
   Int preemptible
   
+  call version_info { input: image_id = image_id }
+  
   # Split the comma-separated string of fastq file names into arrays
   call split_string_into_array as fastq1 {input: str = r1_fastq}
   call split_string_into_array as fastq2 {input: str = r2_fastq}
@@ -31,6 +33,8 @@ workflow call_bismark_pool {
   scatter (fastq_pair in fastq_pairs) { call align_replicates {input: r1_fastq = fastq_pair.left, r2_fastq = fastq_pair.right, n_bp_trim_read1 = n_bp_trim_read1, n_bp_trim_read2 = n_bp_trim_read2, genome_index = genome_index, samplename = samplename, multicore = multicore, monitoring_script = monitoring_script,  memory = memory, disks = disks, cpu = cpu, preemptible = preemptible, image_id = image_id} }
 
   call merge_replicates {input: bams = align_replicates.bam, reports = align_replicates.output_report, samplename = samplename, chrom_sizes = chrom_sizes, genome_index = genome_index, multicore = multicore, monitoring_script = monitoring_script, memory = memory, disks = disks, cpu = cpu, preemptible = preemptible, image_id = image_id}
+
+
   
   output {
         File bam = merge_replicates.output_bam
@@ -39,10 +43,27 @@ workflow call_bismark_pool {
         File report = merge_replicates.output_report
         File mbias = merge_replicates.mbias_report
         File bigwig = merge_replicates.output_bigwig
-        String pipeline_version = version
+        String pipeline_version = version_info.pipeline_version
   }
   
 }
+
+task version_info {
+	String image_id
+	command <<<
+		cat /VERSION
+	>>>
+	runtime {
+            continueOnReturnCode: false
+            docker: "gcr.io/aryeelab/bismark:${image_id}"
+            cpu: 1
+            memory: "1GB"
+        }
+	output {
+	    String pipeline_version = read_string(stdout())
+        }
+}
+
 
 task split_string_into_array {
     String str 
@@ -170,9 +191,9 @@ task merge_replicates {
     samtools merge -n ${samplename}.bam ${sep=' ' bams}
     
     samtools sort -n -o ${samplename}.sorted_by_readname.bam ${samplename}.bam 
-		/src/Bismark-0.18.2/deduplicate_bismark -p --bam ${samplename}.sorted_by_readname.bam
-		rm ${samplename}.sorted_by_readname.bam ${samplename}.bam
-		mv ${samplename}.sorted_by_readname.deduplicated.bam ${samplename}.bam
+    deduplicate_bismark -p --bam ${samplename}.sorted_by_readname.bam
+    rm ${samplename}.sorted_by_readname.bam ${samplename}.bam
+    mv ${samplename}.sorted_by_readname.deduplicated.bam ${samplename}.bam
     
     samtools sort -o ${samplename}.sorted.bam ${samplename}.bam
     samtools index ${samplename}.sorted.bam ${samplename}.sorted.bai
@@ -208,3 +229,7 @@ task merge_replicates {
   }
 
 }
+<<<<<<< HEAD
+=======
+
+>>>>>>> releases/v1.3
