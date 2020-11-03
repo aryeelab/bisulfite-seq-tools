@@ -1,6 +1,6 @@
 workflow call_bismark_pool {
 
-  String version = "1.3"
+  String version = "v1.3"
   
   # 'dev' pipeline versions use the image with the 'latest' tag.
   # release pipeline versions use images tagged with the version number itself
