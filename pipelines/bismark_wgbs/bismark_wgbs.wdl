@@ -229,7 +229,3 @@ task merge_replicates {
   }
 
 }
-<<<<<<< HEAD
-=======
-
->>>>>>> releases/v1.3
