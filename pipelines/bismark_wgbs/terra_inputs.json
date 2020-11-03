@@ -1,0 +1,17 @@
+{
+  "call_bismark_pool.samplename": "${this.sample_id}",
+  "call_bismark_pool.r1_fastq": "${this.bs_fastq1}",
+  "call_bismark_pool.r2_fastq": "${this.bs_fastq2}",
+
+  "call_bismark_pool.chrom_sizes": "gs://terra-featured-workspaces/methylation-preprocessing/chrom.sizes/GRCh38.chrom.sizes",
+  "call_bismark_pool.monitoring_script": "gs://aryeelab/scripts/monitor_v2.sh",
+  "call_bismark_pool.genome_index": "gs://terra-featured-workspaces/methylation-preprocessing/bismark-index/bismark_grch38.tar.gz",
+  "call_bismark_pool.n_bp_trim_read1": "${0}",
+  "call_bismark_pool.n_bp_trim_read2": "${0}",
+
+  "call_bismark_pool.disks": "local-disk 500 SSD",
+  "call_bismark_pool.multicore": "16",
+  "call_bismark_pool.cpu": "${16}",
+  "call_bismark_pool.preemptible": "${0}",
+  "call_bismark_pool.memory": "64 GB"
+}
