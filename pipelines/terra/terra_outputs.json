@@ -5,5 +5,6 @@
   "bsseq.cov_gz": "${this.cov_gz}",
   "bsseq.report": "${this.bismark_report}",
   "bsseq.mbias": "${this.mbias_report}",
-  "bsseq.pipeline_version": "${this.pipeline_version}"
+  "bsseq.pipeline_version": "${this.pipeline_version}",
+  "bsseq.assay": "${this.assay_type}"
 }
