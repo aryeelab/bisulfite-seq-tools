@@ -1,0 +1,17 @@
+{
+    "bsseq.assay_type": "WGBS",
+    "bsseq.r1_fastq": "./small_01_R1.fastq.gz",
+    "bsseq.r2_fastq": "./small_01_R2.fastq.gz",
+    "bsseq.n_bp_trim_read1": 0,
+    "bsseq.n_bp_trim_read2": 0,
+    "bsseq.chrom_sizes": "./mm10_chr19.chrom.sizes",
+    "bsseq.monitoring_script": "../monitor.sh",
+    "bsseq.genome_index": "./bismark_mm10_chr19.tar.gz",
+    "bsseq.multicore": "1",
+    "bsseq.memory": "24 GB",
+    "bsseq.disks": "local-disk 100 SSD",
+    "bsseq.cpu": 4,
+    "bsseq.preemptible": 1,
+    "bsseq.samplename": "sample-1"
+    
+}

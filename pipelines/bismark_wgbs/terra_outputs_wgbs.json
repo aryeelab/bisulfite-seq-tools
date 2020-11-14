@@ -1,9 +1,0 @@
-{
-  "call_bismark_pool.bam": "${this.bam}",
-  "call_bismark_pool.bai": "${this.bai}",
-  "call_bismark_pool.bigwig": "${this.bigwig}",
-  "call_bismark_pool.cov_gz": "${this.cov_gz}",
-  "call_bismark_pool.report": "${this.bismark_report}",
-  "call_bismark_pool.mbias": "${this.mbias_report}",
-  "call_bismark_pool.pipeline_version": "${this.pipeline_version}"
-}
