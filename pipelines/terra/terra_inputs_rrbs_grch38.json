@@ -1,0 +1,18 @@
+{
+  "bsseq.samplename": "${this.sample_id}",
+  "bsseq.r1_fastq": "${this.bs_fastq1}",
+  "bsseq.r2_fastq": "${this.bs_fastq2}",
+
+  "bsseq.assay_type": "RRBS",
+  "bsseq.chrom_sizes": "gs://terra-featured-workspaces/methylation-preprocessing/chrom.sizes/GRCh38.chrom.sizes",
+  "bsseq.monitoring_script": "gs://aryeelab/scripts/monitor_v2.sh",
+  "bsseq.genome_index": "gs://terra-featured-workspaces/methylation-preprocessing/bismark-index/bismark_grch38.tar.gz",
+  "bsseq.n_bp_trim_read1": "${0}",
+  "bsseq.n_bp_trim_read2": "${0}",
+
+  "bsseq.disks": "local-disk 500 SSD",
+  "bsseq.multicore": "16",
+  "bsseq.cpu": "${16}",
+  "bsseq.preemptible": "${0}",
+  "bsseq.memory": "64 GB"
+}

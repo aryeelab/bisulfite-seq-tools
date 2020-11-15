@@ -1,6 +1,6 @@
 version: 1.2
 workflows:
-   - name: bismark_wgbs
+   - name: bismark
      subclass: WDL
-     primaryDescriptorPath: /pipelines/bismark_wgbs/bismark_wgbs.wdl
+     primaryDescriptorPath: /pipelines/bismark.wdl
 

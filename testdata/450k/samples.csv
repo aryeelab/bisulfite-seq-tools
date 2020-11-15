@@ -1,7 +1,0 @@
-Sample_Name,Sample_Group,person,age,sex,status,Basename
-GroupA_3,GroupA,id3,83,M,normal,5723646052/5723646052_R02C02
-GroupA_2,GroupA,id2,58,F,normal,5723646052/5723646052_R04C01
-GroupB_3,GroupB,id3,83,M,cancer,5723646052/5723646052_R05C02
-GroupB_1,GroupB,id1,75,F,cancer,5723646053/5723646053_R04C02
-GroupA_1,GroupA,id1,75,F,normal,5723646053/5723646053_R05C02
-GroupB_2,GroupB,id2,58,F,cancer,5723646053/5723646053_R06C02
