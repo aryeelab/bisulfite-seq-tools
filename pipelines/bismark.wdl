@@ -1,6 +1,6 @@
 workflow bsseq {
 
-  String version = "dev"
+  String version = "v1.4"
   
   # 'dev' pipeline versions use the image with the 'latest' tag.
   # release pipeline versions use images tagged with the version number itself
