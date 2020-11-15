@@ -7,16 +7,22 @@ workflow aggregate_bismark_output {
         String Genome_build
                 
         String memory
-  		  String disks
-  		  Int preemptible
+  		String disks
+  		Int preemptible
 
 
-        call step2_create_combined_bsseq {input:in_pe_reports_files=in_pe_reports_files,in_covgz_files=in_covgz_files,in_mbias_files=in_mbias_files,BSGenome_targz=BSGenome_targz,BSGenome_package=BSGenome_package,Genome_build=Genome_build, memory = memory, disks = disks, preemptible = preemptible}
+        call create_combined_bsseq {input:  in_pe_reports_files=in_pe_reports_files,
+                                            in_covgz_files=in_covgz_files,
+                                            in_mbias_files=in_mbias_files,
+                                            BSGenome_targz=BSGenome_targz,
+                                            BSGenome_package=BSGenome_package,
+                                            Genome_build=Genome_build,
+                                            memory = memory, disks = disks, preemptible = preemptible}
 }
 
 
 
-task step2_create_combined_bsseq {
+task create_combined_bsseq {
         Array[File] in_pe_reports_files
         Array[File] in_covgz_files
         Array[File] in_mbias_files
@@ -25,8 +31,8 @@ task step2_create_combined_bsseq {
         String Genome_build
         
         String memory
-  		  String disks
-  		  Int preemptible
+  		String disks
+  		Int preemptible
   		  
         command {
                 R CMD INSTALL ${BSGenome_targz}
