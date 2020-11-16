@@ -5,15 +5,12 @@ ARG VERSION=__specify_in_build_arg__
 ENV DEBIAN_FRONTEND=noninteractive
 
 RUN apt-get update && \ 
-    apt-get install -y build-essential zlib1g-dev \
+    apt-get install -y procps build-essential zlib1g-dev \
                        libxml2-dev libncurses5-dev libncursesw5-dev git wget unzip \
                        python python-dev python3-pip \
                        libssl-dev libcurl4-openssl-dev dirmngr gnupg \
                        apt-transport-https ca-certificates software-properties-common\
-                       fastqc
-
-# Install procps (to get free and top)
-RUN apt-get install -y procps
+                       fastqc pandoc 
 
 # Install Bowtie2
 RUN apt-get install -y libtbb-dev && \
