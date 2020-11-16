@@ -79,7 +79,7 @@ getPhenoData <- function(pe_report_file) {
 
 getMethCov <- function(covgz_file, gr) {
   tab <- read_tsv(covgz_file,
-                  col_types = "ciiiii",
+                  col_types = "ciidii",
                   col_names=c("chr", "pos", "pos2", "meth_percent", "m_count", "u_count"))
   tab_gr <- GRanges(tab$chr, IRanges(tab$pos, tab$pos))
   m <- rep(0, length(gr))
@@ -123,6 +123,7 @@ end(cpg_gr) <- e
 # Get phenodata
 cat(pe_report_files,sep="\n")
 pd <- foreach(pe_report_file=pe_report_files, .combine="rbind") %do% getPhenoData(pe_report_file)
+rownames(pd) <- sub("_report.txt", "", rownames(pd))
 
 # Store the mbias file in a given directory
 cat(mbias_files, sep='\n')
@@ -150,7 +151,7 @@ Cov <- do.call("cbind", hdf5_cov)
 
 
 # Save bsseq object to rds using HDF5Arrays for on-disk storage
-bs <- BSseq(gr=cpg_gr, M=M, Cov=Cov, pData=pd)
+bs <- BSseq(gr=cpg_gr, M=M, Cov=Cov, pData=pd, sampleNames=rownames(pd))
 message("Saving HDF5SummarizedExperiment to ", opt$output_bsseq_dir)
 #system.time(saveHDF5SummarizedExperiment(bs, dir=opt$output_bsseq_dir, chunk_dim=c(nrow(M), 1), replace = TRUE, verbose=TRUE))
 system.time(saveHDF5SummarizedExperiment(bs, dir=opt$output_bsseq_dir, replace = TRUE, verbose=TRUE))
