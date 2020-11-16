@@ -1,28 +1,52 @@
 workflow aggregate_bismark_output {
-        Array[File] in_pe_reports_files
-        Array[File] in_covgz_files
-        Array[File] in_mbias_files
-        File BSGenome_targz
-        String BSGenome_package
-        String Genome_build
-                
-        String memory
-  		String disks
-  		Int preemptible
 
+    String version = "dev"
 
-        call create_combined_bsseq {input:  in_pe_reports_files=in_pe_reports_files,
-                                            in_covgz_files=in_covgz_files,
-                                            in_mbias_files=in_mbias_files,
-                                            BSGenome_targz=BSGenome_targz,
-                                            BSGenome_package=BSGenome_package,
-                                            Genome_build=Genome_build,
-                                            memory = memory, disks = disks, preemptible = preemptible}
+    # 'dev' pipeline versions use the image with the 'latest' tag.
+    # release pipeline versions use images tagged with the version number itself
+    String image_id = sub(version, "dev", "latest")
+
+    Array[File] in_pe_reports_files
+    Array[File] in_covgz_files
+    Array[File] in_mbias_files
+    File BSGenome_targz
+    String BSGenome_package
+    String Genome_build
+
+    String memory
+    String disks
+    Int preemptible
+
+    call version_info { input: image_id = image_id }
+
+    call create_combined_bsseq {input:  in_pe_reports_files=in_pe_reports_files,
+                                    in_covgz_files=in_covgz_files,
+                                    in_mbias_files=in_mbias_files,
+                                    BSGenome_targz=BSGenome_targz,
+                                    BSGenome_package=BSGenome_package,
+                                    Genome_build=Genome_build,
+                                    memory = memory, disks = disks, preemptible = preemptible, image_id = image_id}
+    }
+
+task version_info {
+	String image_id
+	command <<<
+		cat /VERSION
+	>>>
+	runtime {
+            continueOnReturnCode: false
+            docker: "gcr.io/aryeelab/bismark:${image_id}"
+            cpu: 1
+            memory: "1GB"
+        }
+	output {
+	    String pipeline_version = read_string(stdout())
+        }
 }
 
 
-
 task create_combined_bsseq {
+        String image_id
         Array[File] in_pe_reports_files
         Array[File] in_covgz_files
         Array[File] in_mbias_files
@@ -58,7 +82,7 @@ task create_combined_bsseq {
         }
         runtime {
         continueOnReturnCode: false
-        docker: "aryeelab/bsseq_aggregation:latest"
+    	docker: "gcr.io/aryeelab/bismark:${image_id}"
         memory: memory
         disks: disks
         preemptible: preemptible 
