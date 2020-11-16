@@ -60,21 +60,21 @@ task create_combined_bsseq {
   		  
         command {
                 R CMD INSTALL ${BSGenome_targz}
-                mkdir outputdir_final
+                mkdir bsseq
                 mkdir mbias_files
                 echo """${sep="\n" in_pe_reports_files}""" > all_pe_reports.txt
                 echo """${sep="\n" in_covgz_files}""" > all_cov_gz.txt
                 echo """${sep="\n" in_mbias_files}""" > all_mbias.txt
-                Rscript --vanilla /bismark_to_bsseq_file_list.R -i all_pe_reports.txt -j all_cov_gz.txt -k all_mbias.txt --bsgenome ${BSGenome_package} -o outputdir_final -m mbias_files
-                Rscript -e "library(dplyr);library(scmeth);library('${BSGenome_package}', character.only = TRUE);bs <- HDF5Array::loadHDF5SummarizedExperiment(dir='outputdir_final');getwd();report(bs, '/', get('${BSGenome_package}'), '${Genome_build}',mbiasDir='mbias_files')"
+                Rscript --vanilla /bismark_to_bsseq_file_list.R -i all_pe_reports.txt -j all_cov_gz.txt -k all_mbias.txt --bsgenome ${BSGenome_package} -o bsseq -m mbias_files
+                Rscript -e "library(dplyr);library(scmeth);library('${BSGenome_package}', character.only = TRUE);bs <- HDF5Array::loadHDF5SummarizedExperiment(dir='bsseq');getwd();report(bs, '/', get('${BSGenome_package}'), '${Genome_build}',mbiasDir='mbias_files')"
                 mv /qcReport.html .
                 mv /QC_Summary.txt .
                 mv /Downsample_Table.txt .
                 mv /mbias_Table.txt .
-                tar -cf outputdir_final.tar outputdir_final
+                tar -cfz bsseq.tar.gz bsseq
         }
         output {
-                File final = "outputdir_final.tar"
+                File combined_bsseq = "bsseq.tar.gz"
                 File final_qc_html = "qcReport.html"
                 File final_qc_table = "QC_Summary.txt"
                 File final_downsample_table = "Downsample_Table.txt"
