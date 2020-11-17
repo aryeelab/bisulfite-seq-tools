@@ -5,15 +5,12 @@ ARG VERSION=__specify_in_build_arg__
 ENV DEBIAN_FRONTEND=noninteractive
 
 RUN apt-get update && \ 
-    apt-get install -y build-essential zlib1g-dev \
+    apt-get install -y procps build-essential zlib1g-dev \
                        libxml2-dev libncurses5-dev libncursesw5-dev git wget unzip \
                        python python-dev python3-pip \
                        libssl-dev libcurl4-openssl-dev dirmngr gnupg \
                        apt-transport-https ca-certificates software-properties-common\
-                       fastqc
-
-# Install procps (to get free and top)
-RUN apt-get install -y procps
+                       fastqc pandoc 
 
 # Install Bowtie2
 RUN apt-get install -y libtbb-dev && \
@@ -29,7 +26,6 @@ RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E298A3A825C0D65DFD5
 	apt-get update && \
 	apt-get install -y --force-yes r-base
 	
-#Installing necessary R packages
 RUN Rscript -e "install.packages('BiocManager');" && \
     Rscript -e "install.packages('optparse', repos='http://R-Forge.R-project.org')" && \
     Rscript -e "install.packages('ggplot2',repos='http://R-Forge.R-project.org')" && \
@@ -50,6 +46,20 @@ RUN Rscript -e "install.packages('BiocManager');" && \
     Rscript -e "BiocManager::install('BSgenome.Mmusculus.UCSC.mm10')" && \
     Rscript -e "BiocManager::install('annotatr')" && \
     Rscript -e "BiocManager::install('scmeth')" 
+
+# Install aggregation workflow R packages
+RUN Rscript -e "BiocManager::install(c(\
+            'BSgenome', 'Biostrings','GenomeInfoDb', \
+            'HDF5Array', 'bsseq', \
+            'foreach', 'optparse', 'annotatr', \
+            'readr', 'stringr', 'devtools', \
+            'TxDb.Mmusculus.UCSC.mm9.knownGene', \
+            'TxDb.Mmusculus.UCSC.mm10.knownGene', \
+            'org.Mm.eg.db', \
+            'TxDb.Hsapiens.UCSC.hg19.knownGene', \
+            'TxDb.Hsapiens.UCSC.hg38.knownGene', \
+            'org.Hs.eg.db', \
+            'scmeth'), ask=F)"
 
 # Install bedtools
 RUN cd /src && \
@@ -92,9 +102,13 @@ RUN cd /src && \
 	wget https://github.com/FelixKrueger/Bismark/archive/0.22.3.tar.gz && \
 	tar zxf 0.22.3.tar.gz && \
 	ln -s /src/Bismark-0.22.3/bismark* /usr/local/bin/ && \
-	ln -s /src/Bismark-0.22.3/deduplicate_bismark /usr/local/bin/
-	
-# added pooling report script
+	ln -s /src/Bismark-0.22.3/deduplicate_bismark /usr/local/bin/            
+            
+# Add pooling report script
 ADD ./pool_report_files.R pool_report_files.R
+
+# Add combine individual samples script
+ADD ./bismark_to_bsseq_file_list.R bismark_to_bsseq_file_list.R
+
 
 RUN echo $VERSION > /VERSION

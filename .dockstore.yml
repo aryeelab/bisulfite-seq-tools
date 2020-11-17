@@ -3,4 +3,6 @@ workflows:
    - name: bismark
      subclass: WDL
      primaryDescriptorPath: /pipelines/bismark.wdl
-
+   - name: aggregate_bismark
+     subclass: WDL
+     primaryDescriptorPath: /pipelines/aggregate_bismark.wdl

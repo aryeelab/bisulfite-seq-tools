@@ -52,6 +52,8 @@ workflow bsseq {
   call merge_replicates {input: bams = align.bam, 
                                 reports = align.output_report, 
                                 samplename = samplename, 
+                                trim_logs = trim.log,
+                                align_logs = align.log,
                                 assay_type = assay_type,
                                 chrom_sizes = chrom_sizes, 
                                 genome_index = genome_index, 
@@ -72,6 +74,7 @@ workflow bsseq {
         File bigwig = merge_replicates.output_bigwig
         String pipeline_version = version_info.pipeline_version
         String assay = assay_type
+        File log = merge_replicates.log
   }
   
 }
@@ -133,46 +136,38 @@ task trim {
     chmod u+x ${monitoring_script}
     ${monitoring_script} > monitoring.log &
 
-    #WORK_DIR=$PWD
-    #TMP_DIR=`mktemp -d`
-    #echo "Using temp dir: $TMP_DIR"
-    #cd $TMP_DIR
-
     cp ${r1_fastq} r1.fastq.gz
     cp ${r2_fastq} r2.fastq.gz
     
-    echo "Mode: ${assay_type}"
+    echo "Mode: ${assay_type}" | tee -a log.txt
     
     if [ "${assay_type}" == "rrbs" ] || [ "${assay_type}" == "RRBS" ]; then
-        echo "RRBS trimming"
+        echo "RRBS trimming"  | tee -a log.txt
         trim_galore --rrbs --paired r1.fastq.gz r2.fastq.gz
         mv r1_val_1.fq.gz r1.fastq.gz 
         mv r2_val_2.fq.gz r2.fastq.gz 
     else
-        echo "Not applying RRBS trimming"
+        echo "Not applying RRBS trimming" | tee -a log.txt
     fi
     
-	echo "5' Trimming options:"
-	echo "  n_bp_trim_read1 = ${n_bp_trim_read1}"
-	echo "  n_bp_trim_read2 = ${n_bp_trim_read2}"	
+	echo "5' Trimming options:" | tee -a log.txt
+	echo "  n_bp_trim_read1 = ${n_bp_trim_read1}" | tee -a log.txt
+	echo "  n_bp_trim_read2 = ${n_bp_trim_read2}" | tee -a log.txt	
 	
     if (( ${n_bp_trim_read1} > 0 && ${n_bp_trim_read2} > 0)); then
-        echo "Trimming both read 1 and read 2 from the 5' end"
+        echo "Trimming both read 1 and read 2 from the 5' end" | tee -a log.txt
     	trim_galore --paired --clip_R1 ${n_bp_trim_read1} --clip_R2 ${n_bp_trim_read2} r1.fastq.gz r2.fastq.gz
     elif (( ${n_bp_trim_read1} > 0 && ${n_bp_trim_read2} == 0)); then
-        echo "Trimming only read 1 from the 5' end"
+        echo "Trimming only read 1 from the 5' end" | tee -a log.txt
         trim_galore --paired --clip_R1 ${n_bp_trim_read1} r1.fastq.gz r2.fastq.gz
     elif (( ${n_bp_trim_read1} == 0 && ${n_bp_trim_read2} > 0)); then
-        echo "Trimming only read 2 from the 5' end"
+        echo "Trimming only read 2 from the 5' end" | tee -a log.txt
         trim_galore --paired --clip_R2 ${n_bp_trim_read2} r1.fastq.gz r2.fastq.gz
     else 
-        echo "  Not 5' trimming reads"
+        echo "  Not 5' trimming reads" | tee -a log.txt
         cp r1.fastq.gz r1_val_1.fq.gz
         cp r2.fastq.gz r2_val_2.fq.gz
-    fi
- 
-    #mv r1_val_1.fq.gz $WORK_DIR/
-    #mv r2_val_2.fq.gz $WORK_DIR/
+    fi 
   }
   
   runtime {
@@ -188,6 +183,7 @@ task trim {
     File trimmed_r1_fastq = "r1_val_1.fq.gz"
     File trimmed_r2_fastq = "r2_val_2.fq.gz"    
     File monitoring_log = "monitoring.log"
+    File log = "log.txt"
   }
 
 }
@@ -214,22 +210,28 @@ task align {
     chmod u+x ${monitoring_script}
     ${monitoring_script} > monitoring.log &
     WORK_DIR=$PWD
-    mkdir tmp
-    cd tmp
+    TMP_DIR=`mktemp -d -p /tmp`
+    cd $TMP_DIR
+    echo "Using temp dir: $TMP_DIR" | tee -a log.txt
     mkdir bismark_index
     
+    echo "Using genome index: `basename ${genome_index}`" | tee -a log.txt
     tar zxvf ${genome_index} -C bismark_index
-    echo "Genome index MD5sum:"
-    md5sum ${genome_index}
+    echo "Genome index MD5sum: `md5sum ${genome_index}`"  | tee -a log.txt
     
     ln -s ${r1_fastq} r1.fastq.gz
     ln -s ${r2_fastq} r2.fastq.gz
-            	
-	bismark --genome bismark_index --multicore ${multicore} -1 r1.fastq.gz -2 r2.fastq.gz
+
+    echo "Starting bismark"            	
+	bismark --genome bismark_index --multicore ${multicore} -1 r1.fastq.gz -2 r2.fastq.gz  | tee -a log.txt
+
     mv *bismark_bt2_pe.bam $WORK_DIR/${samplename}.bam
     mv *bismark_bt2_PE_report.txt $WORK_DIR/${samplename}_report.txt
     
-    bismark2report --alignment_report $WORK_DIR/${samplename}_report.txt --output $WORK_DIR/${samplename}_bismark_report.html  
+    echo "Starting bismark2report"    
+    bismark2report --alignment_report $WORK_DIR/${samplename}_report.txt --output $WORK_DIR/${samplename}_bismark_report.html  | tee -a log.txt
+
+    mv log.txt $WORK_DIR/log.txt
   
   }
 
@@ -247,6 +249,7 @@ task align {
     File output_report = "${samplename}_report.txt"
     File bismark_report_html = "${samplename}_bismark_report.html"
     File monitoring_log = "monitoring.log"
+    File log = "log.txt"
   }
   
   
@@ -258,6 +261,8 @@ task merge_replicates {
   String assay_type
   Array[File] bams
   Array[File] reports
+  Array[File] trim_logs
+  Array[File] align_logs
   String multicore
   File monitoring_script
   File chrom_sizes
@@ -274,19 +279,29 @@ task merge_replicates {
     # use of --multicore with --basename
     chmod u+x ${monitoring_script}
     ${monitoring_script} > monitoring.log &
+
+    echo "### TRIM LOGS ###" | tee -a log.txt
+    cat ${sep=' ' trim_logs} | tee -a log.txt
+    echo -ne "\n\n### ALIGN LOGS ###\n" | tee -a log.txt
+    cat ${sep=' ' align_logs} | tee -a log.txt
+
+    echo -ne "\n\n### MERGE LOGS ###\n" | tee -a log.txt
+    
+    echo "Using genome index: `basename ${genome_index}`" | tee -a log.txt
     mkdir bismark_index
     tar zxf ${genome_index} -C bismark_index
     
+    echo "Running samtools merge" | tee -a log.txt
     samtools merge -n ${samplename}.bam ${sep=' ' bams}
     
     if [ "${assay_type}" == "wgbs" ] || [ "${assay_type}" == "WGBS" ]; then
-        echo "Deduplicating..."
+        echo "Deduplicating..." | tee -a log.txt
         samtools sort -n -o ${samplename}.sorted_by_readname.bam ${samplename}.bam 
         deduplicate_bismark -p --bam ${samplename}.sorted_by_readname.bam
         rm ${samplename}.sorted_by_readname.bam ${samplename}.bam
         mv ${samplename}.sorted_by_readname.deduplicated.bam ${samplename}.bam
     else
-        echo "Not deduplicating"
+        echo "Not deduplicating" | tee -a log.txt
     fi
     
     samtools sort -o ${samplename}.sorted.bam ${samplename}.bam
@@ -320,6 +335,7 @@ task merge_replicates {
             File mbias_report = "${samplename}.M-bias.txt"
             File output_bigwig = "${samplename}.bw"
             File output_bai = "${samplename}.sorted.bai"
+            File log = "log.txt"
   }
 
 }
