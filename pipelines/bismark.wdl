@@ -209,12 +209,8 @@ task align {
   command {
     chmod u+x ${monitoring_script}
     ${monitoring_script} > monitoring.log &
-    WORK_DIR=$PWD
-    TMP_DIR=`mktemp -d -p /tmp`
-    cd $TMP_DIR
-    echo "Using temp dir: $TMP_DIR" | tee -a log.txt
-    mkdir bismark_index
     
+    mkdir bismark_index
     echo "Using genome index: `basename ${genome_index}`" | tee -a log.txt
     tar zxvf ${genome_index} -C bismark_index
     echo "Genome index MD5sum: `md5sum ${genome_index}`"  | tee -a log.txt
@@ -225,16 +221,13 @@ task align {
     echo "Starting bismark"            	
 	bismark --genome bismark_index --multicore ${multicore} -1 r1.fastq.gz -2 r2.fastq.gz  | tee -a log.txt
 
-    mv *bismark_bt2_pe.bam $WORK_DIR/${samplename}.bam
-    mv *bismark_bt2_PE_report.txt $WORK_DIR/${samplename}_report.txt
+    mv *bismark_bt2_pe.bam ${samplename}.bam
+    mv *bismark_bt2_PE_report.txt ${samplename}_report.txt
     
     echo "Starting bismark2report"    
-    bismark2report --alignment_report $WORK_DIR/${samplename}_report.txt --output $WORK_DIR/${samplename}_bismark_report.html  | tee -a log.txt
-
-    mv log.txt $WORK_DIR/log.txt
-  
+    bismark2report --alignment_report ${samplename}_report.txt --output ${samplename}_bismark_report.html  | tee -a log.txt
   }
-
+  
   runtime {
   	continueOnReturnCode: false
 	docker: "gcr.io/aryeelab/bismark:${image_id}"
